@@ -2,1490 +2,363 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#1769ff">
-<title>OneChat</title>
-
-<style>
-:root {
-  --blue: #1769ff;
-  --blue-dark: #0754e8;
-  --bg: #f2f6ff;
-  --card: #ffffff;
-  --text: #17233b;
-  --muted: #7b879d;
-  --line: #e5ebf5;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-}
-
-button, input, textarea {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.app {
-  width: 100%;
-  max-width: 680px;
-  margin: auto;
-  min-height: 100dvh;
-  padding: 14px;
-}
-
-/* Единая шапка OneChat и профиля */
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 4px 16px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.7px;
-}
-
-.logo {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 15px;
-  color: white;
-  background: var(--blue);
-  box-shadow: 0 5px 14px #1769ff35;
-}
-
-.logo svg {
-  width: 24px;
-  height: 24px;
-}
-
-.profile-pill {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  max-width: 56%;
-  padding: 6px 12px 6px 6px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--card);
-  color: var(--text);
-  transition: transform .18s;
-}
-
-.profile-pill:active {
-  transform: scale(.97);
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 50%;
-  color: white;
-  background: var(--blue);
-  font-weight: 800;
-}
-
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-pill-info {
-  min-width: 0;
-  text-align: left;
-}
-
-.profile-pill-name {
-  display: block;
-  overflow: hidden;
-  font-weight: 700;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.profile-pill-username {
-  display: block;
-  margin-top: 3px;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 12px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-/* Общий чат начинается сразу под шапкой */
-
-.community {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--card);
-  box-shadow: 0 8px 28px #203e7010;
-  animation: appear .3s ease;
-}
-
-.community-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 17px;
-  border-bottom: 1px solid var(--line);
-  background: linear-gradient(110deg, #eaf2ff, #ffffff);
-}
-
-.community-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.community-icon {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  color: white;
-  background: var(--blue);
-}
-
-.community-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.online {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #16864b;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.online-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #21bd69;
-}
-
-.feed {
-  min-height: 180px;
-  max-height: 52vh;
-  overflow-y: auto;
-  padding: 16px;
-}
-
-.message {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 20px;
-  animation: appear .2s ease;
-}
-
-.message:last-child {
-  margin-bottom: 0;
-}
-
-.message .avatar {
-  width: 39px;
-  height: 39px;
-}
-
-.message-body {
-  min-width: 0;
-  flex: 1;
-}
-
-.message-meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin: 3px 0 7px;
-}
-
-.username-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text);
-  font-weight: 800;
-}
-
-.username-button:hover {
-  color: var(--blue);
-}
-
-.message-time {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.message-text {
-  overflow-wrap: anywhere;
-  line-height: 1.5;
-  font-size: 14px;
-}
-
-.empty {
-  padding: 30px 12px;
-  color: var(--muted);
-  text-align: center;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.composer {
-  display: flex;
-  align-items: flex-end;
-  gap: 9px;
-  padding: 13px;
-  border-top: 1px solid var(--line);
-  background: #fbfcff;
-}
-
-.composer textarea {
-  flex: 1;
-  min-width: 0;
-  max-height: 120px;
-  resize: none;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
-  border-radius: 17px;
-  outline: none;
-  background: white;
-  color: var(--text);
-}
-
-.composer textarea:focus,
-.field input:focus,
-.field textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px #1769ff15;
-}
-
-.send-button {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  flex-shrink: 0;
-  border: 0;
-  border-radius: 15px;
-  color: white;
-  background: var(--blue);
-  transition: background .2s, transform .2s;
-}
-
-.send-button:hover {
-  background: var(--blue-dark);
-}
-
-.send-button:active {
-  transform: scale(.94);
-}
-
-.send-button svg {
-  width: 22px;
-  height: 22px;
-}
-
-.demo-note {
-  padding: 10px 14px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-/* Личные сообщения */
-
-.section {
-  margin-top: 20px;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 3px 12px;
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.find-button {
-  padding: 9px 13px;
-  border: 0;
-  border-radius: 13px;
-  color: white;
-  background: var(--blue);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.dm-list {
-  display: grid;
-  gap: 9px;
-}
-
-.dm-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--card);
-  color: var(--text);
-  text-align: left;
-}
-
-.dm-item .dm-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.dm-item strong,
-.dm-item small {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dm-item small {
-  margin-top: 5px;
-  color: var(--muted);
-}
-
-/* Экраны и окна */
-
-.screen {
-  display: none;
-  animation: appear .22s ease;
-}
-
-.screen.active {
-  display: block;
-}
-
-.back-button {
-  margin: 3px 0 16px;
-  padding: 9px 13px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  color: var(--text);
-  background: white;
-}
-
-.panel {
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 23px;
-  background: white;
-}
-
-.panel h2 {
-  margin: 0 0 18px;
-  font-size: 22px;
-}
-
-.profile-big {
-  display: grid;
-  justify-items: center;
-  margin: 6px 0 20px;
-}
-
-.profile-big .avatar {
-  width: 88px;
-  height: 88px;
-  font-size: 30px;
-}
-
-.profile-big h2 {
-  margin: 12px 0 5px;
-}
-
-.profile-big p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.field {
-  display: block;
-  margin-bottom: 15px;
-}
-
-.field span {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.field input,
-.field textarea {
-  display: block;
-  width: 100%;
-  padding: 12px 13px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  outline: none;
-  background: white;
-  color: var(--text);
-}
-
-.field textarea {
-  min-height: 85px;
-  resize: vertical;
-}
-
-.hint {
-  display: block;
-  margin-top: 7px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.primary-button {
-  width: 100%;
-  padding: 14px;
-  border: 0;
-  border-radius: 14px;
-  background: var(--blue);
-  color: white;
-  font-weight: 800;
-}
-
-.secondary-button {
-  width: 100%;
-  margin-top: 9px;
-  padding: 13px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: white;
-  color: var(--text);
-  font-weight: 700;
-}
-
-.status-message {
-  margin-top: 12px;
-  color: #16864b;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.choice {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 12px;
-  padding: 13px;
-  border: 1px solid var(--line);
-  border-radius: 15px;
-}
-
-.choice input {
-  margin-top: 3px;
-  accent-color: var(--blue);
-}
-
-.choice strong,
-.choice small {
-  display: block;
-}
-
-.choice small {
-  margin-top: 4px;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.user-result {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.user-result:last-child {
-  border-bottom: 0;
-}
-
-.user-result .user-data {
-  flex: 1;
-  min-width: 0;
-}
-
-.user-result strong,
-.user-result small {
-  display: block;
-  overflow-wrap: anywhere;
-}
-
-.user-result small {
-  margin-top: 4px;
-  color: var(--muted);
-}
-
-.small-button {
-  padding: 9px 12px;
-  border: 0;
-  border-radius: 11px;
-  color: white;
-  background: var(--blue);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.device-row {
-  display: flex;
-  gap: 10px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.device-row:last-child {
-  border-bottom: 0;
-}
-
-.device-row small {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-}
-
-.chat-panel {
-  overflow: hidden;
-  padding: 0;
-}
-
-.chat-panel .community-head {
-  padding: 15px;
-}
-
-.chat-panel .feed {
-  min-height: 250px;
-  max-height: 55vh;
-}
-
-.chat-panel .composer {
-  padding: 12px;
-}
-
-.toast {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  z-index: 20;
-  max-width: calc(100vw - 30px);
-  padding: 12px 17px;
-  transform: translate(-50%, 20px);
-  opacity: 0;
-  pointer-events: none;
-  border-radius: 14px;
-  background: #17233b;
-  color: white;
-  font-size: 13px;
-  transition: .22s;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 400px) {
-  .app { padding: 10px; }
-  .brand { font-size: 21px; }
-  .profile-pill { max-width: 58%; }
-  .community-head { padding: 14px 12px; }
-  .feed { padding: 13px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OneChat — Регистрация</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #f2f6ff;
+      font-family: Arial, sans-serif;
+      color: #17233b;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px;
+      border-radius: 20px;
+      background: #1769ff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+    }
+
+    .brand {
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 22px;
+      box-shadow: 0 8px 35px #1769ff12;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .description {
+      color: #71809a;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    input {
+      width: 100%;
+      height: 54px;
+      padding: 0 15px;
+      border: 1px solid #dce5f5;
+      border-radius: 12px;
+      font-size: 17px;
+      outline: none;
+      background: white;
+      color: #17233b;
+    }
+
+    input:focus {
+      border-color: #1769ff;
+      box-shadow: 0 0 0 3px #1769ff18;
+    }
+
+    button {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #1769ff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .error {
+      color: #d93025;
+    }
+
+    .success {
+      color: #16803d;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .privacy {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #71809a;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 
 <body>
-<div class="app">
+  <main class="app">
+    <div class="logo">●</div>
+    <div class="brand">OneChat</div>
 
-  <!-- Главная шапка: OneChat + профиль -->
-  <header class="header" id="mainHeader">
-    <div class="brand">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-2 2v-7.5A7.5 7.5 0 0 1 10.5 6H12"/>
-          <path d="M15 3h6v6"/>
-          <path d="m21 3-8 8"/>
-        </svg>
-      </div>
-      <span>OneChat</span>
-    </div>
+    <section class="card">
+      <h2 id="title">Вход по номеру</h2>
 
-    <button class="profile-pill" id="myProfileButton">
-      <div class="avatar" id="headerAvatar">U</div>
-      <div class="profile-pill-info">
-        <span class="profile-pill-name" id="headerName">Пользователь</span>
-        <span class="profile-pill-username" id="headerUsername">@user</span>
-      </div>
-    </button>
-  </header>
+      <p class="description" id="description">
+        Введи номер телефона, чтобы получить код.
+      </p>
 
-  <!-- Главная -->
-  <main id="homeScreen" class="screen active">
+      <div id="phone-screen">
+        <input
+          id="phone"
+          type="tel"
+          autocomplete="tel"
+          placeholder="+7 999 123-45-67"
+        >
 
-    <section class="community">
-      <div class="community-head">
-        <div class="community-title">
-          <div class="community-icon">
-            <svg viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>
-            </svg>
-          </div>
-          <span>Общий чат</span>
-        </div>
-        <div class="online">
-          <span class="online-dot"></span>
-          Лента
-        </div>
-      </div>
-
-      <div class="feed" id="publicFeed"></div>
-
-      <form class="composer" id="publicForm">
-        <textarea id="publicInput" rows="1"
-          maxlength="1000"
-          placeholder="Написать сообщение..."
-          aria-label="Сообщение в общий чат"></textarea>
-        <button class="send-button" type="submit" aria-label="Отправить">
-          <svg viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="m22 2-7 20-4-9-9-4Z"/>
-            <path d="M22 2 11 13"/>
-          </svg>
+        <button id="send-code">
+          Получить SMS-код
         </button>
-      </form>
-
-      <div class="demo-note">
-        Демоверсия: сообщения сохраняются только на этом устройстве.
       </div>
+
+      <div id="code-screen" class="hidden">
+        <input
+          id="code"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          placeholder="Код из SMS"
+          aria-label="Код из SMS"
+        >
+      </div>
+
+      <div id="message" class="message" role="status"></div>
     </section>
 
-    <section class="section">
-      <div class="section-heading">
-        <span>Личные сообщения</span>
-        <button class="find-button" id="findUsersButton">Найти людей</button>
-      </div>
-      <div class="dm-list" id="dmList"></div>
-    </section>
+    <div class="privacy">
+      🔒 Твой номер нужен для входа в OneChat.
+    </div>
   </main>
 
-  <!-- Профиль -->
-  <section id="profileScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <div class="panel">
-      <div class="profile-big">
-        <div class="avatar" id="profileAvatar">U</div>
-        <h2 id="profileDisplayName">Пользователь</h2>
-        <p id="profileDisplayUsername">@user</p>
-      </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-      <div id="profileDescription"
-           style="margin-bottom:18px;text-align:center;color:#7b879d">
-        Пока без описания
-      </div>
-
-      <button class="primary-button" id="editProfileButton">
-        Редактировать профиль
-      </button>
-
-      <button class="secondary-button" id="privacyButton">
-        Приватность личных сообщений
-      </button>
-
-      <button class="secondary-button" id="devicesButton">
-        Устройства
-      </button>
-    </div>
-  </section>
-
-  <!-- Редактирование профиля -->
-  <section id="editScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <div class="panel">
-      <h2>Редактировать профиль</h2>
-
-      <div class="profile-big">
-        <div class="avatar" id="editAvatar">U</div>
-      </div>
-
-      <label class="field">
-        <span>Фото профиля</span>
-        <input id="avatarFile" type="file" accept="image/*">
-        <small class="hint">Выбери изображение из галереи.</small>
-      </label>
-
-      <label class="field">
-        <span>Имя</span>
-        <input id="nameInput" maxlength="40" placeholder="Твоё имя">
-      </label>
-
-      <label class="field">
-        <span>Юзернейм</span>
-        <input id="usernameInput" maxlength="24"
-          placeholder="blue_user.67"
-          autocomplete="off" autocapitalize="none"
-          spellcheck="false">
-        <small class="hint">
-          Только маленькие английские буквы, цифры, точка и нижнее подчёркивание.
-          От 3 до 24 символов.
-        </small>
-      </label>
-
-      <label class="field">
-        <span>Описание</span>
-        <textarea id="descriptionInput" maxlength="180"
-          placeholder="Расскажи немного о себе"></textarea>
-      </label>
-
-      <button class="primary-button" id="saveProfileButton">
-        Сохранить изменения
-      </button>
-      <div id="editStatus" class="status-message"></div>
-    </div>
-  </section>
-
-  <!-- Поиск -->
-  <section id="peopleScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <div class="panel">
-      <h2>Найти людей</h2>
-      <label class="field">
-        <span>Поиск по имени или юзернейму</span>
-        <input id="peopleSearch" placeholder="Например, blue_user">
-      </label>
-      <div id="peopleResults"></div>
-      <small class="hint">
-        В этой демоверсии поиск работает только по локальным демонстрационным
-        профилям. Для поиска реальных пользователей нужен сервер.
-      </small>
-    </div>
-  </section>
-
-  <!-- Приватность -->
-  <section id="privacyScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <div class="panel">
-      <h2>Приватность</h2>
-      <p style="color:#7b879d;font-size:13px;line-height:1.6">
-        Кто может начинать личную переписку с тобой?
-      </p>
-
-      <label class="choice">
-        <input type="radio" name="privacy" value="anyone">
-        <span>
-          <strong>Любой пользователь</strong>
-          <small>Можно сразу начинать переписку.</small>
-        </span>
-      </label>
-
-      <label class="choice">
-        <input type="radio" name="privacy" value="approval">
-        <span>
-          <strong>Только с моего разрешения</strong>
-          <small>Ты сможешь принимать или отклонять запросы.</small>
-        </span>
-      </label>
-
-      <label class="choice">
-        <input type="radio" name="privacy" value="nobody">
-        <span>
-          <strong>Никто</strong>
-          <small>Новые личные переписки запрещены.</small>
-        </span>
-      </label>
-
-      <button class="primary-button" id="savePrivacyButton">
-        Сохранить
-      </button>
-      <div id="privacyStatus" class="status-message"></div>
-    </div>
-  </section>
-
-  <!-- Устройства -->
-  <section id="devicesScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <div class="panel">
-      <h2>Устройства</h2>
-      <div class="device-row">
-        <div>📱</div>
-        <div>
-          <strong>Это устройство</strong>
-          <small>Текущая локальная сессия</small>
-        </div>
-      </div>
-      <p class="hint">
-        Пока здесь отображается только это устройство. Для обнаружения других
-        устройств и управления активными сессиями потребуется сервер.
-      </p>
-    </div>
-  </section>
-
-  <!-- Личная переписка -->
-  <section id="chatScreen" class="screen">
-    <button class="back-button" data-back>← Назад</button>
-    <section class="community chat-panel">
-      <div class="community-head">
-        <button id="chatUserButton"
-          style="display:flex;align-items:center;gap:10px;border:0;background:none;text-align:left">
-          <div class="avatar" id="chatAvatar">U</div>
-          <div>
-            <strong id="chatName">Пользователь</strong>
-            <div id="chatUsername"
-              style="margin-top:4px;color:#7b879d;font-size:12px">@user</div>
-          </div>
-        </button>
-      </div>
-      <div class="feed" id="privateFeed"></div>
-      <form class="composer" id="privateForm">
-        <textarea id="privateInput" rows="1" maxlength="1000"
-          placeholder="Личное сообщение..."></textarea>
-        <button class="send-button" type="submit" aria-label="Отправить">
-          <svg viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="m22 2-7 20-4-9-9-4Z"/>
-            <path d="M22 2 11 13"/>
-          </svg>
-        </button>
-      </form>
-    </section>
-    <div class="demo-note">
-      Личные сообщения пока сохраняются только на этом устройстве.
-    </div>
-  </section>
-
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const $ = id => document.getElementById(id);
-const STORAGE_KEY = "onechatDemoV2";
-
-const defaultState = {
-  profile: {
-    name: "Пользователь",
-    username: "user",
-    description: "",
-    avatar: ""
-  },
-  privacy: "anyone",
-  publicMessages: [],
-  privateMessages: [],
-  conversations: [],
-  requests: []
-};
-
-let state;
-
-try {
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-  state = { ...defaultState, ...(saved || {}) };
-  state.profile = { ...defaultState.profile, ...(state.profile || {}) };
-  state.publicMessages ||= [];
-  state.privateMessages ||= [];
-  state.conversations ||= [];
-  state.requests ||= [];
-} catch {
-  state = structuredClone(defaultState);
-}
-
-let currentScreen = "homeScreen";
-let previousScreen = "homeScreen";
-let activeChat = null;
-let pendingAvatar = null;
-
-const demoUsers = [
-  {name:"Blue", username:"blue_user.67", description:"Люблю общаться."},
-  {name:"Alex", username:"alex_123", description:"Всем привет!"},
-  {name:"Mira", username:"mira.chat", description:"Здесь ради общения."}
-];
-
-function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    toast("Не удалось сохранить данные. Возможно, фото слишком большое.");
-  }
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[char]));
-}
-
-function toast(message) {
-  const el = $("toast");
-  el.textContent = message;
-  el.classList.add("show");
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => el.classList.remove("show"), 2400);
-}
-
-function initials(name) {
-  return (name || "U").trim().slice(0, 1).toUpperCase() || "U";
-}
-
-function avatarMarkup(user, extraClass = "") {
-  if (user.avatar) {
-    return `<div class="avatar ${extraClass}">
-      <img src="${user.avatar}" alt="">
-    </div>`;
-  }
-  return `<div class="avatar ${extraClass}">${escapeHTML(initials(user.name))}</div>`;
-}
-
-function showScreen(id) {
-  previousScreen = currentScreen;
-  currentScreen = id;
-
-  document.querySelectorAll(".screen").forEach(screen => {
-    screen.classList.toggle("active", screen.id === id);
-  });
-
-  $("mainHeader").style.display =
-    id === "homeScreen" ? "flex" : "none";
-
-  window.scrollTo({top:0, behavior:"smooth"});
-}
-
-function goBack() {
-  showScreen(previousScreen === currentScreen ? "homeScreen" : previousScreen);
-}
-
-document.querySelectorAll("[data-back]").forEach(button => {
-  button.addEventListener("click", () => {
-    if (currentScreen === "chatScreen") {
-      showScreen("homeScreen");
-    } else if (currentScreen === "editScreen") {
-      showScreen("profileScreen");
-    } else if (
-      currentScreen === "privacyScreen" ||
-      currentScreen === "devicesScreen"
-    ) {
-      showScreen("profileScreen");
-    } else {
-      showScreen("homeScreen");
-    }
-  });
-});
-
-/* Профиль */
-
-function renderProfile() {
-  const p = state.profile;
-
-  $("headerName").textContent = p.name || "Пользователь";
-  $("headerUsername").textContent = "@" + (p.username || "user");
-
-  $("headerAvatar").innerHTML = p.avatar
-    ? `<img src="${p.avatar}" alt="">`
-    : escapeHTML(initials(p.name));
-
-  $("profileAvatar").innerHTML = p.avatar
-    ? `<img src="${p.avatar}" alt="">`
-    : escapeHTML(initials(p.name));
-
-  $("editAvatar").innerHTML = p.avatar
-    ? `<img src="${p.avatar}" alt="">`
-    : escapeHTML(initials(p.name));
-
-  $("profileDisplayName").textContent = p.name || "Пользователь";
-  $("profileDisplayUsername").textContent = "@" + (p.username || "user");
-  $("profileDescription").textContent = p.description || "Пока без описания";
-}
-
-$("myProfileButton").addEventListener("click", () => {
-  renderProfile();
-  showScreen("profileScreen");
-});
-
-$("editProfileButton").addEventListener("click", () => {
-  $("nameInput").value = state.profile.name;
-  $("usernameInput").value = state.profile.username;
-  $("descriptionInput").value = state.profile.description;
-  pendingAvatar = null;
-  $("editStatus").textContent = "";
-  renderProfile();
-  showScreen("editScreen");
-});
-
-/* Юзернейм: маленькие английские буквы, цифры, _ и . */
-
-function sanitizeUsername(value) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9_.]/g, "")
-    .slice(0, 24);
-}
-
-$("usernameInput").addEventListener("input", event => {
-  const input = event.target;
-  const cleaned = sanitizeUsername(input.value);
-
-  if (input.value !== cleaned) {
-    const cursor = input.selectionStart;
-    input.value = cleaned;
-    try {
-      input.setSelectionRange(cursor, cursor);
-    } catch {}
-  }
-
-  $("editStatus").textContent = "";
-});
-
-$("avatarFile").addEventListener("change", event => {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    toast("Выбери файл изображения.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    const image = new Image();
-
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      const maxSize = 320;
-      const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
-
-      canvas.width = Math.round(image.width * scale);
-      canvas.height = Math.round(image.height * scale);
-
-      const context = canvas.getContext("2d");
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      pendingAvatar = canvas.toDataURL("image/jpeg", 0.78);
-      $("editAvatar").innerHTML = `<img src="${pendingAvatar}" alt="">`;
+  <script>
+    // ВСТАВЬ СЮДА НАСТРОЙКИ СВОЕГО FIREBASE-ПРОЕКТА
+    const firebaseConfig = {
+      apiKey: "ВСТАВЬ_API_KEY",
+      authDomain: "ВСТАВЬ_PROJECT_ID.firebaseapp.com",
+      projectId: "ВСТАВЬ_PROJECT_ID",
+      appId: "ВСТАВЬ_APP_ID"
     };
 
-    image.onerror = () => toast("Не удалось открыть это изображение.");
-    image.src = reader.result;
-  };
-
-  reader.readAsDataURL(file);
-});
-
-$("saveProfileButton").addEventListener("click", () => {
-  const name = $("nameInput").value.trim();
-  const username = sanitizeUsername($("usernameInput").value);
-  const description = $("descriptionInput").value.trim();
-
-  if (!name) {
-    $("editStatus").textContent = "Введи имя.";
-    return;
-  }
-
-  if (!/^[a-z0-9_.]{3,24}$/.test(username)) {
-    $("editStatus").textContent =
-      "Юзернейм должен содержать от 3 до 24 символов: a–z, 0–9, _ и .";
-    return;
-  }
-
-  state.profile.name = name;
-  state.profile.username = username;
-  state.profile.description = description;
-
-  if (pendingAvatar) {
-    state.profile.avatar = pendingAvatar;
-  }
-
-  saveState();
-  renderProfile();
-  renderPublicMessages();
-  renderDMList();
-
-  $("editStatus").textContent = "Профиль сохранён.";
-  toast("Профиль обновлён.");
-  showScreen("profileScreen");
-});
-
-/* Общая лента */
-
-function renderPublicMessages() {
-  const feed = $("publicFeed");
-
-  if (!state.publicMessages.length) {
-    feed.innerHTML = `
-      <div class="empty">
-        Здесь пока нет сообщений.<br>
-        Напиши первым!
-      </div>`;
-    return;
-  }
-
-  feed.innerHTML = state.publicMessages.map(message => `
-    <article class="message">
-      <button class="avatar profile-open"
-        data-username="${escapeHTML(message.username)}"
-        aria-label="Открыть профиль">
-        ${message.avatar
-          ? `<img src="${message.avatar}" alt="">`
-          : escapeHTML(initials(message.name))}
-      </button>
-      <div class="message-body">
-        <div class="message-meta">
-          <button class="username-button profile-open"
-            data-username="${escapeHTML(message.username)}">
-            ${escapeHTML(message.name)}
-          </button>
-          <span class="message-time">${escapeHTML(message.time)}</span>
-        </div>
-        <div class="message-text">${escapeHTML(message.text)}</div>
-      </div>
-    </article>
-  `).join("");
-
-  feed.querySelectorAll(".profile-open").forEach(button => {
-    button.addEventListener("click", () => {
-      openUserProfile(button.dataset.username);
-    });
-  });
-
-  feed.scrollTop = feed.scrollHeight;
-}
-
-$("publicForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const text = $("publicInput").value.trim();
-  if (!text) return;
-
-  state.publicMessages.push({
-    id: Date.now(),
-    name: state.profile.name,
-    username: state.profile.username,
-    avatar: state.profile.avatar,
-    text,
-    time: new Date().toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit"
-    })
-  });
-
-  state.publicMessages = state.publicMessages.slice(-150);
-  $("publicInput").value = "";
-  saveState();
-  renderPublicMessages();
-});
-
-/* Демонстрационные профили и поиск */
-
-function openUserProfile(username) {
-  if (username === state.profile.username) {
-    renderProfile();
-    showScreen("profileScreen");
-    return;
-  }
-
-  const user = demoUsers.find(item => item.username === username);
-
-  if (!user) {
-    toast("Профиль другого пользователя пока доступен только в демоверсии.");
-    return;
-  }
-
-  $("profileAvatar").textContent = initials(user.name);
-  $("profileDisplayName").textContent = user.name;
-  $("profileDisplayUsername").textContent = "@" + user.username;
-  $("profileDescription").textContent = user.description || "Пока без описания";
-
-  $("editProfileButton").style.display = "none";
-  $("privacyButton").style.display = "none";
-  $("devicesButton").style.display = "none";
-
-  let startButton = document.getElementById("startOtherChatButton");
-
-  if (!startButton) {
-    startButton = document.createElement("button");
-    startButton.id = "startOtherChatButton";
-    startButton.className = "primary-button";
-    startButton.textContent = "Написать сообщение";
-    $("profileDescription").after(startButton);
-  }
-
-  startButton.style.display = "block";
-  startButton.onclick = () => startDM(user);
-
-  showScreen("profileScreen");
-}
-
-function openMyProfile() {
-  $("editProfileButton").style.display = "block";
-  $("privacyButton").style.display = "block";
-  $("devicesButton").style.display = "block";
-
-  const startButton = document.getElementById("startOtherChatButton");
-  if (startButton) startButton.style.display = "none";
-
-  renderProfile();
-  showScreen("profileScreen");
-}
-
-$("myProfileButton").onclick = openMyProfile;
-
-$("findUsersButton").addEventListener("click", () => {
-  $("peopleSearch").value = "";
-  renderPeople("");
-  showScreen("peopleScreen");
-});
-
-$("peopleSearch").addEventListener("input", event => {
-  renderPeople(event.target.value);
-});
-
-function renderPeople(query) {
-  const normalized = query.trim().toLowerCase();
-
-  const users = demoUsers.filter(user =>
-    user.username !== state.profile.username &&
-    (user.name.toLowerCase().includes(normalized) ||
-     user.username.toLowerCase().includes(normalized))
-  );
-
-  $("peopleResults").innerHTML = users.length
-    ? users.map(user => `
-      <div class="user-result">
-        <div class="avatar">${escapeHTML(initials(user.name))}</div>
-        <div class="user-data">
-          <strong>${escapeHTML(user.name)}</strong>
-          <small>@${escapeHTML(user.username)}</small>
-        </div>
-        <button class="small-button"
-          data-open-user="${escapeHTML(user.username)}">Профиль</button>
-      </div>
-    `).join("")
-    : `<div class="empty">Никого не найдено.</div>`;
-
-  $("peopleResults").querySelectorAll("[data-open-user]").forEach(button => {
-    button.addEventListener("click", () => {
-      openUserProfile(button.dataset.openUser);
-    });
-  });
-}
-
-/* Личные сообщения */
-
-function conversationKey(username) {
-  return [state.profile.username, username].sort().join("|");
-}
-
-function startDM(user) {
-  if (state.privacy === "nobody") {
-    toast("Владелец профиля запретил новые личные сообщения.");
-    return;
-  }
-
-  const exists = state.conversations.some(c => c.username === user.username);
-
-  if (!exists) {
-    state.conversations.push({
-      username: user.username,
-      name: user.name,
-      avatar: user.avatar || ""
-    });
-  }
-
-  activeChat = user;
-  saveState();
-  renderDMList();
-  renderPrivateMessages();
-  showScreen("chatScreen");
-}
-
-function renderDMList() {
-  const list = $("dmList");
-
-  if (!state.conversations.length) {
-    list.innerHTML = `
-      <div class="empty" style="border:1px solid var(--line);border-radius:18px;background:white">
-        Здесь появятся твои личные переписки.<br>
-        Нажми «Найти людей», чтобы посмотреть профили.
-      </div>`;
-    return;
-  }
-
-  list.innerHTML = state.conversations.map(user => `
-    <button class="dm-item" data-chat-user="${escapeHTML(user.username)}">
-      ${avatarMarkup(user)}
-      <div class="dm-info">
-        <strong>${escapeHTML(user.name)}</strong>
-        <small>@${escapeHTML(user.username)}</small>
-      </div>
-      <span style="color:var(--blue)">›</span>
-    </button>
-  `).join("");
-
-  list.querySelectorAll("[data-chat-user]").forEach(button => {
-    button.addEventListener("click", () => {
-      const username = button.dataset.chatUser;
-      const user = state.conversations.find(c => c.username === username);
-      if (user) startDM(user);
-    });
-  });
-}
-
-function renderPrivateMessages() {
-  if (!activeChat) return;
-
-  $("chatName").textContent = activeChat.name;
-  $("chatUsername").textContent = "@" + activeChat.username;
-
-  $("chatAvatar").innerHTML = activeChat.avatar
-    ? `<img src="${activeChat.avatar}" alt="">`
-    : escapeHTML(initials(activeChat.name));
-
-  const key = conversationKey(activeChat.username);
-
-  const messages = state.privateMessages.filter(message =>
-    message.key === key
-  );
-
-  $("privateFeed").innerHTML = messages.length
-    ? messages.map(message => `
-      <article class="message">
-        ${avatarMarkup(message)}
-        <div class="message-body">
-          <div class="message-meta">
-            <strong>${escapeHTML(message.name)}</strong>
-            <span class="message-time">${escapeHTML(message.time)}</span>
-          </div>
-          <div class="message-text">${escapeHTML(message.text)}</div>
-        </div>
-      </article>
-    `).join("")
-    : `<div class="empty">
-         Начни переписку с ${escapeHTML(activeChat.name)}.
-         <br>Это локальная демонстрация.
-       </div>`;
-
-  $("privateFeed").scrollTop = $("privateFeed").scrollHeight;
-}
-
-$("privateForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const text = $("privateInput").value.trim();
-  if (!text || !activeChat) return;
-
-  state.privateMessages.push({
-    key: conversationKey(activeChat.username),
-    name: state.profile.name,
-    username: state.profile.username,
-    avatar: state.profile.avatar,
-    text,
-    time: new Date().toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit"
-    })
-  });
-
-  $("privateInput").value = "";
-  saveState();
-  renderPrivateMessages();
-});
-
-$("chatUserButton").addEventListener("click", () => {
-  if (activeChat) openUserProfile(activeChat.username);
-});
-
-/* Настройки приватности */
-
-$("privacyButton").addEventListener("click", () => {
-  document.querySelectorAll('input[name="privacy"]').forEach(radio => {
-    radio.checked = radio.value === state.privacy;
-  });
-  $("privacyStatus").textContent = "";
-  showScreen("privacyScreen");
-});
-
-$("savePrivacyButton").addEventListener("click", () => {
-  const selected = document.querySelector('input[name="privacy"]:checked');
-
-  if (!selected) {
-    $("privacyStatus").textContent = "Выбери вариант приватности.";
-    return;
-  }
-
-  state.privacy = selected.value;
-  saveState();
-  $("privacyStatus").textContent = "Настройки сохранены на этом устройстве.";
-  toast("Приватность обновлена.");
-});
-
-$("devicesButton").addEventListener("click", () => {
-  showScreen("devicesScreen");
-});
-
-/* Запуск */
-
-renderProfile();
-renderPublicMessages();
-renderDMList();
-renderPeople("");
-</script>
+    const phoneScreen = document.getElementById("phone-screen");
+    const codeScreen = document.getElementById("code-screen");
+    const phoneInput = document.getElementById("phone");
+    const codeInput = document.getElementById("code");
+    const sendButton = document.getElementById("send-code");
+    const title = document.getElementById("title");
+    const description = document.getElementById("description");
+    const message = document.getElementById("message");
+
+    let confirmation = null;
+    let verifier = null;
+    let checkingCode = false;
+
+    function showMessage(text, type = "error") {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+
+    function firebaseConfigured() {
+      return firebaseConfig.apiKey !== "ВСТАВЬ_API_KEY"
+        && firebaseConfig.projectId !== "ВСТАВЬ_PROJECT_ID"
+        && firebaseConfig.appId !== "ВСТАВЬ_APP_ID";
+    }
+
+    if (firebaseConfigured()) {
+      firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      auth.useDeviceLanguage();
+
+      // Невидимая проверка, защищающая от автоматических запросов.
+      verifier = new firebase.auth.RecaptchaVerifier(
+        "send-code",
+        {
+          size: "invisible",
+          callback: () => {}
+        }
+      );
+
+      sendButton.addEventListener("click", async () => {
+        const phone = phoneInput.value.trim();
+
+        if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+          showMessage(
+            "Введи номер в международном формате, например +79991234567."
+          );
+          return;
+        }
+
+        sendButton.disabled = true;
+        showMessage("Отправляем SMS...", "success");
+
+        try {
+          confirmation = await auth.signInWithPhoneNumber(
+            phone,
+            verifier
+          );
+
+          // Кнопка исчезает. На её месте появляется поле кода.
+          phoneScreen.classList.add("hidden");
+          codeScreen.classList.remove("hidden");
+
+          title.textContent = "Введи SMS-код";
+          description.textContent =
+            "Код отправлен на " + phone +
+            ". Введи 6 цифр — проверка начнётся автоматически.";
+
+          showMessage("");
+          codeInput.focus();
+        } catch (error) {
+          console.error(error);
+
+          let text = "Не удалось отправить SMS. Попробуй позже.";
+
+          if (error.code === "auth/invalid-phone-number") {
+            text = "Номер телефона указан неверно.";
+          } else if (error.code === "auth/too-many-requests") {
+            text = "Слишком много попыток. Попробуй позже.";
+          } else if (error.code === "auth/quota-exceeded") {
+            text = "Лимит SMS исчерпан.";
+          } else if (
+            error.code === "auth/operation-not-allowed"
+          ) {
+            text = "В Firebase не включён вход по номеру телефона.";
+          }
+
+          showMessage(text);
+          verifier.clear();
+
+          verifier = new firebase.auth.RecaptchaVerifier(
+            "send-code",
+            { size: "invisible" }
+          );
+        } finally {
+          sendButton.disabled = false;
+        }
+      });
+
+      // Автоматически проверяем код, когда введены все 6 цифр.
+      codeInput.addEventListener("input", async () => {
+        codeInput.value = codeInput.value
+          .replace(/\D/g, "")
+          .slice(0, 6);
+
+        if (
+          codeInput.value.length !== 6 ||
+          checkingCode ||
+          !confirmation
+        ) {
+          return;
+        }
+
+        checkingCode = true;
+        codeInput.disabled = true;
+        showMessage("Проверяем код...", "success");
+
+        try {
+          const result = await confirmation.confirm(
+            codeInput.value
+          );
+
+          // Firebase подтвердил номер.
+          title.textContent = "Добро пожаловать!";
+          description.textContent =
+            "Номер телефона успешно подтверждён.";
+
+          codeScreen.classList.add("hidden");
+
+          showMessage(
+            "Регистрация прошла успешно!",
+            "success"
+          );
+
+          // Пользователь авторизован в Firebase.
+          // Здесь можно открыть основной экран OneChat.
+          document.dispatchEvent(
+            new CustomEvent("onechat-login", {
+              detail: { user: result.user }
+            })
+          );
+        } catch (error) {
+          console.error(error);
+
+          if (
+            error.code === "auth/invalid-verification-code"
+          ) {
+            showMessage("Неверный код. Попробуй ещё раз.");
+          } else if (
+            error.code === "auth/code-expired"
+          ) {
+            showMessage("Срок действия кода истёк.");
+          } else {
+            showMessage("Не удалось проверить код. Попробуй ещё раз.");
+          }
+
+          codeInput.value = "";
+          codeInput.disabled = false;
+          codeInput.focus();
+        } finally {
+          checkingCode = false;
+        }
+      });
+
+    } else {
+      sendButton.addEventListener("click", () => {
+        showMessage(
+          "Сначала подключи Firebase: вставь настройки проекта в код."
+        );
+      });
+    }
+  </script>
 </body>
 </html>
