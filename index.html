@@ -3,388 +3,448 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087cff">
 <title>YouChat - Development</title>
-
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: #f3f7ff;
-  color: #172033;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background: white;
-  padding: 17px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 3px 15px #153b7510;
-}
-
-.logo {
-  color: #087cff;
-  font-size: 25px;
-  font-weight: 800;
-}
-
-.dev {
-  color: #8a97aa;
-  font-size: 9px;
-  letter-spacing: 2px;
-  margin-top: 3px;
-}
-
-button {
-  border: none;
-  border-radius: 13px;
-  padding: 13px 16px;
-  background: #087cff;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform .2s, opacity .2s;
-}
-
-button:active { transform: scale(.97); }
-
-button.secondary {
-  color: #087cff;
-  background: #eaf3ff;
-}
-
-button:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-}
-
-main {
-  max-width: 650px;
-  margin: 25px auto;
-  padding: 0 15px 35px;
-}
-
-.panel {
-  background: white;
-  border-radius: 21px;
-  padding: 20px;
-  margin-bottom: 17px;
-  box-shadow: 0 5px 22px #153b7509;
-  animation: appear .3s ease;
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-h2 { font-size: 21px; margin: 0 0 8px; }
-p { color: #718096; line-height: 1.5; font-size: 14px; }
-
-input {
-  display: block;
-  width: 100%;
-  border: 1px solid #dce5f1;
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  margin: 10px 0;
-  outline: none;
-  font-size: 15px;
-}
-
-input:focus { border-color: #087cff; }
-
-.actions {
-  display: flex;
-  gap: 9px;
-  flex-wrap: wrap;
-}
-
-.actions button { flex: 1; }
-
-.chat {
-  border: 1px solid #e6edf7;
-  border-radius: 15px;
-  padding: 15px;
-  margin-top: 12px;
-  animation: appear .25s ease;
-}
-
-.chat-title { font-weight: bold; font-size: 16px; }
-
-.chat-link {
-  overflow-wrap: anywhere;
-  color: #087cff;
-  font-size: 13px;
-  margin: 10px 0;
-}
-
-.small { font-size: 12px; color: #8592a5; }
-
-.status {
-  background: #eef5ff;
-  border-radius: 12px;
-  padding: 12px;
-  margin: 12px 0;
-  font-size: 13px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.success { background: #e8fff2; color: #087b46; }
-.hidden { display: none; }
-
-footer {
-  text-align: center;
-  color: #91a0b4;
-  font-size: 11px;
-  padding: 10px;
-}
+*{box-sizing:border-box}
+:root{--blue:#087cff;--bg:#f3f7ff;--card:#fff;--text:#172033;--muted:#8491a5;--line:#e8edf5}
+body.dark{--bg:#101521;--card:#1b2332;--text:#f0f4fc;--muted:#9ba8bc;--line:#30394a}
+body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0}
+header{height:67px;padding:0 17px;background:var(--card);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.logo{font-size:25px;font-weight:800;color:var(--blue);letter-spacing:-1px}
+.dev{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+main{max-width:650px;margin:auto;padding:18px 14px 100px}
+.screen{display:none;animation:show .22s ease}
+.screen.active{display:block}
+@keyframes show{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+h2{font-size:22px;margin:8px 0}
+h3{font-size:16px;margin:0}
+p{color:var(--muted);line-height:1.5;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:17px;margin-bottom:13px}
+.primary{background:var(--blue);color:white;border-radius:13px;padding:13px 16px;font-weight:bold}
+.secondary{background:#eaf3ff;color:var(--blue);border-radius:12px;padding:12px 14px;font-weight:bold}
+body.dark .secondary{background:#263a56;color:#86bcff}
+.danger{background:#fff0f0;color:#d33;border-radius:12px;padding:12px}
+input,textarea,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);outline:none;margin:7px 0 12px}
+input:focus,textarea:focus{border-color:var(--blue)}
+label{font-size:12px;color:var(--muted);display:block;margin-top:12px}
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.avatar{width:49px;height:49px;border-radius:50%;background:#dceaff;object-fit:cover;display:flex;align-items:center;justify-content:center;color:var(--blue);font-weight:bold;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.bigavatar{width:88px;height:88px;font-size:25px}
+.badge{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#087cff;color:white;font-size:12px;font-weight:bold;vertical-align:middle;margin-left:3px}
+.muted{color:var(--muted);font-size:12px}
+.folderbar{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px;scrollbar-width:none}
+.folder{white-space:nowrap;padding:10px 15px;border-radius:20px;background:var(--card);color:var(--text);border:1px solid var(--line)}
+.folder.active{background:var(--blue);color:white;border-color:var(--blue)}
+.chatrow{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.chatrow:last-child{border-bottom:0}
+.chatname{font-weight:bold;overflow-wrap:anywhere}
+.chatdesc{font-size:12px;color:var(--muted);margin-top:5px}
+.settingsrow{display:flex;align-items:center;gap:13px;padding:16px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.settingsrow:last-child{border-bottom:0}
+.seticon{width:40px;height:40px;border-radius:13px;background:#eaf3ff;color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+body.dark .seticon{background:#263a56}
+.chevron{margin-left:auto;color:var(--muted);font-size:21px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 12px max(8px,env(safe-area-inset-bottom));z-index:10}
+.bottom button{background:transparent;color:var(--muted);width:50%;max-width:300px;padding:8px;font-size:12px}
+.bottom button span{display:block;font-size:22px;margin-bottom:4px}
+.bottom button.active{color:var(--blue);font-weight:bold}
+.hidden{display:none!important}
+.note{padding:12px;background:var(--bg);border-radius:12px;font-size:12px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+.tag{font-size:11px;color:var(--blue);background:#eaf3ff;padding:5px 8px;border-radius:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{flex:1}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
 </style>
 </head>
-
 <body>
-
 <header>
   <div>
     <div class="logo">YouChat</div>
     <div class="dev">DEVELOPMENT</div>
   </div>
-  <button onclick="showProfile()">Мой профиль</button>
+  <button class="secondary" onclick="openAccount()">👤</button>
 </header>
 
 <main>
-  <section id="home">
-    <div class="panel">
-      <h2>Твои чаты</h2>
-      <p>
-        Создавай чаты и отправляй друзьям ссылки.
-        Юзернейм для этого не нужен.
-      </p>
-      <button onclick="createChat()">＋ Создать чат</button>
+  <!-- ЧАТЫ -->
+  <section id="chatsScreen" class="screen active">
+    <div class="row between">
+      <h2>Чаты</h2>
+      <button class="primary" onclick="createChat()">＋ Создать</button>
+    </div>
+
+    <div class="folderbar" id="folderbar"></div>
+
+    <div class="card">
+      <input id="search" placeholder="Поиск чатов..." oninput="renderChats()">
       <div id="chatList"></div>
     </div>
+    <div class="muted">Чаты можно создавать и без юзернейма.</div>
+  </section>
 
-    <div class="panel">
-      <h2>👤 Юзернейм</h2>
-      <p>
-        Хочешь получить свой @username, чтобы другие
-        могли находить тебя? Сначала подтверди номер телефона.
-      </p>
-      <div id="usernameStatus" class="status">
-        🔒 Номер телефона пока не подтверждён.
+  <!-- НАСТРОЙКИ -->
+  <section id="settingsScreen" class="screen">
+    <h2>Настройки</h2>
+    <div class="card">
+      <div class="row" onclick="openAccount()" style="cursor:pointer">
+        <div class="avatar" id="smallAvatar">Y</div>
+        <div class="grow">
+          <div id="settingsName"><b>Пользователь</b> <span class="badge">✓</span></div>
+          <div class="muted" id="settingsUsername">Юзернейм не задан</div>
+        </div>
+        <span class="chevron">›</span>
       </div>
-      <button onclick="showProfile()" class="secondary">
-        Подтвердить телефон
-      </button>
+    </div>
+    <div class="card" id="settingsList">
+      <div class="settingsrow" onclick="openSetting('account')"><div class="seticon">👤</div><div class="grow"><b>Аккаунт</b><div class="muted">Имя, аватар и юзернейм</div></div><span class="chevron">›</span></div>
+      <div class="settingsrow" onclick="openSetting('privacy')"><div class="seticon">🔒</div><div class="grow"><b>Конфиденциальность</b><div class="muted">Приватность профиля</div></div><span class="chevron">›</span></div>
+      <div class="settingsrow" onclick="openSetting('notifications')"><div class="seticon">🔔</div><div class="grow"><b>Уведомления</b><div class="muted">Настройки уведомлений</div></div><span class="chevron">›</span></div>
+      <div class="settingsrow" onclick="openSetting('data')"><div class="seticon">💾</div><div class="grow"><b>Данные и память</b><div class="muted">Данные и очистка локальных чатов</div></div><span class="chevron">›</span></div>
+      <div class="settingsrow" onclick="openSetting('devices')"><div class="seticon">📱</div><div class="grow"><b>Устройства</b><div class="muted">Текущее устройство</div></div><span class="chevron">›</span></div>
+      <div class="settingsrow" onclick="openSetting('language')"><div class="seticon">🌐</div><div class="grow"><b>Язык</b><div class="muted">Язык интерфейса</div></div><span class="chevron">›</span></div>
     </div>
   </section>
 
-  <section id="profile" class="hidden">
-    <div class="panel">
-      <button class="secondary" onclick="showHome()">← Назад</button>
-      <h2 style="margin-top:20px">Твой профиль</h2>
-      <p>Чаты доступны без подтверждения телефона.</p>
-
-      <label for="phone">Номер телефона</label>
-      <input id="phone" type="tel" value="+1 234 567 8901"
-             placeholder="+1 234 567 8901">
-
-      <button onclick="sendCode()">Получить SMS-код</button>
-
-      <div id="codeArea" class="hidden">
-        <label for="smsCode">Код подтверждения</label>
-        <input id="smsCode" inputmode="numeric"
-               placeholder="Код из SMS">
-        <button onclick="verifyCode()">Подтвердить номер</button>
+  <!-- АККАУНТ -->
+  <section id="accountScreen" class="screen">
+    <button class="secondary" onclick="backSettings()">← Назад</button>
+    <h2>Аккаунт</h2>
+    <div class="card">
+      <div class="row">
+        <div class="avatar bigavatar" id="bigAvatar">Y</div>
+        <div class="grow">
+          <b>Аватар профиля</b>
+          <p>Выбери фотографию из галереи.</p>
+          <button class="secondary" onclick="document.getElementById('avatarFile').click()">Выбрать фото</button>
+          <input type="file" id="avatarFile" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
+        </div>
       </div>
 
-      <div id="profileMessage" class="status">
-        Подтверждение телефона необходимо только для создания юзернейма.
-      </div>
+      <label>Имя профиля</label>
+      <input id="nameInput" maxlength="40" placeholder="Твоё имя">
 
-      <div id="usernameArea" class="hidden">
-        <h2 style="margin-top:22px">Твой юзернейм</h2>
-        <div class="status success">✓ Номер подтверждён</div>
-        <input id="usernameInput" placeholder="Например, ivan">
-        <button onclick="saveUsername()">Сохранить юзернейм</button>
-      </div>
+      <label>Юзернейм профиля</label>
+      <input id="usernameInput" maxlength="20" placeholder="Например, ivan">
+      <p>Задать юзернейм в профиле можно без подтверждения телефона.</p>
+
+      <button class="primary" onclick="saveProfile()">Сохранить профиль</button>
+      <hr>
+      <h3>Юзернейм для чатов</h3>
+      <p>Чтобы использовать юзернейм для поиска и общения, нужно отдельно подтвердить его.</p>
+      <div id="usernameVerificationStatus" class="note">Юзернейм для чатов ещё не подтверждён.</div>
+      <button class="primary" id="verifyUsernameButton" onclick="verifyUsername()">Подтвердить юзернейм (демо)</button>
+      <p class="muted">Демонстрационный режим: настоящая проверка требует серверной реализации.</p>
     </div>
   </section>
 
-  <section id="chatPage" class="hidden">
-    <div class="panel">
-      <button class="secondary" onclick="showHome()">← Назад к чатам</button>
-      <h2 id="chatHeading" style="margin-top:20px">Чат</h2>
-      <p>Пригласи участников по ссылке.</p>
-      <div id="currentLink" class="status"></div>
-      <div class="actions">
-        <button onclick="copyLink()">Скопировать ссылку</button>
-        <button class="secondary" onclick="showHome()">Мои чаты</button>
+  <!-- ОСТАЛЬНЫЕ НАСТРОЙКИ -->
+  <section id="detailScreen" class="screen">
+    <button class="secondary" onclick="backSettings()">← Назад</button>
+    <h2 id="detailTitle">Настройки</h2>
+    <div class="card" id="detailContent"></div>
+  </section>
+
+  <!-- СТРАНИЦА ЧАТА -->
+  <section id="chatScreen" class="screen">
+    <button class="secondary" onclick="showScreen('chatsScreen')">← Все чаты</button>
+    <div class="card" style="margin-top:15px">
+      <div class="row">
+        <div class="avatar">💬</div>
+        <div class="grow">
+          <h2 id="openedChatName">Чат</h2>
+          <div class="muted">Ссылка-приглашение</div>
+        </div>
       </div>
-      <div class="status">
-        Это демонстрация интерфейса. Общение между разными устройствами
-        заработает после подключения сервера.
+      <div class="note" id="openedChatLink" style="margin:15px 0"></div>
+      <button class="primary" onclick="copyOpenedLink()">Скопировать ссылку</button>
+      <hr>
+      <h3>Участие в чате</h3>
+      <p id="chatIdentityStatus">Ты можешь пользоваться чатом без юзернейма.</p>
+      <div id="chatUsernameArea" class="hidden">
+        <div class="note" id="chatUsernameLabel"></div>
       </div>
     </div>
   </section>
 </main>
 
-<footer>YouChat - Development · Ранняя версия</footer>
+<nav class="bottom">
+  <button id="navChats" class="active" onclick="showScreen('chatsScreen')"><span>☰</span>Чаты</button>
+  <button id="navSettings" onclick="showScreen('settingsScreen')"><span>⚙</span>Настройки</button>
+</nav>
 
 <script>
 const $ = id => document.getElementById(id);
+const STORAGE = "youchatDevelopmentV2";
 
-let chats = [];
-let currentChat = null;
-let phoneVerified = false;
-let username = "";
-let demoCode = "";
+let data = {
+  name:"Пользователь",
+  username:"",
+  avatar:"",
+  usernameVerified:false,
+  chats:[],
+  folders:["Все","Личные","Группы","Избранное"],
+  chatFolders:{},
+  activeFolder:"Все",
+  settings:{}
+};
 
-function showOnly(id) {
-  ["home", "profile", "chatPage"].forEach(name =>
-    $(name).classList.toggle("hidden", name !== id)
-  );
+let openedChatId = null;
+let previousScreen = "settingsScreen";
+
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE) || "null");
+  if (saved) data = {...data,...saved};
+} catch(e) {}
+
+function persist(){
+  try { localStorage.setItem(STORAGE,JSON.stringify(data)); }
+  catch(e) { alert("Не удалось сохранить данные. Возможно, аватар слишком большой."); }
 }
 
-function showHome() {
-  showOnly("home");
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  $("navChats").classList.toggle("active",id==="chatsScreen"||id==="chatScreen");
+  $("navSettings").classList.toggle("active",id==="settingsScreen"||id==="accountScreen"||id==="detailScreen");
+  if(id==="chatsScreen") renderChats();
+  if(id==="settingsScreen") renderSettingsProfile();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function showProfile() {
-  showOnly("profile");
+function backSettings(){ showScreen(previousScreen==="accountScreen"?"settingsScreen":"settingsScreen"); }
+
+function renderSettingsProfile(){
+  $("settingsName").innerHTML = "";
+  const b=document.createElement("b"); b.textContent=data.name||"Пользователь";
+  const badge=document.createElement("span"); badge.className="badge"; badge.textContent="✓"; badge.title="Синяя галочка профиля";
+  $("settingsName").append(b,badge);
+  $("settingsUsername").textContent=data.username?"@"+data.username:"Юзернейм не задан";
+  setAvatar("smallAvatar");
 }
 
-function createChat() {
-  const name = prompt("Как назвать чат?");
-  if (!name || !name.trim()) return;
+function setAvatar(id){
+  const el=$(id);
+  el.innerHTML="";
+  if(data.avatar){
+    const img=document.createElement("img"); img.src=data.avatar; el.appendChild(img);
+  }else{
+    el.textContent=(data.name||"Y").trim().charAt(0).toUpperCase();
+  }
+}
 
-  const id = Array.from(crypto.getRandomValues(new Uint8Array(10)))
-    .map(n => n.toString(16).padStart(2, "0")).join("");
+function openAccount(){
+  previousScreen="settingsScreen";
+  $("nameInput").value=data.name||"";
+  $("usernameInput").value=data.username||"";
+  setAvatar("bigAvatar");
+  updateVerificationStatus();
+  showScreen("accountScreen");
+}
 
-  const chat = {
-    id,
-    name: name.trim(),
-    link: location.href.split("#")[0] + "#chat-" + id
+function uploadAvatar(event){
+  const file=event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith("image/")) return alert("Выбери изображение.");
+  if(file.size>3*1024*1024) return alert("Выбери фото размером до 3 МБ.");
+  const reader=new FileReader();
+  reader.onload=()=>{
+    data.avatar=reader.result;
+    persist();
+    setAvatar("bigAvatar");
+    setAvatar("smallAvatar");
   };
+  reader.readAsDataURL(file);
+}
 
-  chats.push(chat);
+function saveProfile(){
+  const name=$("nameInput").value.trim()||"Пользователь";
+  const username=$("usernameInput").value.trim().replace(/^@/,"").toLowerCase();
+  if(username && !/^[a-z0-9_]{3,20}$/.test(username)){
+    return alert("Юзернейм должен содержать 3–20 символов: английские буквы, цифры и _.");
+  }
+
+  if(username!==data.username) data.usernameVerified=false;
+  data.name=name;
+  data.username=username;
+  persist();
+  setAvatar("bigAvatar");
+  renderSettingsProfile();
+  updateVerificationStatus();
+  alert("Профиль сохранён!");
+}
+
+function verifyUsername(){
+  if(!data.username) return alert("Сначала задай юзернейм и сохрани профиль.");
+  if(data.usernameVerified) return alert("Юзернейм уже подтверждён в деморежиме.");
+  if(!confirm("Подтвердить @"+data.username+" для чатов? Это демонстрационная проверка.")) return;
+  data.usernameVerified=true;
+  persist();
+  updateVerificationStatus();
+  alert("Юзернейм отмечен как подтверждённый в деморежиме.");
+}
+
+function updateVerificationStatus(){
+  const el=$("usernameVerificationStatus");
+  const btn=$("verifyUsernameButton");
+  if(data.usernameVerified){
+    el.textContent="✓ @"+data.username+" подтверждён для чатов (демо).";
+    el.className="note";
+    btn.textContent="Юзернейм подтверждён";
+    btn.disabled=true;
+  }else{
+    el.textContent=data.username
+      ?"@"+data.username+" задан в профиле, но не подтверждён для чатов."
+      :"Сначала задай юзернейм в профиле.";
+    el.className="note";
+    btn.textContent="Подтвердить юзернейм (демо)";
+    btn.disabled=false;
+  }
+}
+
+function createChat(){
+  const name=prompt("Название нового чата:");
+  if(!name||!name.trim()) return;
+  const id=makeId();
+  const chat={id,name:name.trim(),link:location.href.split("#")[0]+"#chat-"+id,folder:"Все"};
+  data.chats.unshift(chat);
+  data.chatFolders[id]="Все";
+  persist();
   renderChats();
   openChat(id);
 }
 
-function renderChats() {
-  $("chatList").innerHTML = "";
+function makeId(){
+  const chars="abcdefghijklmnopqrstuvwxyz0123456789";
+  let id="";
+  for(let i=0;i<16;i++) id+=chars[Math.floor(Math.random()*chars.length)];
+  return id;
+}
 
-  if (!chats.length) {
-    $("chatList").innerHTML =
-      '<p class="small">Пока чатов нет. Создай свой первый чат!</p>';
-    return;
+function renderFolders(){
+  const bar=$("folderbar"); bar.innerHTML="";
+  data.folders.forEach(folder=>{
+    const b=document.createElement("button");
+    b.className="folder"+(data.activeFolder===folder?" active":"");
+    b.textContent=folder;
+    b.onclick=()=>{data.activeFolder=folder;persist();renderChats();};
+    bar.appendChild(b);
+  });
+  const add=document.createElement("button");
+  add.className="folder";
+  add.textContent="＋";
+  add.title="Создать папку";
+  add.onclick=addFolder;
+  bar.appendChild(add);
+}
+
+function addFolder(){
+  const name=prompt("Название папки:");
+  if(!name||!name.trim()) return;
+  if(data.folders.includes(name.trim())) return alert("Такая папка уже есть.");
+  data.folders.push(name.trim());
+  data.activeFolder=name.trim();
+  persist();renderChats();
+}
+
+function renderChats(){
+  renderFolders();
+  const list=$("chatList"); list.innerHTML="";
+  const q=$("search").value.trim().toLowerCase();
+  const shown=data.chats.filter(c=>{
+    const folder=data.chatFolders[c.id]||"Все";
+    const inFolder=data.activeFolder==="Все"||folder===data.activeFolder;
+    return inFolder&&c.name.toLowerCase().includes(q);
+  });
+  if(!shown.length){
+    const empty=document.createElement("p");
+    empty.textContent=data.chats.length?"В этой папке пока нет чатов.":"Здесь пока пусто. Создай первый чат!";
+    list.appendChild(empty);return;
   }
-
-  chats.forEach(chat => {
-    const item = document.createElement("div");
-    item.className = "chat";
-
-    const title = document.createElement("div");
-    title.className = "chat-title";
-    title.textContent = "💬 " + chat.name;
-
-    const link = document.createElement("div");
-    link.className = "chat-link";
-    link.textContent = chat.link;
-
-    const open = document.createElement("button");
-    open.textContent = "Открыть чат";
-    open.onclick = () => openChat(chat.id);
-
-    const copy = document.createElement("button");
-    copy.textContent = "Копировать ссылку";
-    copy.className = "secondary";
-    copy.style.marginLeft = "8px";
-    copy.onclick = () => copyText(chat.link);
-
-    item.append(title, link, open, copy);
-    $("chatList").appendChild(item);
+  shown.forEach(c=>{
+    const row=document.createElement("div");row.className="chatrow";
+    const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="💬";
+    const info=document.createElement("div");info.className="grow";
+    const title=document.createElement("div");title.className="chatname";title.textContent=c.name;
+    const desc=document.createElement("div");desc.className="chatdesc";desc.textContent=c.link;
+    info.append(title,desc);
+    const open=document.createElement("button");open.className="secondary";open.textContent="Открыть";
+    open.onclick=()=>openChat(c.id);
+    row.append(avatar,info,open);
+    row.onclick=e=>{if(e.target!==open)openChat(c.id)};
+    list.appendChild(row);
   });
 }
 
-function openChat(id) {
-  currentChat = chats.find(chat => chat.id === id);
-  if (!currentChat) return;
-
-  $("chatHeading").textContent = currentChat.name;
-  $("currentLink").textContent = currentChat.link;
-  showOnly("chatPage");
+function openChat(id){
+  const chat=data.chats.find(c=>c.id===id);if(!chat)return;
+  openedChatId=id;
+  $("openedChatName").textContent=chat.name;
+  $("openedChatLink").textContent=chat.link;
+  $("chatIdentityStatus").textContent=data.usernameVerified
+    ?"Ты можешь использовать @"+data.username+" в чатах (демо)."
+    :"Чат доступен без юзернейма. Для использования @username подтверди его в профиле.";
+  $("chatUsernameArea").classList.toggle("hidden",!data.usernameVerified);
+  $("chatUsernameLabel").textContent=data.usernameVerified?"Твой подтверждённый юзернейм: @"+data.username:"";
+  showScreen("chatScreen");
 }
 
-function copyLink() {
-  if (currentChat) copyText(currentChat.link);
+function copyOpenedLink(){
+  const chat=data.chats.find(c=>c.id===openedChatId);
+  if(chat) copyText(chat.link);
 }
 
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    alert("Ссылка скопирована!");
-  } catch {
-    prompt("Скопируй ссылку:", text);
+async function copyText(text){
+  try{await navigator.clipboard.writeText(text);alert("Ссылка скопирована.");}
+  catch(e){prompt("Скопируй ссылку:",text);}
+}
+
+function openSetting(key){
+  const titles={
+    privacy:"Конфиденциальность",
+    notifications:"Уведомления",
+    data:"Данные и память",
+    devices:"Устройства",
+    language:"Язык"
+  };
+  previousScreen="settingsScreen";
+  $("detailTitle").textContent=titles[key]||"Настройки";
+  const box=$("detailContent");box.innerHTML="";
+
+  if(key==="privacy"){
+    box.innerHTML='<h3>Приватность</h3><p>Настройки интерфейса для будущей серверной версии.</p><label><input type="checkbox" id="hidePhone" style="width:auto"> Не показывать номер в профиле</label><label><input type="checkbox" id="privateProfile" style="width:auto"> Закрытый профиль (демо)</label>';
+  }else if(key==="notifications"){
+    box.innerHTML='<h3>Уведомления</h3><label><input type="checkbox" id="notify" style="width:auto"> Уведомления о сообщениях</label><label><input type="checkbox" id="sounds" style="width:auto"> Звуки</label>';
+  }else if(key==="data"){
+    box.innerHTML='<h3>Локальные данные</h3><p>Чаты хранятся только в этом браузере.</p><button class="danger" onclick="clearChats()">Удалить все локальные чаты</button>';
+  }else if(key==="devices"){
+    box.innerHTML='<h3>Это устройство</h3><p>Текущий браузер</p><div class="note">Список активных устройств появится после подключения сервера.</div>';
+  }else if(key==="language"){
+    box.innerHTML='<h3>Язык интерфейса</h3><select id="language"><option value="ru">Русский</option><option value="en">English</option></select><p>В этой версии переключение языка пока не меняет все тексты приложения.</p>';
   }
+  showScreen("detailScreen");
 }
 
-function sendCode() {
-  const phone = $("phone").value.trim();
-
-  if (!/^\+[1-9]\d{7,14}$/.test(phone.replace(/[\s()-]/g, ""))) {
-    $("profileMessage").textContent =
-      "Проверь номер и международный код страны.";
-    return;
-  }
-
-  // Деморежим: никакая SMS не отправляется.
-  // Для настоящей проверки подключи Firebase Authentication.
-  demoCode = "123456";
-  $("codeArea").classList.remove("hidden");
-  $("profileMessage").textContent =
-    "Демонстрация: тестовый код — 123456. Настоящая SMS не отправлена.";
+function clearChats(){
+  if(!confirm("Удалить все чаты с этого устройства?"))return;
+  data.chats=[];data.chatFolders={};persist();renderChats();showScreen("chatsScreen");
 }
 
-function verifyCode() {
-  if (!demoCode || $("smsCode").value.trim() !== demoCode) {
-    $("profileMessage").textContent = "Неверный код.";
-    return;
-  }
-
-  phoneVerified = true;
-  $("usernameArea").classList.remove("hidden");
-  $("profileMessage").textContent =
-    "Номер подтверждён только в демонстрационном режиме.";
-  $("usernameStatus").textContent = "✓ Телефон отмечен как подтверждённый (демо).";
-}
-
-function saveUsername() {
-  if (!phoneVerified) {
-    alert("Сначала подтверди номер телефона.");
-    return;
-  }
-
-  const value = $("usernameInput").value.trim()
-    .replace(/^@/, "").toLowerCase();
-
-  if (!/^[a-z0-9_]{3,20}$/.test(value)) {
-    alert("Юзернейм: 3–20 символов, английские буквы, цифры и _.");
-    return;
-  }
-
-  username = value;
-  $("usernameStatus").textContent = "@" + username + " · демоверсия";
-  alert("Юзернейм: @" + username);
-  showHome();
-}
-
+renderSettingsProfile();
 renderChats();
+
+// Демонстрационные ссылки: они не дают доступа к общему чату
+// на другом устройстве без сервера.
+if(location.hash.startsWith("#chat-")){
+  const id=location.hash.slice(6);
+  const existing=data.chats.find(c=>c.id===id);
+  if(existing)openChat(id);
+}
 </script>
 </body>
 </html>
