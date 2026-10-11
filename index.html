@@ -1,390 +1,316 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1769ff">
 <title>OneChat</title>
-
 <style>
 *{box-sizing:border-box}
-:root{--blue:#1769ff;--bg:#f3f6fc;--text:#17233b;--muted:#78859b;--line:#e7ecf5}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f6ff;color:#152238}
 button,input{font:inherit}
-button{cursor:pointer}
+button{cursor:pointer;border:0;border-radius:12px;padding:14px;background:#1769ff;color:white;font-weight:bold}
+input{width:100%;padding:15px;border:1px solid #ccd9ee;border-radius:12px;outline:none;background:white}
+input:focus{border-color:#1769ff}
+.app{max-width:480px;min-height:100dvh;margin:auto;background:white;display:flex;flex-direction:column}
+header{height:65px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #e5ebf5}
+.logo{font-size:24px;font-weight:800;color:#1769ff}
+.page{padding:22px;flex:1}
+h2{margin-top:15px}
+.muted{color:#738199;font-size:14px;line-height:1.5}
+.stack{display:grid;gap:12px;margin-top:24px}
+.secondary{background:#edf3ff;color:#1769ff}
 .hidden{display:none!important}
-.app{max-width:650px;margin:auto;min-height:100dvh;background:white;display:flex;flex-direction:column}
-header{height:70px;padding:0 18px;display:flex;align-items:center;gap:12px;background:white;border-bottom:1px solid var(--line);flex-shrink:0}
-.logo{height:43px;width:43px;background:var(--blue);border-radius:14px;display:grid;place-items:center;color:white;font-size:26px}
-.brand{font-size:23px;font-weight:800;flex:1}
-.icon-btn{border:0;background:#edf3ff;color:var(--blue);height:43px;width:43px;border-radius:50%;font-size:21px;display:grid;place-items:center}
-main{flex:1;display:flex;flex-direction:column;min-height:0}
-.screen{flex:1;display:flex;flex-direction:column}
-.auth{margin:auto;width:100%;max-width:420px;padding:25px}
-.auth-logo{margin:0 auto 17px;width:76px;height:76px;border-radius:25px;background:#eaf1ff;color:var(--blue);display:grid;place-items:center;font-size:38px}
-h1{font-size:27px;margin:0 0 10px}
-h2{font-size:22px;margin:0 0 10px}
-p{color:var(--muted);line-height:1.5;font-size:14px}
-.field-label{font-size:14px;font-weight:bold;display:block;margin:22px 0 9px}
-input{width:100%;height:54px;border:1px solid #dce4f1;border-radius:13px;padding:0 15px;background:white;outline:none;color:var(--text)}
-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1769ff15}
-.primary,.secondary{width:100%;min-height:53px;border-radius:13px;font-weight:bold;margin-top:13px;padding:12px}
-.primary{border:0;background:var(--blue);color:white}
-.secondary{border:1px solid #dce4f1;background:white;color:var(--blue)}
-.primary:disabled{opacity:.6}
-.separator{display:flex;align-items:center;gap:12px;margin:20px 0;color:#9aa6b8;font-size:12px}
-.separator:before,.separator:after{content:"";height:1px;background:var(--line);flex:1}
-.note{text-align:center;font-size:12px;color:var(--muted);margin-top:18px}
-.error{font-size:13px;color:#d93025;margin-top:12px;line-height:1.5}
-.chat-head{padding:14px 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
-.avatar{width:43px;height:43px;border-radius:50%;background:#e5edff;color:var(--blue);display:grid;place-items:center;font-size:21px;overflow:hidden;flex-shrink:0}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.chat-title{font-size:17px;font-weight:bold}
-.chat-subtitle{font-size:12px;color:var(--muted);margin-top:4px}
-.messages{flex:1;overflow-y:auto;padding:17px;display:flex;flex-direction:column;gap:15px;min-height:200px}
-.empty{margin:auto;text-align:center;padding:25px;color:var(--muted)}
-.empty-icon{font-size:38px;margin-bottom:12px}
-.message-row{display:flex;gap:9px;align-items:flex-start}
-.message-row.mine{justify-content:flex-end}
-.mini-avatar{width:31px;height:31px;border-radius:50%;background:#e5edff;color:var(--blue);display:grid;place-items:center;flex-shrink:0;font-size:14px}
-.message-content{max-width:78%}
-.message-name{font-size:12px;color:var(--muted);margin:0 0 5px 2px}
-.bubble{background:#f0f4fb;padding:11px 13px;border-radius:5px 16px 16px 16px;overflow-wrap:anywhere;white-space:pre-wrap;font-size:15px;line-height:1.4}
-.mine .bubble{background:var(--blue);color:white;border-radius:16px 5px 16px 16px}
-.composer{display:flex;gap:9px;padding:12px;border-top:1px solid var(--line);background:white;align-items:center}
-.composer input{flex:1;min-width:0;height:48px;background:#f5f7fb;border:0}
-.send{height:47px;width:48px;border:0;border-radius:14px;background:var(--blue);color:white;font-size:20px;flex-shrink:0}
-.profile{padding:25px;width:100%;max-width:440px;margin:0 auto}
-.profile-center{display:flex;flex-direction:column;align-items:center;margin:25px 0}
-.big-avatar{width:100px;height:100px;border-radius:50%;background:#e5edff;color:var(--blue);display:grid;place-items:center;font-size:45px;overflow:hidden}
-.big-avatar img{width:100%;height:100%;object-fit:cover}
-.back{border:0;background:transparent;color:var(--blue);font-weight:bold;padding:8px 0 20px}
-.status{font-size:13px;line-height:1.5;color:var(--muted);margin-top:10px}
-@media(min-width:651px){body{padding:20px 0}.app{min-height:calc(100dvh - 40px);border-radius:20px;overflow:hidden;box-shadow:0 8px 40px #17233b10}}
+.chat{display:flex;flex-direction:column;min-height:calc(100dvh - 65px)}
+.messages{flex:1;padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.bubble{background:#edf3ff;border-radius:5px 16px 16px 16px;padding:12px;max-width:85%;overflow-wrap:anywhere}
+.bubble.mine{background:#1769ff;color:white;align-self:flex-end;border-radius:16px 5px 16px 16px}
+.sender{font-size:12px;color:#647895;margin-bottom:5px}
+.mine .sender{color:#dce8ff}
+.composer{display:flex;gap:8px;padding:12px;border-top:1px solid #e5ebf5}
+.composer input{min-width:0}
+.composer button{padding:0 18px}
+.check{color:#1769ff;font-weight:bold}
+.row{display:flex;align-items:center;gap:10px}
+.avatar{width:48px;height:48px;border-radius:50%;background:#e5efff;color:#1769ff;display:grid;place-items:center;font-size:23px;font-weight:bold}
+.card{padding:15px;border:1px solid #e5ebf5;border-radius:15px;margin-top:14px}
+.small{font-size:13px}
 </style>
 </head>
-
 <body>
 <div class="app">
-  <header>
-    <div class="logo">●</div>
-    <div class="brand">OneChat</div>
-    <button id="profile-button" class="icon-btn hidden" aria-label="Профиль">👤</button>
-  </header>
+<header>
+  <div class="logo">OneChat</div>
+  <button id="profileButton" class="secondary hidden" style="padding:9px 13px" onclick="openProfile()">Профиль</button>
+</header>
 
-  <main>
-    <!-- ВХОД -->
-    <section id="login-screen" class="screen">
-      <div class="auth">
-        <div class="auth-logo">✉</div>
-        <h1>Добро пожаловать!</h1>
-        <p id="login-description">Войди в OneChat по номеру телефона</p>
+<section id="login" class="page">
+  <h2>Добро пожаловать!</h2>
+  <p class="muted">Войди по номеру телефона или продолжи как гость.</p>
 
-        <div id="phone-area">
-          <label class="field-label" for="phone">Номер телефона</label>
-          <input id="phone" type="tel" autocomplete="tel"
-                 placeholder="+7 999 123-45-67">
-          <button id="get-code" class="primary">Получить SMS-код</button>
-        </div>
+  <div class="stack" id="phoneStep">
+    <label for="phone">Номер телефона</label>
+    <input id="phone" type="tel" placeholder="+79990000000" autocomplete="tel">
+    <button onclick="sendCode()">Получить SMS-код</button>
+    <button class="secondary" onclick="guestLogin()">Войти как гость</button>
+  </div>
 
-        <div id="code-area" class="hidden">
-          <label class="field-label" for="sms-code">Код из SMS</label>
-          <input id="sms-code" type="text" inputmode="numeric"
-                 autocomplete="one-time-code" maxlength="6"
-                 placeholder="Введи 6 цифр">
-          <p>Введи код — приложение проверит его автоматически.</p>
-        </div>
+  <div class="stack hidden" id="codeStep">
+    <label for="sms">Демонстрационный SMS-код</label>
+    <input id="sms" inputmode="numeric" maxlength="6" placeholder="Введите 6 цифр">
+    <p class="muted" id="codeHint"></p>
+    <button class="secondary" onclick="backToPhone()">Назад</button>
+  </div>
+  <p class="muted small">Тестовый номер специального аккаунта: +79990000000</p>
+</section>
 
-        <div id="login-error" class="error"></div>
+<section id="chat" class="chat hidden">
+  <div class="messages" id="messages"></div>
+  <form class="composer" onsubmit="sendMessage(event)">
+    <input id="messageInput" placeholder="Сообщение..." autocomplete="off">
+    <button type="submit">➤</button>
+  </form>
+</section>
 
-        <div class="separator">ИЛИ</div>
-        <button id="guest-button" class="secondary">Войти как гость</button>
-        <div class="note">Простой вход. Никаких лишних меню.</div>
-      </div>
-    </section>
+<section id="profile" class="page hidden">
+  <h2>Профиль</h2>
+  <div class="row">
+    <div class="avatar" id="avatar">U</div>
+    <div>
+      <strong id="profileName"></strong>
+      <div class="muted" id="profileNumber"></div>
+    </div>
+  </div>
+  <div class="card">
+    <label for="nickname">Имя пользователя</label>
+    <input id="nickname" maxlength="24" placeholder="Твой никнейм" style="margin-top:10px">
+    <button onclick="saveProfile()" style="width:100%;margin-top:12px">Сохранить</button>
+  </div>
+  <div class="card">
+    <strong>Аккаунты</strong>
+    <p class="muted">Добавляй другие аккаунты и переключайся между ними.</p>
+    <button onclick="addAccount()" style="width:100%">Добавить аккаунт</button>
+    <div id="accountList"></div>
+  </div>
+  <button class="secondary" onclick="openChat()" style="width:100%;margin-top:14px">Вернуться в чат</button>
+  <button onclick="logout()" style="width:100%;margin-top:10px;background:#ffecee;color:#c52b40">Выйти из аккаунта</button>
+</section>
 
-    <!-- ОБЩИЙ ЧАТ -->
-    <section id="chat-screen" class="screen hidden">
-      <div class="chat-head">
-        <div class="avatar">💬</div>
-        <div style="flex:1">
-          <div class="chat-title">Общий чат</div>
-          <div class="chat-subtitle" id="chat-subtitle">Ты вошёл в OneChat</div>
-        </div>
-      </div>
-
-      <div id="messages" class="messages">
-        <div class="empty" id="empty-state">
-          <div class="empty-icon">💬</div>
-          <strong>Пока тихо</strong>
-          <p>Напиши первое сообщение!</p>
-        </div>
-      </div>
-
-      <form id="message-form" class="composer">
-        <input id="message-input" maxlength="2000"
-               placeholder="Сообщение..." autocomplete="off">
-        <button class="send" type="submit" aria-label="Отправить">➤</button>
-      </form>
-    </section>
-
-    <!-- ПРОФИЛЬ -->
-    <section id="profile-screen" class="screen hidden">
-      <div class="profile">
-        <button id="back-button" class="back">← Назад в чат</button>
-        <h2>Твой профиль</h2>
-        <p>Аватар и никнейм</p>
-
-        <div class="profile-center">
-          <div id="big-avatar" class="big-avatar">👤</div>
-          <label class="secondary" style="width:auto;margin-top:14px">
-            Изменить аватар
-            <input id="avatar-file" type="file" accept="image/*" hidden>
-          </label>
-        </div>
-
-        <label class="field-label" for="nickname">Никнейм</label>
-        <input id="nickname" maxlength="30" placeholder="Твой никнейм">
-        <button id="save-profile" class="primary">Сохранить</button>
-        <div id="profile-status" class="status"></div>
-      </div>
-    </section>
-  </main>
+<section id="guestTools" class="page hidden">
+  <h2>Гостевой аккаунт</h2>
+  <p class="muted">Гости могут общаться, но не могут менять имя и аватар или открывать настройки профиля.</p>
+  <div class="card">
+    <strong id="guestName"></strong>
+    <p class="muted">Хочешь полноценный профиль?</p>
+    <button onclick="addAccount()" style="width:100%">Добавить номер</button>
+  </div>
+  <button class="secondary" onclick="openChat()" style="width:100%;margin-top:14px">Вернуться в чат</button>
+  <button onclick="logout()" style="width:100%;margin-top:10px;background:#ffecee;color:#c52b40">Выйти из гостя</button>
+</section>
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
+const SPECIAL_PHONE = "+79990000000";
+const STORAGE_KEY = "onechat_demo_accounts_v1";
+let accounts = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+let currentId = null;
+let pendingPhone = "";
+let nextGuest = Number(localStorage.getItem("onechat_guest_counter") || "1");
+let messages = [];
 
-let currentUser = null;
-let avatarData = "";
-let codeMode = false;
-let checking = false;
-
-// Это только локальный прототип.
-// Настоящий сервер позже заменит локальное хранение.
-function readJSON(key, fallback) {
-  try {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  } catch {
-    return fallback;
-  }
+function saveAccounts(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts));
 }
-
-function showScreen(name) {
-  ["login-screen", "chat-screen", "profile-screen"].forEach(id => {
-    $(id).classList.toggle("hidden", id !== name + "-screen");
-  });
-
-  $("profile-button").classList.toggle("hidden", name !== "chat");
+function current(){
+  return accounts.find(a => a.id === currentId);
 }
-
-function setError(text) {
-  $("login-error").textContent = text;
+function normalizePhone(v){
+  return v.replace(/[^\d+]/g, "");
 }
-
-function makeGuest() {
-  // Временная нумерация только на этом устройстве.
-  // Глобальные уникальные ники сделаем на сервере.
-  let number = Number(localStorage.getItem("onechat-guest-counter") || "0");
-  number += 1;
-  localStorage.setItem("onechat-guest-counter", String(number));
-
-  currentUser = {
-    nickname: "guest" + number,
-    type: "guest"
-  };
-
-  avatarData = "";
-  openChat();
-}
-
-function startPhoneLogin() {
-  const phone = $("phone").value.trim();
-
-  if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-    setError("Введи номер в международном формате, например +79991234567.");
+function sendCode(){
+  const phone = normalizePhone(document.getElementById("phone").value.trim());
+  if(!/^\+\d{10,15}$/.test(phone)){
+    alert("Введи номер в международном формате, например +79990000000");
     return;
   }
-
-  // Сервер и Firebase пока не подключены.
-  // Не показываем сообщение, будто SMS действительно отправлено.
-  codeMode = true;
-  $("phone-area").classList.add("hidden");
-  $("code-area").classList.remove("hidden");
-  $("login-description").textContent =
-    "Демонстрация входа. Настоящая SMS пока не отправляется.";
-  $("sms-code").focus();
-  setError("Это макет: для реального входа сначала подключим SMS-авторизацию.");
+  pendingPhone = phone;
+  document.getElementById("phoneStep").classList.add("hidden");
+  document.getElementById("codeStep").classList.remove("hidden");
+  document.getElementById("sms").value = "";
+  document.getElementById("codeHint").textContent =
+    "Демонстрационный код: 123456. Настоящее SMS пока не отправляется.";
+  document.getElementById("sms").focus();
 }
-
-$("get-code").addEventListener("click", startPhoneLogin);
-$("guest-button").addEventListener("click", makeGuest);
-
-$("sms-code").addEventListener("input", () => {
-  const input = $("sms-code");
-  input.value = input.value.replace(/\D/g, "").slice(0, 6);
-
-  if (input.value.length === 6 && !checking) {
-    checking = true;
-    setError("Настоящую проверку SMS-кода подключим вместе с сервером.");
-    checking = false;
+function backToPhone(){
+  document.getElementById("codeStep").classList.add("hidden");
+  document.getElementById("phoneStep").classList.remove("hidden");
+}
+document.getElementById("sms").addEventListener("input", e => {
+  e.target.value = e.target.value.replace(/\D/g, "").slice(0,6);
+  if(e.target.value.length === 6){
+    if(e.target.value !== "123456"){
+      alert("Неверный демонстрационный код.");
+      e.target.value = "";
+      return;
+    }
+    loginPhone(pendingPhone);
   }
 });
-
-function openChat() {
-  $("chat-subtitle").textContent =
-    "Ты вошёл как " + currentUser.nickname;
-
-  $("nickname").value = currentUser.nickname;
-  renderMessages();
-  showScreen("chat");
-}
-
-function renderMessages() {
-  const container = $("messages");
-  container.replaceChildren();
-
-  const saved = readJSON("onechat-demo-messages", []);
-
-  if (!saved.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.innerHTML =
-      '<div class="empty-icon">💬</div><strong>Пока тихо</strong><p>Напиши первое сообщение!</p>';
-    container.appendChild(empty);
-    return;
+function loginPhone(phone){
+  let a = accounts.find(x => !x.guest && x.phone === phone);
+  if(!a){
+    a = {
+      id: crypto.randomUUID(),
+      phone,
+      guest:false,
+      name: phone === SPECIAL_PHONE ? "OneChat" : "user" + Math.floor(1000 + Math.random()*9000),
+      verified:true,
+      special:phone === SPECIAL_PHONE
+    };
+    accounts.push(a);
   }
-
-  saved.forEach(item => {
-    const row = document.createElement("div");
-    row.className = "message-row" +
-      (item.sender === currentUser.nickname ? " mine" : "");
-
-    if (item.sender !== currentUser.nickname) {
-      const icon = document.createElement("div");
-      icon.className = "mini-avatar";
-      icon.textContent = "👤";
-      row.appendChild(icon);
-    }
-
-    const content = document.createElement("div");
-    content.className = "message-content";
-
-    const name = document.createElement("div");
-    name.className = "message-name";
-    name.textContent = item.sender;
-
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.textContent = item.text;
-
-    content.append(name, bubble);
-    row.appendChild(content);
-    container.appendChild(row);
-  });
-
-  container.scrollTop = container.scrollHeight;
+  // Специальный статус в этом макете привязан к тестовому номеру.
+  a.special = a.phone === SPECIAL_PHONE;
+  saveAccounts();
+  currentId = a.id;
+  showChat();
 }
-
-$("message-form").addEventListener("submit", event => {
-  event.preventDefault();
-  if (!currentUser) return;
-
-  const input = $("message-input");
-  const text = input.value.trim();
-  if (!text) return;
-
-  const saved = readJSON("onechat-demo-messages", []);
-  saved.push({
-    sender: currentUser.nickname,
-    text,
-    time: Date.now()
+function guestLogin(){
+  const n = nextGuest++;
+  localStorage.setItem("onechat_guest_counter", String(nextGuest));
+  const a = {
+    id:crypto.randomUUID(),
+    guest:true,
+    phone:"",
+    name:"guest"+n,
+    special:false
+  };
+  accounts.push(a);
+  saveAccounts();
+  currentId = a.id;
+  showChat();
+}
+function addAccount(){
+  document.getElementById("profile").classList.add("hidden");
+  document.getElementById("guestTools").classList.add("hidden");
+  document.getElementById("chat").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("phoneStep").classList.remove("hidden");
+  document.getElementById("codeStep").classList.add("hidden");
+  document.getElementById("phone").value = "";
+  document.getElementById("sms").value = "";
+}
+function showChat(){
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("profile").classList.add("hidden");
+  document.getElementById("guestTools").classList.add("hidden");
+  document.getElementById("chat").classList.remove("hidden");
+  document.getElementById("profileButton").classList.toggle("hidden", current().guest);
+  renderMessages();
+}
+function openChat(){showChat();}
+function openProfile(){
+  const a = current();
+  if(!a || a.guest) return;
+  document.getElementById("chat").classList.add("hidden");
+  document.getElementById("profile").classList.remove("hidden");
+  document.getElementById("profileName").innerHTML = escapeHTML(a.name) +
+    (a.special ? ' <span class="check">✓</span>' : "");
+  document.getElementById("profileNumber").textContent = a.phone;
+  document.getElementById("nickname").value = a.name;
+  document.getElementById("avatar").textContent = a.name.slice(0,1).toUpperCase();
+  renderAccounts();
+}
+function saveProfile(){
+  const a = current();
+  if(!a || a.guest) return;
+  const name = document.getElementById("nickname").value.trim();
+  if(!name){alert("Введи имя.");return;}
+  a.name = name.slice(0,24);
+  saveAccounts();
+  openProfile();
+}
+function renderAccounts(){
+  const list = document.getElementById("accountList");
+  list.innerHTML = "";
+  accounts.forEach(a=>{
+    const div = document.createElement("div");
+    div.className = "card";
+    const label = a.name + (a.special ? " ✓" : "") + (a.guest ? " (гость)" : "");
+    const info = document.createElement("div");
+    info.textContent = label;
+    div.appendChild(info);
+    const btn = document.createElement("button");
+    btn.className = "secondary";
+    btn.style.width = "100%";
+    btn.style.marginTop = "8px";
+    btn.textContent = a.id === currentId ? "Текущий аккаунт" : "Переключиться";
+    btn.disabled = a.id === currentId;
+    btn.onclick = ()=>{currentId=a.id;showChat();};
+    div.appendChild(btn);
+    list.appendChild(div);
   });
-
-  // Только локальный демонстрационный чат.
-  localStorage.setItem("onechat-demo-messages", JSON.stringify(saved));
+}
+function sendMessage(e){
+  e.preventDefault();
+  const input = document.getElementById("messageInput");
+  const value = input.value.trim();
+  if(!value)return;
+  const a = current();
+  messages.push({name:a.name,special:a.special,text:value,mine:true});
   input.value = "";
   renderMessages();
-});
-
-$("profile-button").addEventListener("click", () => {
-  $("nickname").value = currentUser?.nickname || "";
-  $("profile-status").textContent = "";
-  renderAvatar();
-  showScreen("profile");
-});
-
-$("back-button").addEventListener("click", () => showScreen("chat"));
-
-$("save-profile").addEventListener("click", () => {
-  const nickname = $("nickname").value.trim();
-
-  if (!nickname) {
-    $("profile-status").textContent = "Введи никнейм.";
-    return;
-  }
-
-  if (nickname.length > 30) {
-    $("profile-status").textContent = "Максимум 30 символов.";
-    return;
-  }
-
-  currentUser.nickname = nickname;
-  localStorage.setItem("onechat-demo-profile", JSON.stringify({
-    nickname,
-    avatarData
-  }));
-
-  $("chat-subtitle").textContent = "Ты вошёл как " + nickname;
-  $("profile-status").textContent = "Профиль сохранён на этом устройстве.";
-  renderAvatar();
-  renderMessages();
-});
-
-function renderAvatar() {
-  const avatar = $("big-avatar");
-  avatar.replaceChildren();
-
-  if (avatarData) {
-    const img = document.createElement("img");
-    img.src = avatarData;
-    img.alt = "Аватар";
-    avatar.appendChild(img);
-  } else {
-    avatar.textContent = "👤";
-  }
 }
+function renderMessages(){
+  const root = document.getElementById("messages");
+  root.innerHTML = "";
+  messages.forEach(m=>{
+    const bubble = document.createElement("div");
+    bubble.className = "bubble" + (m.mine ? " mine" : "");
+    const sender = document.createElement("div");
+    sender.className = "sender";
+    sender.textContent = m.name + (m.special ? " ✓" : "");
+    if(m.special){
+      sender.innerHTML = escapeHTML(m.name) + ' <span class="check">✓</span>';
+    }
+    const text = document.createElement("div");
+    text.textContent = m.text;
+    bubble.append(sender,text);
+    root.appendChild(bubble);
+  });
+  root.scrollTop = root.scrollHeight;
+}
+function logout(){
+  currentId = null;
+  document.getElementById("chat").classList.add("hidden");
+  document.getElementById("profile").classList.add("hidden");
+  document.getElementById("guestTools").classList.add("hidden");
+  document.getElementById("profileButton").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+  backToPhone();
+}
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+document.getElementById("profileButton").onclick = openProfile;
 
-$("avatar-file").addEventListener("change", event => {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    $("profile-status").textContent = "Выбери изображение.";
-    return;
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    $("profile-status").textContent = "Изображение должно быть меньше 2 МБ.";
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    avatarData = reader.result;
-    renderAvatar();
-    $("profile-status").textContent =
-      "Аватар выбран. Нажми «Сохранить».";
-  };
-  reader.readAsDataURL(file);
-});
-
-// Восстановление профиля на этом устройстве.
-const savedProfile = readJSON("onechat-demo-profile", null);
-if (savedProfile) {
-  avatarData = savedProfile.avatarData || "";
+// При возвращении к сохранённому демо-проекту можно выбрать уже созданный аккаунт.
+if(accounts.length){
+  document.getElementById("phoneStep").insertAdjacentHTML(
+    "beforeend",
+    '<div class="card"><strong>Сохранённые аккаунты</strong><div id="loginAccounts"></div></div>'
+  );
+  const list = document.getElementById("loginAccounts");
+  accounts.forEach(a=>{
+    const b = document.createElement("button");
+    b.className = "secondary";
+    b.style.width = "100%";
+    b.style.marginTop = "8px";
+    b.textContent = "Войти: " + a.name + (a.special ? " ✓" : "");
+    b.onclick = ()=>{currentId=a.id;showChat();};
+    list.appendChild(b);
+  });
 }
 </script>
 </body>
