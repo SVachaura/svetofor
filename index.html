@@ -3,550 +3,862 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1769f5">
 <title>OneChat</title>
+
 <style>
 :root {
-  --blue:#2878ff;
-  --blue2:#1458d4;
-  --bg:#f4f7fc;
-  --card:#ffffff;
-  --text:#172033;
+  --blue:#1769f5;
+  --blue2:#0954df;
+  --pale:#eaf2ff;
+  --bg:#f5f8ff;
+  --card:#fff;
+  --text:#17243b;
   --muted:#8490a5;
-  --line:#e7ecf4;
+  --line:#e5ebf5;
+  --green:#20b77a;
+  --red:#ed4969;
+  --shadow:0 8px 26px rgba(35,75,145,.06);
 }
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
-button,input,textarea { font:inherit; }
-button { cursor:pointer; }
-.app {
-  max-width:620px;
-  min-height:100dvh;
-  margin:auto;
-  background:var(--bg);
-  padding-bottom:85px;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:3px solid #a9c9ff;outline-offset:2px
 }
-header {
-  position:sticky;
-  top:0;
-  z-index:5;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line);
-  padding:17px 19px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+button:active{transform:scale(.98)}
+.app{max-width:650px;min-height:100dvh;margin:auto;background:var(--bg)}
+header{
+  position:sticky;top:0;z-index:10;height:76px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 17px;background:rgba(255,255,255,.95);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(18px)
 }
-.brand {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:23px;
-  font-weight:850;
-  letter-spacing:-1px;
+.brand{display:flex;align-items:center;gap:11px;font-size:23px;font-weight:850;letter-spacing:-.8px}
+.logo{
+  width:43px;height:43px;display:grid;place-items:center;
+  color:white;background:var(--blue);border-radius:15px;
+  box-shadow:0 5px 14px #1769f52b
 }
-.logo {
-  background:var(--blue);
-  color:white;
-  border-radius:13px;
-  width:39px;height:39px;
-  display:grid;place-items:center;
-  font-size:23px;
+.logo svg{width:27px;height:27px}
+.icon-btn{
+  width:43px;height:43px;border:0;border-radius:14px;
+  display:grid;place-items:center;background:var(--blue);color:white;
+  transition:background .2s,transform .2s
 }
-.iconbtn {
-  border:1px solid var(--line);
-  background:white;
-  border-radius:13px;
-  width:42px;height:42px;
-  font-size:20px;
-  color:var(--text);
+.icon-btn:hover{background:var(--blue2)}
+.icon-btn svg{width:21px;height:21px}
+.profile-trigger{
+  width:46px;height:46px;padding:2px;border-radius:50%;
+  border:2px solid #dce9ff;background:white;overflow:hidden
 }
-.page { display:none;padding:20px 17px; }
-.page.active { display:block;animation:appear .25s ease; }
-@keyframes appear {
-  from {opacity:0;transform:translateY(7px)}
-  to {opacity:1;transform:translateY(0)}
+.avatar{
+  width:43px;height:43px;flex-shrink:0;border-radius:15px;
+  display:grid;place-items:center;overflow:hidden;
+  background:var(--blue);color:white;font-size:15px;font-weight:800;
+  border:0;padding:0
 }
-h1 {font-size:27px;letter-spacing:-.8px;margin:4px 0 7px}
-.subtitle {color:var(--muted);font-size:14px;margin-bottom:20px}
-.panel {
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:21px;
-  padding:16px;
-  margin-bottom:14px;
+.avatar img,.profile-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.round{border-radius:50%}
+.profile-trigger .avatar{width:100%;height:100%;border-radius:50%}
+main{padding:18px 15px 40px}
+.page{display:none;animation:appear .23s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:21px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)
 }
-.live {
-  display:flex;align-items:center;gap:8px;
-  color:#18885b;font-size:12px;font-weight:750;
+.section-title{font-size:16px;font-weight:850;margin:22px 2px 12px}
+.page-title{font-size:25px;letter-spacing:-.7px;margin:4px 0 7px}
+.subtitle{font-size:13px;line-height:1.55;color:var(--muted);margin-bottom:18px}
+.topline{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 14px}
+.online{font-size:12px;color:var(--green);font-weight:750}
+.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:6px}
+.top-actions{display:flex;gap:8px}
+.messages{display:flex;flex-direction:column;gap:19px}
+.message{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.message-body{min-width:0;flex:1}
+.message-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:2px 0 6px}
+.name-button{padding:0;border:0;background:transparent;color:var(--text);font-weight:800;font-size:13px}
+.username{font-size:11px;color:var(--muted)}
+.time{font-size:10px;color:#a0aabd;margin-left:auto}
+.verified{
+  width:15px;height:15px;border-radius:50%;background:var(--blue);color:white;
+  display:inline-grid;place-items:center;font-size:10px;font-weight:900
 }
-.dot {
-  width:8px;height:8px;border-radius:50%;
-  background:#22c985;
+.bubble{
+  display:inline-block;max-width:100%;padding:10px 12px;
+  background:#f0f4fb;border-radius:4px 15px 15px 15px;
+  font-size:14px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap
 }
-.chat-top {
-  display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:16px;
+.own .bubble{background:var(--pale)}
+.composer{
+  display:flex;align-items:flex-end;gap:8px;
+  padding-top:13px;margin-top:15px;border-top:1px solid var(--line)
 }
-.chat-top h2 {font-size:17px;margin:0}
-.count {font-size:12px;color:var(--muted)}
-.message {
-  display:flex;align-items:flex-start;gap:11px;
-  margin:21px 0;
+.composer textarea{
+  min-width:0;flex:1;resize:none;min-height:44px;max-height:130px;
+  padding:12px;border:1px solid var(--line);border-radius:14px;
+  background:#f8faff;outline:none;color:var(--text)
 }
-.avatar {
-  flex-shrink:0;
-  width:42px;height:42px;border-radius:15px;
-  display:grid;place-items:center;
-  font-size:15px;font-weight:800;
-  color:#fff;background:#6379d8;
+.send{
+  width:44px;height:44px;border:0;border-radius:14px;
+  display:grid;place-items:center;background:var(--blue);color:white;flex-shrink:0
 }
-.avatar.green {background:#18a77b}
-.avatar.purple {background:#9062df}
-.avatar.orange {background:#ec9852}
-.avatar.me {background:var(--blue)}
-.msgbody {min-width:0;flex:1}
-.msghead {display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.name {font-size:14px;font-weight:800}
-.username {font-size:12px;color:var(--muted)}
-.time {margin-left:auto;font-size:11px;color:#a1aabb}
-.bubble {
-  margin-top:7px;background:#f1f5fb;
-  border-radius:4px 15px 15px 15px;
-  padding:11px 12px;font-size:14px;line-height:1.5;
-  overflow-wrap:anywhere;
+.send svg{width:21px;height:21px}
+.note{font-size:11px;line-height:1.6;color:var(--muted);margin:10px 2px 0}
+.primary,.secondary,.danger{
+  width:100%;min-height:45px;padding:12px 15px;border-radius:13px;font-weight:750
 }
-.profile-link {
-  padding:0;border:0;background:none;color:inherit;
-  font-weight:inherit;
-}
-.profile-link:hover {color:var(--blue)}
-.composer {
-  display:flex;align-items:center;gap:9px;
-  border:1px solid var(--line);background:white;
-  padding:8px;border-radius:17px;margin-top:20px;
-}
-.composer input {
-  border:0;outline:0;min-width:0;flex:1;
-  padding:8px 4px;background:transparent;
-}
-.send {
+.primary{border:0;background:var(--blue);color:white}
+.primary:hover{background:var(--blue2)}
+.secondary{border:1px solid #dce6f6;background:#f5f8ff;color:var(--blue)}
+.danger{border:1px solid #ffdde5;background:#fff2f5;color:var(--red)}
+.small-button{width:auto;min-height:35px;padding:8px 11px;font-size:12px}
+.page-head{display:flex;align-items:center;gap:11px;margin-bottom:19px}
+.page-head h1{font-size:24px;letter-spacing:-.6px;margin:0}
+.back{
   width:41px;height:41px;border:0;border-radius:13px;
-  background:var(--blue);color:white;font-size:19px;
+  display:grid;place-items:center;background:var(--blue);color:white;flex-shrink:0
 }
-.smallnote {color:var(--muted);font-size:11px;margin:10px 2px}
-.primary {
-  background:var(--blue);color:white;border:0;
-  border-radius:14px;padding:13px 16px;
-  font-weight:750;
+.back svg{width:20px;height:20px}
+.field{display:block;margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:7px}
+.field input,.field textarea,.field select{
+  width:100%;padding:12px;border:1px solid var(--line);
+  border-radius:12px;background:#f8faff;color:var(--text);outline:none
 }
-.primary:active {transform:scale(.98)}
-.search {
-  width:100%;padding:14px 15px;
-  border:1px solid var(--line);border-radius:14px;
-  background:white;outline:none;margin-bottom:15px;
+.field textarea{resize:vertical;min-height:85px}
+.row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row-info{min-width:0;flex:1}
+.row-info strong{display:block;font-size:13px}
+.row-info small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5}
+.square-icon{
+  width:41px;height:41px;border-radius:13px;display:grid;place-items:center;
+  flex-shrink:0;background:var(--blue);color:white
 }
-.rowitem {
-  display:flex;align-items:center;gap:12px;
-  padding:14px 0;border-bottom:1px solid var(--line);
+.square-icon svg{width:20px;height:20px}
+.profile-card{text-align:center;padding:24px 16px}
+.profile-photo{
+  width:98px;height:98px;margin:0 auto 13px;border-radius:29px;
+  display:grid;place-items:center;overflow:hidden;
+  background:linear-gradient(140deg,#66a9ff,#1769f5);
+  color:white;font-size:31px;font-weight:850;border:4px solid #eaf2ff
 }
-.rowitem:last-child {border-bottom:0}
-.rowitem .info {flex:1;min-width:0}
-.rowitem strong {display:block;font-size:14px;margin-bottom:4px}
-.rowitem small {color:var(--muted);font-size:12px}
-.section-title {font-size:14px;font-weight:800;margin:23px 0 12px}
-.profile-head {text-align:center;padding:22px 15px}
-.bigavatar {
-  width:86px;height:86px;border-radius:28px;
-  display:grid;place-items:center;margin:0 auto 14px;
-  background:linear-gradient(135deg,#5ba4ff,#2461ef);
-  color:white;font-size:29px;font-weight:850;
+.profile-name{font-size:22px;font-weight:850}
+.profile-handle{font-size:13px;color:var(--muted);margin-top:5px}
+.profile-bio{font-size:13px;line-height:1.6;color:#69758a;margin:12px 0 17px;white-space:pre-wrap}
+.profile-buttons{display:flex;gap:9px}
+.profile-buttons>*{flex:1}
+.search{
+  width:100%;padding:13px 14px;border:1px solid var(--line);
+  border-radius:13px;background:white;outline:none;margin-bottom:13px
 }
-.profile-head h2 {margin:0 0 6px;font-size:22px}
-.profile-head p {margin:9px 0 17px;color:var(--muted);font-size:14px}
-.profile-actions {display:flex;justify-content:center;gap:9px}
-.secondary {
-  background:white;border:1px solid var(--line);
-  border-radius:13px;padding:12px 15px;font-weight:700;
+.person{
+  display:flex;align-items:center;gap:11px;padding:12px 0;
+  border-bottom:1px solid var(--line)
 }
-.setting-label {font-size:14px;font-weight:800;margin-bottom:7px}
-.option {
-  display:flex;align-items:center;gap:12px;
-  padding:14px 0;border-bottom:1px solid var(--line);
-  cursor:pointer;
+.person:last-child{border-bottom:0}
+.person-info{flex:1;min-width:0}
+.person-info strong{font-size:13px;display:block}
+.person-info small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.privacy-option{
+  display:flex;align-items:flex-start;gap:10px;padding:13px;
+  border:1px solid var(--line);border-radius:14px;margin-top:9px;cursor:pointer
 }
-.option:last-child {border-bottom:0}
-.option input {accent-color:var(--blue);width:18px;height:18px}
-.option .details {flex:1}
-.option strong {font-size:14px;display:block;margin-bottom:5px}
-.option small {font-size:12px;line-height:1.5;color:var(--muted);display:block}
-.tag {
-  font-size:10px;background:#eaf2ff;color:var(--blue);
-  border-radius:6px;padding:4px 6px;font-weight:800;
+.privacy-option:has(input:checked){background:#f1f6ff;border-color:#8db6ff}
+.privacy-option input{accent-color:var(--blue);margin-top:3px}
+.privacy-option strong{font-size:13px;display:block}
+.privacy-option small{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin-top:4px}
+.empty{text-align:center;padding:24px 12px;color:var(--muted);font-size:13px;line-height:1.6}
+.dm-messages{display:flex;flex-direction:column;gap:12px;min-height:100px}
+.dm-line{display:flex;gap:8px;align-items:flex-end}
+.dm-line.mine{justify-content:flex-end}
+.dm-bubble{max-width:83%;padding:10px 12px;border-radius:14px 14px 14px 4px;background:#f0f4fb;font-size:14px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.dm-line.mine .dm-bubble{background:var(--blue);color:white;border-radius:14px 14px 4px 14px}
+.badge{display:inline-block;padding:5px 8px;border-radius:7px;background:var(--pale);color:var(--blue);font-size:10px;font-weight:800}
+.notice{padding:13px;border-radius:13px;background:#eef5ff;color:#355d9a;border:1px solid #dce8ff;font-size:12px;line-height:1.6;margin-bottom:12px}
+.hidden{display:none!important}
+.modal-bg{
+  position:fixed;inset:0;z-index:30;background:#0b183b66;
+  display:none;align-items:flex-end;justify-content:center;padding:10px
 }
-.bottom {
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:620px;
-  display:flex;justify-content:space-around;
-  padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);z-index:8;
+.modal-bg.show{display:flex;animation:fade .2s ease}
+.modal{
+  width:100%;max-width:630px;max-height:87dvh;overflow:auto;
+  padding:21px;background:white;border-radius:24px;
+  padding-bottom:calc(21px + env(safe-area-inset-bottom));
+  animation:slide .23s ease
 }
-.navbtn {
-  flex:1;border:0;background:transparent;color:#8994a7;
-  display:flex;flex-direction:column;align-items:center;
-  gap:5px;font-size:11px;padding:5px;
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
+.modal-head h2{font-size:20px;margin:0}
+.modal-actions{display:flex;gap:9px;margin-top:15px}
+.modal-actions>*{flex:1}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes slide{from{transform:translateY(25px);opacity:.7}to{transform:translateY(0);opacity:1}}
+.toast{
+  position:fixed;left:50%;bottom:20px;transform:translate(-50%,15px);
+  z-index:50;max-width:calc(100% - 30px);padding:12px 17px;
+  background:#17243b;color:white;border-radius:13px;font-size:13px;
+  opacity:0;pointer-events:none;transition:.22s
 }
-.navbtn span:first-child {font-size:21px}
-.navbtn.active {color:var(--blue);font-weight:800}
-.modal-bg {
-  position:fixed;inset:0;background:#101b2d66;
-  z-index:20;display:none;align-items:flex-end;justify-content:center;
-}
-.modal-bg.show {display:flex}
-.modal {
-  background:white;width:100%;max-width:620px;
-  border-radius:24px 24px 0 0;padding:22px 20px;
-  padding-bottom:calc(24px + env(safe-area-inset-bottom));
-  animation:slide .22s ease;
-}
-@keyframes slide {
-  from {transform:translateY(35px);opacity:.5}
-  to {transform:translateY(0);opacity:1}
-}
-.modal h2 {font-size:21px;margin:0 0 18px}
-.modal .field {margin-bottom:13px}
-.field label {display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
-.field input,.field textarea {
-  width:100%;padding:13px;border:1px solid var(--line);
-  border-radius:12px;outline:none;resize:vertical;
-}
-.modal-actions {display:flex;gap:10px;margin-top:17px}
-.modal-actions button {flex:1}
-.empty {text-align:center;color:var(--muted);padding:35px 10px}
-.hidden {display:none!important}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
+
 <body>
+<!-- Иконки: белые контуры, без эмодзи -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-logo" viewBox="0 0 24 24">
+    <path d="M5 7.5A3.5 3.5 0 0 1 8.5 4H16a4 4 0 0 1 0 8H9a3 3 0 0 0 0 6h7"
+      fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M8 8h8M8 16h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-send" viewBox="0 0 24 24">
+    <path d="m22 2-7 20-4-9-9-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M22 2 11 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-people" viewBox="0 0 24 24">
+    <circle cx="9" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8m2 3a6 6 0 0 1 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.7a8 8 0 0 1-2 .9l-.3 1.9h-3l-.3-1.9a8 8 0 0 1-2-.9l-1.7.7-1.5-2.6L8.3 15a8 8 0 0 1 0-2l-1.4-1.1 1.5-2.6 1.7.7a8 8 0 0 1 2-.9l.3-1.9h3l.3 1.9a8 8 0 0 1 2 .9l1.7-.7 1.5 2.6-1.4 1.1a8 8 0 0 1-.1 2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-back" viewBox="0 0 24 24">
+    <path d="m15 18-6-6 6-6M9 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-device" viewBox="0 0 24 24">
+    <rect x="5" y="2" width="14" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24">
+    <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="m16 16 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-close" viewBox="0 0 24 24">
+    <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
 <div class="app">
   <header>
     <div class="brand">
-      <div class="logo">◉</div>
-      OneChat
+      <div class="logo"><svg><use href="#i-logo"/></svg></div>
+      <span>OneChat</span>
     </div>
-    <button class="iconbtn" onclick="openProfile()" aria-label="Мой профиль">👤</button>
+    <button class="profile-trigger" id="headerProfile" aria-label="Мой профиль">
+      <div class="avatar round" id="headerAvatar">
+        <svg width="23" height="23"><use href="#i-user"/></svg>
+      </div>
+    </button>
   </header>
 
   <main>
+    <!-- Главная лента: отдельного заголовка над сообщениями нет -->
     <section id="home" class="page active">
-      <h1>Общий чат</h1>
-      <div class="subtitle">Один чат. Все люди.</div>
+      <div class="topline">
+        <span class="online"><span class="dot"></span>OneChat</span>
+        <div class="top-actions">
+          <button class="icon-btn" id="peopleButton" aria-label="Пользователи">
+            <svg><use href="#i-people"/></svg>
+          </button>
+          <button class="icon-btn" id="settingsButton" aria-label="Настройки">
+            <svg><use href="#i-settings"/></svg>
+          </button>
+        </div>
+      </div>
 
       <div class="panel">
-        <div class="chat-top">
-          <h2>🌐 Все пользователи</h2>
-          <div class="live"><span class="dot"></span> В сети</div>
-        </div>
-        <div class="count">Общая лента сообщений</div>
-        <div id="messages">
-          <div class="message">
-            <div class="avatar green">A</div>
-            <div class="msgbody">
-              <div class="msghead">
-                <button class="profile-link name" onclick="showUser('Alex','@alex','A','green','Просто общаюсь 👋')">Alex</button>
-                <span class="username">@alex</span><span class="time">12:40</span>
-              </div>
-              <div class="bubble">Всем привет! 👋 Кто откуда?</div>
-            </div>
-          </div>
-          <div class="message">
-            <div class="avatar purple">M</div>
-            <div class="msgbody">
-              <div class="msghead">
-                <button class="profile-link name" onclick="showUser('Mira','@mira','M','purple','Люблю музыку 🎧')">Mira</button>
-                <span class="username">@mira</span><span class="time">12:41</span>
-              </div>
-              <div class="bubble">Я тут впервые, прикольный интерфейс 💙</div>
-            </div>
-          </div>
-          <div class="message">
-            <div class="avatar orange">K</div>
-            <div class="msgbody">
-              <div class="msghead">
-                <button class="profile-link name" onclick="showUser('Kirill','@kirill','K','orange','')">Kirill</button>
-                <span class="username">@kirill</span><span class="time">12:42</span>
-              </div>
-              <div class="bubble">Залетаем в общение 😎</div>
-            </div>
-          </div>
-        </div>
-        <div id="emptyMessages" class="empty hidden">Пока нет сообщений</div>
-        <form class="composer" id="messageForm">
-          <input id="messageInput" maxlength="500" placeholder="Написать сообщение..." autocomplete="off">
-          <button class="send" aria-label="Отправить">➤</button>
+        <div id="messages" class="messages"></div>
+        <div id="emptyMessages" class="empty hidden">Пока нет сообщений. Напиши первым.</div>
+        <form id="messageForm" class="composer">
+          <textarea id="messageInput" rows="1" maxlength="1000"
+            placeholder="Написать сообщение..." aria-label="Сообщение"></textarea>
+          <button class="send" aria-label="Отправить сообщение">
+            <svg><use href="#i-send"/></svg>
+          </button>
         </form>
-        <div class="smallnote">Демо: сообщения видны только на этом устройстве.</div>
+        <div class="note">Локальный демонстрационный режим. Сообщения пока не отправляются другим пользователям.</div>
       </div>
+
+      <div class="section-title">Личные сообщения</div>
+      <div class="panel" id="dmList">
+        <div class="empty" id="emptyDM">Здесь появятся твои личные переписки.</div>
+      </div>
+      <button class="secondary" id="findPeople">Найти пользователей</button>
     </section>
 
     <section id="people" class="page">
-      <h1>Люди</h1>
-      <div class="subtitle">Найди пользователя и открой его профиль.</div>
-      <input id="searchPeople" class="search" placeholder="🔎 Поиск по имени или юзернейму">
-      <div class="panel" id="peopleList">
-        <div class="rowitem" data-search="alex @alex">
-          <div class="avatar green">A</div>
-          <div class="info"><strong>Alex</strong><small>@alex</small></div>
-          <button class="secondary" onclick="showUser('Alex','@alex','A','green','Просто общаюсь 👋')">Профиль</button>
-        </div>
-        <div class="rowitem" data-search="mira @mira">
-          <div class="avatar purple">M</div>
-          <div class="info"><strong>Mira</strong><small>@mira</small></div>
-          <button class="secondary" onclick="showUser('Mira','@mira','M','purple','Люблю музыку 🎧')">Профиль</button>
-        </div>
-        <div class="rowitem" data-search="kirill @kirill">
-          <div class="avatar orange">K</div>
-          <div class="info"><strong>Kirill</strong><small>@kirill</small></div>
-          <button class="secondary" onclick="showUser('Kirill','@kirill','K','orange','')">Профиль</button>
-        </div>
+      <div class="page-head">
+        <button class="back" data-back="home" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <h1>Пользователи</h1>
       </div>
+      <input class="search" id="peopleSearch" placeholder="Поиск по имени или юзернейму">
+      <div class="panel" id="peopleList"></div>
+      <div class="note">Сейчас отображаются демонстрационные профили.</div>
     </section>
 
     <section id="profile" class="page">
-      <h1>Мой профиль</h1>
-      <div class="subtitle">Твой аккаунт OneChat.</div>
-      <div class="panel profile-head">
-        <div class="bigavatar" id="myAvatar">Y</div>
-        <h2 id="myName">Your name</h2>
-        <div class="username" id="myUsername">@yourname</div>
-        <p id="myDescription">Расскажи немного о себе.</p>
-        <div class="profile-actions">
-          <button class="primary" onclick="editProfile()">Изменить профиль</button>
+      <div class="page-head">
+        <button class="back" data-back="home" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <h1>Мой профиль</h1>
+      </div>
+      <div class="panel profile-card">
+        <div class="profile-photo" id="myPhoto">
+          <svg width="36" height="36"><use href="#i-user"/></svg>
+        </div>
+        <div class="profile-name" id="myName">Пользователь</div>
+        <div class="profile-handle" id="myUsername">@user</div>
+        <div class="profile-bio" id="myBio">Расскажи немного о себе.</div>
+        <div class="profile-buttons">
+          <button class="primary" id="editProfile">Изменить профиль</button>
         </div>
       </div>
+
+      <div class="section-title">Аккаунт</div>
       <div class="panel">
-        <div class="rowitem">
-          <div class="avatar me">⚙</div>
-          <div class="info"><strong>Приватность</strong><small>Кто может писать тебе в личку</small></div>
-          <button class="secondary" onclick="navigate('settings')">Открыть</button>
+        <div class="row">
+          <div class="square-icon"><svg><use href="#i-user"/></svg></div>
+          <div class="row-info"><strong>Номер телефона</strong><small id="phoneLabel">Не подтверждён</small></div>
+          <span class="badge">Приватно</span>
+        </div>
+        <div class="row" style="cursor:pointer" id="openDevices">
+          <div class="square-icon"><svg><use href="#i-device"/></svg></div>
+          <div class="row-info"><strong>Устройства</strong><small>Управление сеансами входа</small></div>
+          <span style="color:var(--muted)">›</span>
+        </div>
+        <div class="row" style="cursor:pointer" id="openPrivacy">
+          <div class="square-icon"><svg><use href="#i-settings"/></svg></div>
+          <div class="row-info"><strong>Приватность</strong><small>Кто может писать тебе</small></div>
+          <span style="color:var(--muted)">›</span>
+        </div>
+        <div class="row" style="cursor:pointer" id="openRequests">
+          <div class="square-icon"><svg><use href="#i-people"/></svg></div>
+          <div class="row-info"><strong>Запросы на переписку</strong><small>Принять или отклонить запросы</small></div>
+          <span id="requestCount" class="badge">0</span>
         </div>
       </div>
     </section>
 
     <section id="settings" class="page">
-      <h1>Настройки</h1>
-      <div class="subtitle">Настрой общение под себя.</div>
-      <div class="panel">
-        <div class="setting-label">Кто может писать мне в личку?</div>
-        <label class="option">
-          <input type="radio" name="privacy" value="everyone" checked>
-          <span class="details"><strong>Любой пользователь</strong><small>Все могут начать переписку с тобой.</small></span>
-        </label>
-        <label class="option">
-          <input type="radio" name="privacy" value="approval">
-          <span class="details"><strong>Только с моего разрешения</strong><small>Сначала приходит запрос. Ты принимаешь или отклоняешь его.</small></span>
-        </label>
-        <label class="option">
-          <input type="radio" name="privacy" value="nobody">
-          <span class="details"><strong>Никто</strong><small>Новые личные переписки начать нельзя.</small></span>
-        </label>
-        <div class="smallnote" id="privacyNote">Выбор сохранится на этом устройстве в демо.</div>
+      <div class="page-head">
+        <button class="back" data-back="home" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <h1>Настройки</h1>
       </div>
+      <div class="section-title">Личные сообщения</div>
       <div class="panel">
-        <div class="setting-label">Аккаунт</div>
-        <div class="rowitem">
-          <div class="info"><strong>Номер телефона</strong><small>В реальной версии используется для входа и подтверждения аккаунта.</small></div>
-          <span class="tag">СКРЫТ</span>
+        <label class="privacy-option">
+          <input type="radio" name="privacy" value="everyone">
+          <span><strong>Любой пользователь</strong><small>Любой человек может начать личную переписку.</small></span>
+        </label>
+        <label class="privacy-option">
+          <input type="radio" name="privacy" value="approval">
+          <span><strong>Только с моего разрешения</strong><small>Сначала пользователь отправляет запрос, а ты решаешь, принимать его или нет.</small></span>
+        </label>
+        <label class="privacy-option">
+          <input type="radio" name="privacy" value="nobody">
+          <span><strong>Никто</strong><small>Новые личные переписки запрещены.</small></span>
+        </label>
+        <div class="note" id="privacyNote">Настройка сохраняется на этом устройстве.</div>
+      </div>
+      <div class="section-title">Аккаунт</div>
+      <div class="panel">
+        <div class="row">
+          <div class="row-info"><strong>Вход по номеру телефона</strong><small>Для настоящей авторизации понадобится сервер и SMS-подтверждение.</small></div>
         </div>
-        <div class="rowitem">
-          <div class="info"><strong>Безопасность</strong><small>Блокировка пользователей и управление доступом.</small></div>
+        <button class="secondary" id="phoneLogin">Настроить номер телефона</button>
+      </div>
+      <div class="section-title">Устройства</div>
+      <div class="panel">
+        <div class="row">
+          <div class="square-icon"><svg><use href="#i-device"/></svg></div>
+          <div class="row-info"><strong>Это устройство</strong><small id="deviceInfo">Текущий браузер</small></div>
+          <span class="badge">Текущее</span>
         </div>
+        <button class="secondary" id="devicesFromSettings">Управление устройствами</button>
+      </div>
+    </section>
+
+    <section id="devices" class="page">
+      <div class="page-head">
+        <button class="back" data-back="profile" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <h1>Устройства</h1>
+      </div>
+      <div class="notice">Здесь будет список устройств, на которых открыт твой аккаунт. Для реального списка необходима серверная авторизация.</div>
+      <div class="panel">
+        <div class="row">
+          <div class="square-icon"><svg><use href="#i-device"/></svg></div>
+          <div class="row-info"><strong>Текущее устройство</strong><small id="deviceDescription">Браузер · этот сеанс</small></div>
+          <span class="badge">Активно</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="requests" class="page">
+      <div class="page-head">
+        <button class="back" data-back="profile" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <h1>Запросы</h1>
+      </div>
+      <div class="panel" id="requestsList">
+        <div class="empty">Новых запросов нет.</div>
       </div>
     </section>
 
     <section id="dm" class="page">
-      <button class="secondary" onclick="navigate('people')">← Назад</button>
-      <h1 id="dmTitle" style="margin-top:20px">Личная переписка</h1>
-      <div class="subtitle" id="dmSubtitle">Личные сообщения</div>
+      <div class="page-head">
+        <button class="back" data-back="home" id="dmBack" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+        <button class="avatar" id="dmAvatar" aria-label="Открыть профиль"></button>
+        <div style="min-width:0;flex:1">
+          <div id="dmName" style="font-weight:850"></div>
+          <div id="dmUsername" class="username"></div>
+        </div>
+        <button class="icon-btn" id="dmUserProfile" aria-label="Профиль пользователя"><svg><use href="#i-user"/></svg></button>
+      </div>
       <div class="panel">
-        <div id="dmMessages"></div>
+        <div class="dm-messages" id="dmMessages"></div>
         <form class="composer" id="dmForm">
-          <input id="dmInput" maxlength="500" placeholder="Написать в личку..." autocomplete="off">
-          <button class="send" aria-label="Отправить">➤</button>
+          <textarea id="dmInput" rows="1" maxlength="1000" placeholder="Написать сообщение..."></textarea>
+          <button class="send" aria-label="Отправить"><svg><use href="#i-send"/></svg></button>
         </form>
-        <div class="smallnote" id="dmNote">Демо: переписка не отправляется другим людям.</div>
+        <div class="note">Демо-режим: личные сообщения сохраняются только локально.</div>
       </div>
     </section>
   </main>
-
-  <nav class="bottom">
-    <button class="navbtn active" data-page="home" onclick="navigate('home')"><span>🌐</span><span>Общий чат</span></button>
-    <button class="navbtn" data-page="people" onclick="navigate('people')"><span>👥</span><span>Люди</span></button>
-    <button class="navbtn" data-page="profile" onclick="navigate('profile')"><span>👤</span><span>Профиль</span></button>
-    <button class="navbtn" data-page="settings" onclick="navigate('settings')"><span>⚙️</span><span>Настройки</span></button>
-  </nav>
 </div>
 
-<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+<div class="modal-bg" id="modalBg">
   <div class="modal">
-    <h2 id="modalTitle">Профиль</h2>
-    <div id="modalContent"></div>
-    <div class="modal-actions">
-      <button class="secondary" onclick="closeModal()">Отмена</button>
-      <button class="primary" id="modalSave">Сохранить</button>
+    <div class="modal-head">
+      <h2 id="modalTitle">OneChat</h2>
+      <button class="icon-btn" id="modalClose" aria-label="Закрыть"><svg><use href="#i-close"/></svg></button>
     </div>
+    <div id="modalContent"></div>
+    <div class="modal-actions" id="modalActions"></div>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+<input type="file" id="avatarFile" accept="image/*" hidden>
+
 <script>
 const $ = id => document.getElementById(id);
-let me = {name:"Your name",username:"@yourname",description:"Расскажи немного о себе.",avatar:"Y"};
-let currentUser = null;
-let chats = {};
+const STORE = "onechat_demo_v2";
 
-function navigate(page) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  $(page).classList.add('active');
-  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
-  window.scrollTo({top:0,behavior:'smooth'});
+const defaultState = {
+  profile:{name:"Пользователь",username:"user",bio:"",avatar:"",phone:""},
+  privacy:"everyone",
+  messages:[],
+  dms:{},
+  requests:[],
+  approved:[],
+  dismissed:[]
+};
+
+let state = loadState();
+let currentPage = "home";
+let activeUser = null;
+let toastTimer = null;
+
+const demoUsers = [
+  {id:"alex",name:"Alex",username:"alex",bio:"Общаюсь с людьми.",color:"#3984f8"},
+  {id:"mira",name:"Mira",username:"mira",bio:"Люблю музыку и общение.",color:"#795ee9"},
+  {id:"kirill",name:"Kirill",username:"kirill",bio:"Всем привет!",color:"#e18a40"}
+];
+
+function loadState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORE)||"null");
+    return saved ? {...structuredClone(defaultState),...saved,
+      profile:{...defaultState.profile,...saved.profile}} : structuredClone(defaultState);
+  }catch{return structuredClone(defaultState)}
 }
 
-function closeModal() { $('modalBg').classList.remove('show'); }
-
-function openModal(title,html,onSave) {
-  $('modalTitle').textContent=title;
-  $('modalContent').innerHTML=html;
-  $('modalSave').onclick=onSave;
-  $('modalBg').classList.add('show');
+function saveState(){
+  try{localStorage.setItem(STORE,JSON.stringify(state))}
+  catch{toast("Не удалось сохранить данные. Возможно, изображение слишком большое.")}
 }
 
-function openProfile() { navigate('profile'); }
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
 
-function editProfile() {
-  openModal('Изменить профиль',`
-    <div class="field"><label>Имя</label><input id="editName" maxlength="32" value="${escapeHtml(me.name)}"></div>
-    <div class="field"><label>Юзернейм</label><input id="editUsername" maxlength="24" value="${escapeHtml(me.username)}"></div>
-    <div class="field"><label>Описание</label><textarea id="editDescription" maxlength="160" rows="3">${escapeHtml(me.description)}</textarea></div>
-    <div class="field"><label>Буква аватара (демо)</label><input id="editAvatar" maxlength="2" value="${escapeHtml(me.avatar)}"></div>
-  `,()=>{
-    me.name=$('editName').value.trim()||'User';
-    me.username=$('editUsername').value.trim().replace(/\s/g,'')||'@user';
-    if(!me.username.startsWith('@')) me.username='@'+me.username;
-    me.description=$('editDescription').value.trim();
-    me.avatar=$('editAvatar').value.trim().slice(0,2)||me.name[0].toUpperCase();
-    $('myName').textContent=me.name;
-    $('myUsername').textContent=me.username;
-    $('myDescription').textContent=me.description||'Нет описания';
-    $('myAvatar').textContent=me.avatar;
-    closeModal();
+function toast(text){
+  $("toast").textContent=text;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600);
+}
+
+function navigate(page){
+  if(!$ (page))return;
+  currentPage=page;
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  $(page).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(page==="profile")renderProfile();
+  if(page==="people")renderPeople($("peopleSearch").value);
+  if(page==="settings")renderSettings();
+  if(page==="requests")renderRequests();
+  if(page==="dm")renderDM();
+}
+
+document.querySelectorAll("[data-back]").forEach(b=>{
+  b.addEventListener("click",()=>navigate(b.dataset.back));
+});
+
+$("headerProfile").addEventListener("click",()=>navigate("profile"));
+$("peopleButton").addEventListener("click",()=>navigate("people"));
+$("settingsButton").addEventListener("click",()=>navigate("settings"));
+$("findPeople").addEventListener("click",()=>navigate("people"));
+$("openDevices").addEventListener("click",()=>navigate("devices"));
+$("openPrivacy").addEventListener("click",()=>navigate("settings"));
+$("openRequests").addEventListener("click",()=>navigate("requests"));
+$("devicesFromSettings").addEventListener("click",()=>navigate("devices"));
+$("editProfile").addEventListener("click",editProfile);
+$("dmUserProfile").addEventListener("click",()=>{if(activeUser)showPersonProfile(activeUser)});
+$("dmAvatar").addEventListener("click",()=>{if(activeUser)showPersonProfile(activeUser)});
+
+function avatarHTML(user,extra=""){
+  const fallback=esc((user.name||"U").trim().slice(0,1).toUpperCase()||"U");
+  if(user.avatar){
+    return `<div class="avatar ${extra}"><img src="${user.avatar}" alt=""></div>`;
+  }
+  return `<div class="avatar ${extra}" style="background:${esc(user.color||"var(--blue)")}">${fallback}</div>`;
+}
+
+function renderHeaderAvatar(){
+  const p=state.profile;
+  $("headerAvatar").innerHTML=p.avatar
+    ? `<img src="${p.avatar}" alt="">`
+    : `<svg width="23" height="23"><use href="#i-user"/></svg>`;
+}
+
+function renderProfile(){
+  const p=state.profile;
+  $("myPhoto").innerHTML=p.avatar
+    ? `<img src="${p.avatar}" alt="Аватар">`
+    : `<svg width="36" height="36"><use href="#i-user"/></svg>`;
+  $("myName").textContent=p.name||"Пользователь";
+  $("myUsername").textContent="@"+(p.username||"user");
+  $("myBio").textContent=p.bio||"Нет описания";
+  $("phoneLabel").textContent=p.phone||"Не подтверждён";
+  $("requestCount").textContent=state.requests.filter(r=>r.status==="pending").length;
+}
+
+function renderSettings(){
+  document.querySelectorAll('input[name="privacy"]').forEach(input=>{
+    input.checked=input.value===state.privacy;
   });
+  const notes={
+    everyone:"Любой пользователь может начать личную переписку.",
+    approval:"Новые пользователи отправляют запрос. Ты решаешь, принимать его или нет.",
+    nobody:"Новые личные переписки запрещены."
+  };
+  $("privacyNote").textContent=notes[state.privacy]||notes.everyone;
 }
 
-function showUser(name,username,avatar,color,description) {
-  currentUser={name,username,avatar,color,description};
-  openModal('Профиль пользователя',`
-    <div style="text-align:center;padding:8px 0 16px">
-      <div class="avatar ${color}" style="width:76px;height:76px;border-radius:24px;margin:auto;font-size:25px">${escapeHtml(avatar)}</div>
-      <h2 style="margin:13px 0 5px">${escapeHtml(name)}</h2>
-      <div style="color:#8490a5">${escapeHtml(username)}</div>
-      <p style="font-size:14px;line-height:1.5">${escapeHtml(description||'Нет описания')}</p>
+function openModal(title,content,actions){
+  $("modalTitle").textContent=title;
+  $("modalContent").innerHTML=content;
+  const area=$("modalActions");
+  area.replaceChildren();
+  actions.forEach(a=>{
+    const b=document.createElement("button");
+    b.className=a.primary?"primary":"secondary";
+    b.textContent=a.label;
+    b.addEventListener("click",a.run);
+    area.appendChild(b);
+  });
+  $("modalBg").classList.add("show");
+}
+function closeModal(){$("modalBg").classList.remove("show")}
+$("modalClose").addEventListener("click",closeModal);
+$("modalBg").addEventListener("click",e=>{if(e.target===$("modalBg"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+function editProfile(){
+  const p=state.profile;
+  openModal("Изменить профиль",`
+    <div style="text-align:center;margin-bottom:17px">
+      <button id="chooseAvatar" class="secondary" style="width:auto">Загрузить фотографию</button>
+      <div class="note">Можно выбрать изображение из галереи.</div>
     </div>
-  `,()=>{
-    closeModal();
-    startDM(currentUser);
+    <label class="field"><label for="profileName">Имя</label><input id="profileName" maxlength="40" value="${esc(p.name)}" placeholder="Твоё имя"></label>
+    <label class="field"><label for="profileUsername">Юзернейм</label><input id="profileUsername" maxlength="24" value="${esc(p.username)}" placeholder="username"></label>
+    <label class="field"><label for="profileBio">Описание</label><textarea id="profileBio" maxlength="180" placeholder="Расскажи о себе">${esc(p.bio)}</textarea></label>
+    <div class="note">Юзернейм должен содержать латинские буквы, цифры или подчёркивания.</div>
+  `,[
+    {label:"Отмена",run:closeModal},
+    {label:"Сохранить",primary:true,run:()=>{
+      const name=$("profileName").value.trim();
+      const username=$("profileUsername").value.trim().replace(/^@/,"");
+      if(!name){toast("Введи имя");return}
+      if(!/^[a-zA-Z0-9_]{3,24}$/.test(username)){
+        toast("Юзернейм: 3–24 латинских символа, цифры или _");return;
+      }
+      state.profile.name=name;
+      state.profile.username=username;
+      state.profile.bio=$("profileBio").value.trim();
+      saveState();closeModal();renderProfile();renderHeaderAvatar();
+      toast("Профиль сохранён");
+    }}
+  ]);
+  $("chooseAvatar").addEventListener("click",()=>$("avatarFile").click());
+}
+
+$("avatarFile").addEventListener("change",async e=>{
+  const file=e.target.files?.[0];
+  if(!file)return;
+  if(!file.type.startsWith("image/")){toast("Выбери изображение");return}
+  try{
+    const data=await compressImage(file);
+    state.profile.avatar=data;
+    saveState();renderProfile();renderHeaderAvatar();
+    toast("Фотография обновлена");
+  }catch{toast("Не удалось загрузить фотографию")}
+  e.target.value="";
+});
+
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=reject;
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=reject;
+      img.onload=()=>{
+        const max=500,scale=Math.min(1,max/Math.max(img.width,img.height));
+        const canvas=document.createElement("canvas");
+        canvas.width=Math.max(1,Math.round(img.width*scale));
+        canvas.height=Math.max(1,Math.round(img.height*scale));
+        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL("image/jpeg",.78));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
   });
-  $('modalSave').textContent='Написать в личку';
 }
 
-function startDM(user) {
-  const mode=document.querySelector('input[name="privacy"]:checked').value;
-  if(mode==='nobody') {
-    openModal('Личные сообщения',`<p>Ты запретил новые личные переписки в настройках.</p>`,closeModal);
-    $('modalSave').textContent='Понятно';
-    return;
-  }
-  if(mode==='approval') {
-    openModal('Запрос на переписку',`<p>В реальной версии пользователю нужно будет отправить запрос, а ты сможешь принять или отклонить его.</p>`,closeModal);
-    $('modalSave').textContent='Понятно';
-    return;
-  }
-  currentUser=user;
-  $('dmTitle').textContent=user.name;
-  $('dmSubtitle').textContent=user.username;
-  renderDM();
+function allUsers(){
+  return demoUsers.map(u=>({...u,avatar:""}));
+}
+
+function renderPeople(query=""){
+  const q=query.toLowerCase().trim();
+  const users=allUsers().filter(u=>(u.name+" "+u.username+" "+u.bio).toLowerCase().includes(q));
+  $("peopleList").innerHTML=users.length?users.map(u=>`
+    <div class="person">
+      ${avatarHTML(u)}
+      <div class="person-info"><strong>${esc(u.name)}</strong><small>@${esc(u.username)}</small></div>
+      <button class="secondary small-button" data-person="${esc(u.id)}">Профиль</button>
+    </div>`).join(""):`<div class="empty">Пользователи не найдены.</div>`;
+  $("peopleList").querySelectorAll("[data-person]").forEach(b=>{
+    b.addEventListener("click",()=>showPersonProfile(findUser(b.dataset.person)));
+  });
+}
+$("peopleSearch").addEventListener("input",e=>renderPeople(e.target.value));
+
+function findUser(id){
+  return allUsers().find(u=>u.id===id)||demoUsers.find(u=>u.id===id);
+}
+
+function showPersonProfile(user){
+  if(!user)return;
+  const content=`
+    <div style="text-align:center;padding:6px 0 14px">
+      ${avatarHTML(user)}
+      <div style="font-size:21px;font-weight:850;margin-top:12px">${esc(user.name)}</div>
+      <div class="username" style="margin-top:5px">@${esc(user.username)}</div>
+      <p style="font-size:13px;line-height:1.6;color:var(--muted)">${esc(user.bio||"Нет описания")}</p>
+    </div>
+    <div class="notice">Демо-профиль. В реальной версии здесь будет профиль настоящего пользователя.</div>`;
+  openModal("Профиль",content,[
+    {label:"Закрыть",run:closeModal},
+    {label:"Написать",primary:true,run:()=>startDM(user)}
+  ]);
+}
+
+function startDM(user){
   closeModal();
-  navigate('dm');
+  if(user.id==="me"){navigate("profile");return}
+  if(state.privacy==="nobody"){
+    openModal("Личные сообщения",`<div class="notice">Ты запретил новые личные переписки в настройках.</div>`,[
+      {label:"Понятно",primary:true,run:closeModal}
+    ]);return;
+  }
+  if(state.privacy==="approval"&&!state.approved.includes(user.id)){
+    const existing=state.requests.find(r=>r.from===user.id&&r.status==="pending");
+    if(existing){toast("Запрос уже отправлен");return}
+    state.requests.push({id:crypto.randomUUID?.()||String(Date.now()),from:user.id,status:"pending"});
+    saveState();renderProfile();
+    openModal("Запрос отправлен",`<div class="notice">Запрос на переписку с ${esc(user.name)} создан в демонстрационном режиме. Для настоящей отправки запроса нужен сервер.</div>`,[
+      {label:"Понятно",primary:true,run:closeModal}
+    ]);return;
+  }
+  activeUser=user;
+  if(!state.dms[user.id])state.dms[user.id]=[];
+  $("dmName").textContent=user.name;
+  $("dmUsername").textContent="@"+user.username;
+  $("dmAvatar").innerHTML=user.avatar?`<img src="${user.avatar}" alt="">`:esc(user.name.slice(0,1).toUpperCase());
+  navigate("dm");
 }
 
-function renderDM() {
-  const list=chats[currentUser.username]||[];
-  $('dmMessages').innerHTML=list.length?list.map(m=>`
-    <div class="message">
-      <div class="avatar ${m.mine?'me':currentUser.color}">${escapeHtml(m.mine?me.avatar:currentUser.avatar)}</div>
-      <div class="msgbody">
-        <div class="msghead"><span class="name">${escapeHtml(m.mine?me.name:currentUser.name)}</span></div>
-        <div class="bubble">${escapeHtml(m.text)}</div>
-      </div>
-    </div>`).join(''):`<div class="empty">Начни переписку с ${escapeHtml(currentUser.name)}.</div>`;
+function renderDM(){
+  if(!activeUser)return;
+  const list=state.dms[activeUser.id]||[];
+  $("dmMessages").innerHTML=list.length?list.map(m=>`
+    <div class="dm-line ${m.mine?"mine":""}">
+      <div class="dm-bubble">${esc(m.text)}</div>
+    </div>`).join(""):`<div class="empty">Начни переписку с ${esc(activeUser.name)}.</div>`;
+  $("dmMessages").scrollTop=$("dmMessages").scrollHeight;
+  renderDMList();
 }
 
-$('messageForm').addEventListener('submit',e=>{
+$("dmForm").addEventListener("submit",e=>{
   e.preventDefault();
-  const input=$('messageInput'),text=input.value.trim();
+  if(!activeUser)return;
+  const input=$("dmInput"),text=input.value.trim();
   if(!text)return;
-  const msg=document.createElement('div');
-  msg.className='message';
-  msg.innerHTML=`<div class="avatar me">${escapeHtml(me.avatar)}</div>
-    <div class="msgbody"><div class="msghead"><span class="name"></span><span class="username"></span><span class="time">сейчас</span></div><div class="bubble"></div></div>`;
-  msg.querySelector('.name').textContent=me.name;
-  msg.querySelector('.username').textContent=me.username;
-  msg.querySelector('.bubble').textContent=text;
-  $('messages').appendChild(msg);
-  $('emptyMessages').classList.add('hidden');
-  input.value='';
-  msg.scrollIntoView({behavior:'smooth',block:'nearest'});
+  state.dms[activeUser.id]??=[];
+  state.dms[activeUser.id].push({text,mine:true,time:Date.now()});
+  input.value="";saveState();renderDM();
 });
 
-$('dmForm').addEventListener('submit',e=>{
+function renderDMList(){
+  const ids=Object.keys(state.dms).filter(id=>state.dms[id]?.length);
+  const box=$("dmList");
+  if(!ids.length){
+    box.innerHTML='<div class="empty">Здесь появятся твои личные переписки.</div>';return;
+  }
+  box.innerHTML=ids.map(id=>{
+    const u=findUser(id)||{id,name:id,username:id,bio:"",color:"#1769f5"};
+    const last=state.dms[id].at(-1);
+    return `<button class="person" data-dm="${esc(id)}" style="width:100%;background:white;border:0;text-align:left">
+      ${avatarHTML(u)}
+      <span class="person-info"><strong>${esc(u.name)}</strong><small>${esc(last.text)}</small></span>
+      <span style="color:var(--muted)">›</span>
+    </button>`;
+  }).join("");
+  box.querySelectorAll("[data-dm]").forEach(b=>b.addEventListener("click",()=>{
+    const u=findUser(b.dataset.dm);
+    if(u)startDM(u);
+  }));
+}
+
+$("messageForm").addEventListener("submit",e=>{
   e.preventDefault();
-  const input=$('dmInput'),text=input.value.trim();
-  if(!text||!currentUser)return;
-  if(!chats[currentUser.username])chats[currentUser.username]=[];
-  chats[currentUser.username].push({text,mine:true});
-  input.value='';
-  renderDM();
+  const input=$("messageInput"),text=input.value.trim();
+  if(!text)return;
+  state.messages.push({text,time:Date.now()});
+  saveState();input.value="";renderMessages();
 });
+
+function renderMessages(){
+  const box=$("messages");
+  box.innerHTML=state.messages.map(m=>`
+    <div class="message own">
+      <button class="avatar" data-own-profile aria-label="Мой профиль">
+        ${state.profile.avatar?`<img src="${state.profile.avatar}" alt="">`:`<svg width="21" height="21"><use href="#i-user"/></svg>`}
+      </button>
+      <div class="message-body">
+        <div class="message-head">
+          <button class="name-button" data-own-profile>${esc(state.profile.name)}</button>
+          <span class="username">@${esc(state.profile.username)}</span>
+          <span class="time">${new Date(m.time).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}</span>
+        </div>
+        <div class="bubble">${esc(m.text)}</div>
+      </div>
+    </div>`).join("");
+  $("emptyMessages").classList.toggle("hidden",state.messages.length>0);
+  box.querySelectorAll("[data-own-profile]").forEach(b=>b.addEventListener("click",()=>navigate("profile")));
+}
 
 document.querySelectorAll('input[name="privacy"]').forEach(input=>{
-  input.addEventListener('change',()=>{
-    const messages={
-      everyone:'Любой пользователь может начать переписку.',
-      approval:'Новые люди должны отправить запрос на переписку.',
-      nobody:'Новые личные переписки запрещены.'
-    };
-    $('privacyNote').textContent=messages[input.value];
+  input.addEventListener("change",()=>{
+    state.privacy=input.value;saveState();renderSettings();
+    toast("Настройка приватности сохранена");
   });
 });
 
-$('searchPeople').addEventListener('input',e=>{
-  const query=e.target.value.toLowerCase().trim();
-  document.querySelectorAll('#peopleList [data-search]').forEach(row=>{
-    row.classList.toggle('hidden',!row.dataset.search.includes(query));
-  });
-});
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g,c=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[c]));
+function renderRequests(){
+  const pending=state.requests.filter(r=>r.status==="pending");
+  const box=$("requestsList");
+  if(!pending.length){
+    box.innerHTML='<div class="empty">Новых запросов нет.</div>';return;
+  }
+  box.innerHTML=pending.map(r=>{
+    const u=findUser(r.from);
+    if(!u)return "";
+    return `<div class="person">
+      ${avatarHTML(u)}
+      <div class="person-info"><strong>${esc(u.name)}</strong><small>@${esc(u.username)} хочет начать переписку</small></div>
+    </div>
+    <div class="modal-actions">
+      <button class="secondary" data-reject="${esc(r.id)}">Отклонить</button>
+      <button class="primary" data-accept="${esc(r.id)}">Принять</button>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-accept]").forEach(b=>b.addEventListener("click",()=>{
+    const r=state.requests.find(x=>x.id===b.dataset.accept);
+    if(!r)return;
+    r.status="accepted";
+    if(!state.approved.includes(r.from))state.approved.push(r.from);
+    saveState();renderRequests();renderProfile();toast("Запрос принят");
+  }));
+  box.querySelectorAll("[data-reject]").forEach(b=>b.addEventListener("click",()=>{
+    const r=state.requests.find(x=>x.id===b.dataset.reject);
+    if(r)r.status="rejected";
+    saveState();renderRequests();renderProfile();toast("Запрос отклонён");
+  }));
 }
+
+$("phoneLogin").addEventListener("click",()=>{
+  openModal("Вход по номеру телефона",`
+    <div class="notice">Для настоящего входа понадобится подключить сервер авторизации и отправку SMS-кода. Этот макет не отправляет SMS и не подтверждает номер.</div>
+    <label class="field"><label for="phoneNumber">Номер телефона</label><input id="phoneNumber" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel"></label>
+  `,[
+    {label:"Закрыть",run:closeModal},
+    {label:"Сохранить для макета",primary:true,run:()=>{
+      const phone=$("phoneNumber").value.trim();
+      if(!phone){toast("Введи номер телефона");return}
+      state.profile.phone=phone;saveState();renderProfile();closeModal();
+      toast("Номер сохранён без SMS-подтверждения");
+    }}
+  ]);
+});
+
+function detectDevice(){
+  const ua=navigator.userAgent;
+  if(/Android/i.test(ua))return "Android · текущий браузер";
+  if(/iPhone|iPad/i.test(ua))return "iOS · текущий браузер";
+  if(/Windows/i.test(ua))return "Windows · текущий браузер";
+  if(/Macintosh/i.test(ua))return "macOS · текущий браузер";
+  return "Текущий браузер";
+}
+$("deviceInfo").textContent=detectDevice();
+$("deviceDescription").textContent=detectDevice()+" · этот сеанс";
+
+renderHeaderAvatar();
+renderProfile();
+renderSettings();
+renderMessages();
+renderDMList();
 </script>
 </body>
 </html>
