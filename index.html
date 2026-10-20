@@ -1,345 +1,179 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ВКонтакте — Мобильная версия</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 13px;
-            background: #edeef0;
-            color: #000;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        a { color: #2b587a; text-decoration: none; }
-
-        /* Шапка */
-        .header {
-            background: #4a76a8;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .header-logo {
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 1px #345070;
-            flex: 1;
-        }
-
-        .header-icon {
-            font-size: 18px;
-            margin-left: 15px;
-            opacity: 0.9;
-        }
-
-        /* Поиск */
-        .search-wrap {
-            background: #4a76a8;
-            padding: 0 10px 8px;
-            position: sticky;
-            top: 44px;
-            z-index: 99;
-        }
-
-        .search-input {
-            width: 100%;
-            background: #365a80;
-            border: none;
-            border-radius: 3px;
-            padding: 6px 10px;
-            color: white;
-            font-size: 13px;
-            outline: none;
-        }
-        .search-input::placeholder { color: #a8b8c8; }
-
-        /* Контент */
-        .content {
-            padding: 8px;
-        }
-
-        /* Карточка профиля */
-        .profile-card {
-            background: white;
-            border: 1px solid #d3d9de;
-            border-radius: 3px;
-            padding: 10px;
-            margin-bottom: 8px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            border: 1px solid #d3d9de;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .profile-info h2 {
-            font-size: 15px;
-            color: #2b587a;
-            margin-bottom: 4px;
-        }
-
-        .profile-info p {
-            font-size: 12px;
-            color: #555;
-            margin: 2px 0;
-            line-height: 1.3;
-        }
-
-        /* Меню разделов */
-        .menu {
-            background: white;
-            border: 1px solid #d3d9de;
-            border-radius: 3px;
-            margin-bottom: 8px;
-            overflow: hidden;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid #e5e8eb;
-            color: #2b587a;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        .menu-item:last-child { border-bottom: none; }
-
-        .menu-item:active { background: #dfe3e8; }
-
-        .menu-icon {
-            width: 20px;
-            margin-right: 10px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        /* Стена */
-        .wall {
-            background: white;
-            border: 1px solid #d3d9de;
-            border-radius: 3px;
-            padding: 10px;
-        }
-
-        .wall-title {
-            font-size: 13px;
-            font-weight: bold;
-            color: #2b587a;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #d3d9de;
-            margin-bottom: 8px;
-        }
-
-        .post {
-            display: flex;
-            gap: 8px;
-            padding: 10px 0;
-            border-bottom: 1px solid #e5e8eb;
-        }
-
-        .post:last-child { border-bottom: none; }
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            background: #4a76a8;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 10px;
-            flex-shrink: 0;
-        }
-
-        .post-content { flex: 1; }
-
-        .post-author {
-            font-weight: bold;
-            color: #2b587a;
-            font-size: 12px;
-            margin-bottom: 3px;
-        }
-
-        .post-text {
-            font-size: 12px;
-            line-height: 1.4;
-            margin-bottom: 5px;
-        }
-
-        .post-date {
-            font-size: 10px;
-            color: #999;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 12px;
-            font-size: 11px;
-            color: #2b587a;
-            margin-top: 5px;
-        }
-
-        /* Нижнее меню */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #f0f2f5;
-            border-top: 1px solid #d3d9de;
-            display: flex;
-            justify-content: space-around;
-            padding: 6px 0;
-            z-index: 100;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            color: #2b587a;
-            font-size: 9px;
-            padding: 2px 8px;
-        }
-
-        .nav-item.active { color: #000; }
-
-        .nav-icon {
-            font-size: 18px;
-        }
-
-        /* Отступ под нижнее меню */
-        .content { padding-bottom: 60px; }
-
-        /* Онлайн-статус */
-        .online {
-            color: #4a76a8;
-            font-size: 11px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#4b729f">
+<title>OldVK</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e9edf2;color:#333;font:13px Arial}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+header{background:#4b729f;color:white;position:sticky;top:0;z-index:5}
+.top{max-width:1000px;margin:auto;height:52px;display:flex;align-items:center;gap:10px;padding:8px}
+.logo{width:36px;height:36px;object-fit:cover;border-radius:3px}
+.brand{font-size:21px;font-weight:bold}
+.search{margin-left:12px;width:230px;max-width:35%;padding:9px;border:0;border-radius:4px;background:#3c618d;color:white}
+.search::placeholder{color:#dbe5f0}
+.wrap{max-width:1000px;margin:15px auto;display:grid;grid-template-columns:160px minmax(0,1fr);gap:15px;padding:0 10px}
+nav{display:flex;flex-direction:column;gap:3px}
+nav button{border:0;background:none;text-align:left;padding:10px;color:#42658c;border-radius:4px}
+nav button:hover,nav button.active{background:#dce5ef}
+.card{background:white;border:1px solid #dce2e9;border-radius:4px;margin-bottom:12px;overflow:hidden}
+.head{padding:13px;border-bottom:1px solid #e7ebf0;color:#42658c;font-weight:bold}
+.body{padding:14px}
+.profile{display:grid;grid-template-columns:140px minmax(0,1fr);gap:15px}
+.avatar{width:100%;aspect-ratio:1;object-fit:cover;background:#dce7f2}
+.small{width:42px;height:42px;object-fit:cover;flex-shrink:0}
+h2{font-size:21px;font-weight:normal;margin:0 0 6px}
+.muted{color:#8995a3;font-size:12px}
+hr{border:0;border-top:1px solid #e7ebf0;margin:12px 0}
+.row{display:flex;gap:8px;margin:9px 0}
+.label{width:85px;color:#8995a3;flex-shrink:0}
+.btn{border:0;border-radius:4px;padding:9px 12px;background:#547ba5;color:white}
+.light{background:#e5ebf2;color:#42658c}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+textarea,input.field{width:100%;padding:10px;border:1px solid #d6dce5;border-radius:4px}
+textarea{min-height:70px;resize:vertical}
+.right{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+.post{padding:14px;border-bottom:1px solid #edf0f4}
+.posttop{display:flex;align-items:center;gap:10px}
+.name{font-weight:bold;color:#42658c}
+.posttext{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;margin:13px 0}
+.postactions{display:flex;gap:18px}
+.postactions button{border:0;background:none;color:#42658c;padding:2px 0}
+.postactions .liked{color:#d34e67}
+.person{display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee}
+.grow{flex:1}
+.msg{padding:10px;background:#f0f4f8;border-radius:4px;margin:8px 0}
+.mine{background:#e5edf7;margin-left:18px}
+.empty{text-align:center;padding:25px;color:#8995a3}
+.hidden{display:none!important}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#26384c;color:white;padding:12px 16px;border-radius:5px;z-index:10}
+@media(max-width:650px){
+ .top{gap:7px}.brand{font-size:18px}.search{min-width:0;flex:1;margin-left:3px}
+ .wrap{display:block;margin:10px auto}
+ nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;z-index:8;flex-direction:row;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom)}
+ nav button{flex:1;text-align:center;font-size:10px;padding:8px 1px}
+ main{padding-bottom:65px}
+ .profile{grid-template-columns:100px minmax(0,1fr);gap:12px}
+ .label{width:70px}
+}
+</style>
 </head>
 <body>
+<header>
+ <div class="top">
+  <img class="logo" src="avatar.png" alt="OldVK">
+  <span class="brand">OldVK</span>
+  <input class="search" id="search" placeholder="Поиск">
+ </div>
+</header>
 
-    <!-- Шапка -->
-    <div class="header">
-        <div class="header-logo">ВКонтакте</div>
-        <span class="header-icon">🔔</span>
-        <span class="header-icon">💬</span>
+<div class="wrap">
+<nav>
+ <button class="active" data-page="profile" onclick="page('profile')">👤 Моя страница</button>
+ <button data-page="news" onclick="page('news')">▤ Новости</button>
+ <button data-page="messages" onclick="page('messages')">✉ Сообщения</button>
+ <button data-page="friends" onclick="page('friends')">♧ Друзья</button>
+ <button data-page="photos" onclick="page('photos')">▧ Фотографии</button>
+ <button data-page="settings" onclick="page('settings')">⚙ Настройки</button>
+</nav>
+
+<main>
+<section id="profile">
+ <div class="card">
+  <div class="head">Моя страница</div>
+  <div class="body profile">
+   <div>
+    <img src="avatar.png" class="avatar" alt="Аватар OldVK">
+    <button class="btn light" style="width:100%;margin-top:7px" onclick="notify('Загрузка фото появится позже')">Изменить фото</button>
+   </div>
+   <div>
+    <h2 id="pname">Пользователь OldVK</h2>
+    <span class="muted">Был недавно</span>
+    <hr>
+    <div class="row"><span class="label">Город:</span><span id="pcity">Не указан</span></div>
+    <div class="row"><span class="label">О себе:</span><span id="pabout">Добро пожаловать на мою страницу!</span></div>
+    <div class="actions">
+     <button class="btn" onclick="page('settings')">Редактировать</button>
+     <button class="btn light" onclick="page('news')">Новости</button>
     </div>
+   </div>
+  </div>
+ </div>
 
-    <!-- Поиск -->
-    <div class="search-wrap">
-        <input type="text" class="search-input" placeholder="Поиск по сайту...">
-    </div>
+ <div class="card">
+  <div class="head">Новая запись</div>
+  <div class="body">
+   <textarea id="posttext" placeholder="Что у вас нового?"></textarea>
+   <div class="right"><span class="muted">Запись на вашей стене</span><button class="btn" onclick="addPost()">Опубликовать</button></div>
+  </div>
+ </div>
+ <div class="card"><div class="head">Записи на стене</div><div id="wall"></div></div>
+</section>
 
-    <!-- Контент -->
-    <div class="content">
+<section id="news" class="hidden">
+ <div class="card"><div class="head">Новости</div><div id="newswall"></div></div>
+</section>
 
-        <!-- Профиль -->
-        <div class="profile-card">
-            <img src="avatar.png" alt="Avatar" class="avatar">
-            <div class="profile-info">
-                <h2>OldVK.ru</h2>
-                <p class="online">● онлайн</p>
-                <p>Ностальгия по 2010-м</p>
-                <p>Город: Интернет</p>
-            </div>
-        </div>
+<section id="friends" class="hidden">
+ <div class="card"><div class="head">Друзья</div>
+  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Александр</a><div class="muted">Был недавно</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
+  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Мария</a><div class="muted">На сайте</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
+  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Дмитрий</a><div class="muted">Был сегодня</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
+ </div>
+</section>
 
-        <!-- Меню разделов -->
-        <div class="menu">
-            <div class="menu-item"><span class="menu-icon">👤</span> Моя страница</div>
-            <div class="menu-item"><span class="menu-icon">👥</span> Мои друзья</div>
-            <div class="menu-item"><span class="menu-icon">📷</span> Мои фотографии</div>
-            <div class="menu-item"><span class="menu-icon">🎵</span> Мои аудиозаписи</div>
-            <div class="menu-item"><span class="menu-icon">💬</span> Мои сообщения</div>
-            <div class="menu-item"><span class="menu-icon">📰</span> Мои группы</div>
-            <div class="menu-item"><span class="menu-icon">⚙️</span> Настройки</div>
-        </div>
+<section id="messages" class="hidden">
+ <div class="card"><div class="head">Сообщения</div><div class="body">
+  <div class="muted">Демонстрационная переписка</div>
+  <div class="msg">Александр: Привет! Как тебе OldVK?</div>
+  <div class="msg mine">Вы: Отлично! Продолжаем разработку.</div>
+  <div id="chat"></div>
+  <div class="right"><input id="message" class="field" placeholder="Сообщение..." style="flex:1;min-width:0"><button class="btn" onclick="send()">Отправить</button></div>
+ </div></div>
+</section>
 
-        <!-- Стена -->
-        <div class="wall">
-            <div class="wall-title">Стена</div>
+<section id="photos" class="hidden">
+ <div class="card"><div class="head">Фотографии</div><div class="empty">Фотографий пока нет.<br><br><button class="btn" onclick="notify('Загрузка фото появится позже')">Добавить фотографию</button></div></div>
+</section>
 
-            <div class="post">
-                <div class="post-avatar">OldVK</div>
-                <div class="post-content">
-                    <div class="post-author">OldVK.ru</div>
-                    <div class="post-text">
-                        Добро пожаловать в мобильную версию старого ВК! Тот самый дизайн, который открывался в браузере телефона в 2012 году.
-                    </div>
-                    <div class="post-date">сегодня в 14:32</div>
-                    <div class="post-actions">
-                        <span>❤️ 5</span>
-                        <span>💬 2</span>
-                    </div>
-                </div>
-            </div>
+<section id="settings" class="hidden">
+ <div class="card"><div class="head">Настройки профиля</div><div class="body">
+  <label>Имя<input class="field" id="name" style="margin:6px 0 12px"></label>
+  <label>Город<input class="field" id="city" style="margin:6px 0 12px"></label>
+  <label>О себе<textarea id="about" style="margin-top:6px"></textarea></label>
+  <button class="btn" style="margin-top:12px" onclick="saveProfile()">Сохранить</button>
+  <p class="muted">Пока данные сохраняются только в этом браузере.</p>
+ </div></div>
+</section>
+</main>
+</div>
+<div id="toast" class="hidden"></div>
 
-            <div class="post">
-                <div class="post-avatar" style="background:#5c7a9e;">А</div>
-                <div class="post-content">
-                    <div class="post-author">Андрей</div>
-                    <div class="post-text">
-                        Ого, это же старый дизайн! Сразу вспомнил свои школьные годы и кнопочный телефон.
-                    </div>
-                    <div class="post-date">сегодня в 14:35</div>
-                    <div class="post-actions">
-                        <span>❤️ 2</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="post">
-                <div class="post-avatar" style="background:#6b8ca9;">Е</div>
-                <div class="post-content">
-                    <div class="post-author">Екатерина</div>
-                    <div class="post-text">
-                        А где кнопка «Мне нравится»? Всё как в старые добрые времена!
-                    </div>
-                    <div class="post-date">сегодня в 14:40</div>
-                    <div class="post-actions">
-                        <span>❤️ 1</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Нижнее меню -->
-    <div class="bottom-nav">
-        <div class="nav-item active"><span class="nav-icon">🏠</span>Главная</div>
-        <div class="nav-item"><span class="nav-icon">👥</span>Друзья</div>
-        <div class="nav-item"><span class="nav-icon">💬</span>Сообщения</div>
-        <div class="nav-item"><span class="nav-icon">🔔</span>Уведомления</div>
-        <div class="nav-item"><span class="nav-icon">👤</span>Профиль</div>
-    </div>
-
+<script>
+const KEY='oldvk-data';
+let data={name:'Пользователь OldVK',city:'Не указан',about:'Добро пожаловать на мою страницу!',posts:[],likes:[],messages:[]};
+try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function notify(s){let t=document.getElementById('toast');t.textContent=s;t.classList.remove('hidden');clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.add('hidden'),2200)}
+function page(id){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'})}
+function profileRender(){pname.textContent=data.name;pcity.textContent=data.city;pabout.textContent=data.about;name.value=data.name;city.value=data.city;about.value=data.about}
+function renderPosts(){
+ let html=data.posts.slice().reverse().map(p=>`<article class="post"><div class="posttop"><img src="avatar.png" class="small" alt=""><div><div class="name">${safe(data.name)}</div><div class="muted">${safe(p.date)}</div></div></div><div class="posttext">${safe(p.text)}</div><div class="postactions"><button class="${data.likes.includes(p.id)?'liked':''}" onclick="like('${p.id}')">♥ ${p.likes+(data.likes.includes(p.id)?1:0)} Нравится</button><button onclick="notify('Комментарии появятся позже')">Комментарий</button></div></article>`).join('')||'<div class="empty">Записей пока нет. Опубликуйте первую!</div>';
+ wall.innerHTML=html;newswall.innerHTML=html;
+}
+function addPost(){let el=document.getElementById('posttext'),v=el.value.trim();if(!v)return notify('Напишите текст записи');data.posts.push({id:String(Date.now()),text:v,date:new Date().toLocaleString('ru-RU'),likes:0});el.value='';save();renderPosts();notify('Запись опубликована')}
+function like(id){if(data.likes.includes(id))data.likes=data.likes.filter(x=>x!==id);else data.likes.push(id);save();renderPosts()}
+function saveProfile(){data.name=name.value.trim()||'Пользователь OldVK';data.city=city.value.trim()||'Не указан';data.about=about.value.trim()||'Пока ничего не указано';save();profileRender();renderPosts();page('profile');notify('Профиль сохранён')}
+function send(){let el=document.getElementById('message'),v=el.value.trim();if(!v)return;data.messages.push(v);save();renderChat();el.value=''}
+function renderChat(){chat.innerHTML=data.messages.map(m=>`<div class="msg mine">Вы: ${safe(m)}</div>`).join('')}
+document.getElementById('search').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.toLowerCase().trim();notify(q&&data.posts.some(p=>p.text.toLowerCase().includes(q))?'Найдена запись на стене':'Совпадений не найдено')}})
+profileRender();renderPosts();renderChat();
+</script>
 </body>
 </html>
