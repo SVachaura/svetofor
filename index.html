@@ -1,317 +1,479 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OneChat</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f6ff;color:#152238}
-button,input{font:inherit}
-button{cursor:pointer;border:0;border-radius:12px;padding:14px;background:#1769ff;color:white;font-weight:bold}
-input{width:100%;padding:15px;border:1px solid #ccd9ee;border-radius:12px;outline:none;background:white}
-input:focus{border-color:#1769ff}
-.app{max-width:480px;min-height:100dvh;margin:auto;background:white;display:flex;flex-direction:column}
-header{height:65px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #e5ebf5}
-.logo{font-size:24px;font-weight:800;color:#1769ff}
-.page{padding:22px;flex:1}
-h2{margin-top:15px}
-.muted{color:#738199;font-size:14px;line-height:1.5}
-.stack{display:grid;gap:12px;margin-top:24px}
-.secondary{background:#edf3ff;color:#1769ff}
-.hidden{display:none!important}
-.chat{display:flex;flex-direction:column;min-height:calc(100dvh - 65px)}
-.messages{flex:1;padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
-.bubble{background:#edf3ff;border-radius:5px 16px 16px 16px;padding:12px;max-width:85%;overflow-wrap:anywhere}
-.bubble.mine{background:#1769ff;color:white;align-self:flex-end;border-radius:16px 5px 16px 16px}
-.sender{font-size:12px;color:#647895;margin-bottom:5px}
-.mine .sender{color:#dce8ff}
-.composer{display:flex;gap:8px;padding:12px;border-top:1px solid #e5ebf5}
-.composer input{min-width:0}
-.composer button{padding:0 18px}
-.check{color:#1769ff;font-weight:bold}
-.row{display:flex;align-items:center;gap:10px}
-.avatar{width:48px;height:48px;border-radius:50%;background:#e5efff;color:#1769ff;display:grid;place-items:center;font-size:23px;font-weight:bold}
-.card{padding:15px;border:1px solid #e5ebf5;border-radius:15px;margin-top:14px}
-.small{font-size:13px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VK — современный прототип</title>
+    <style>
+        :root {
+            --bg: #edeef0;
+            --card: #ffffff;
+            --text: #000000;
+            --text-secondary: #818c99;
+            --accent: #0077ff;
+            --header: #ffffff;
+            --border: #e1e3e6;
+            --hover: #f0f2f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        /* Шапка */
+        .header {
+            background: var(--header);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -1px;
+        }
+
+        .header-search {
+            background: var(--hover);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            width: 280px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 16px;
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        /* Основной контейнер */
+        .app {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            min-height: calc(100vh - 50px);
+            padding-bottom: 70px;
+        }
+
+        /* Левое меню */
+        .sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            padding: 16px 8px;
+            display: none;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover { background: var(--hover); }
+        .sidebar-item.active { background: var(--hover); color: var(--accent); }
+
+        .sidebar-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Центральная лента */
+        .feed {
+            flex: 1;
+            max-width: 600px;
+            padding: 12px;
+        }
+
+        /* Сторис */
+        .stories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .stories::-webkit-scrollbar { display: none; }
+
+        .story {
+            flex-shrink: 0;
+            width: 80px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .story-ring {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0077ff, #00c6ff);
+            padding: 3px;
+            margin: 0 auto 4px;
+        }
+
+        .story-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--card);
+        }
+
+        .story-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Карточка поста */
+        .post-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-author {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .post-text {
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-action { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .post-action:hover { color: var(--accent); }
+
+        /* Клипы (вертикальная сетка) */
+        .clips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .clip-thumb {
+            aspect-ratio: 9/16;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Правый сайдбар (рекомендации) */
+        .right-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            padding: 16px 8px;
+            display: none;
+        }
+
+        .widget {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .widget h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .widget-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .widget-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        /* Нижняя навигация (мобильная) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--header);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-secondary);
+            font-size: 10px;
+            cursor: pointer;
+            padding: 4px 12px;
+        }
+
+        .nav-item.active { color: var(--accent); }
+        .nav-icon { font-size: 22px; }
+
+        /* Профиль (заглушка) */
+        .profile-header {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .profile-cover {
+            height: 120px;
+            background: linear-gradient(135deg, #4a76a8, #0077ff);
+        }
+
+        .profile-info-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            padding: 0 20px 16px;
+            margin-top: -30px;
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--card);
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-status {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* Адаптив */
+        @media (min-width: 900px) {
+            .sidebar { display: block; }
+            .right-sidebar { display: block; }
+            .bottom-nav { display: none; }
+            .app { gap: 8px; }
+            .stories { display: flex; }
+        }
+
+        @media (max-width: 899px) {
+            .feed { max-width: 100%; }
+            .header-search { width: 160px; }
+        }
+    </style>
 </head>
 <body>
-<div class="app">
-<header>
-  <div class="logo">OneChat</div>
-  <button id="profileButton" class="secondary hidden" style="padding:9px 13px" onclick="openProfile()">Профиль</button>
-</header>
 
-<section id="login" class="page">
-  <h2>Добро пожаловать!</h2>
-  <p class="muted">Войди по номеру телефона или продолжи как гость.</p>
-
-  <div class="stack" id="phoneStep">
-    <label for="phone">Номер телефона</label>
-    <input id="phone" type="tel" placeholder="+79990000000" autocomplete="tel">
-    <button onclick="sendCode()">Получить SMS-код</button>
-    <button class="secondary" onclick="guestLogin()">Войти как гость</button>
-  </div>
-
-  <div class="stack hidden" id="codeStep">
-    <label for="sms">Демонстрационный SMS-код</label>
-    <input id="sms" inputmode="numeric" maxlength="6" placeholder="Введите 6 цифр">
-    <p class="muted" id="codeHint"></p>
-    <button class="secondary" onclick="backToPhone()">Назад</button>
-  </div>
-  <p class="muted small">Тестовый номер специального аккаунта: +79990000000</p>
-</section>
-
-<section id="chat" class="chat hidden">
-  <div class="messages" id="messages"></div>
-  <form class="composer" onsubmit="sendMessage(event)">
-    <input id="messageInput" placeholder="Сообщение..." autocomplete="off">
-    <button type="submit">➤</button>
-  </form>
-</section>
-
-<section id="profile" class="page hidden">
-  <h2>Профиль</h2>
-  <div class="row">
-    <div class="avatar" id="avatar">U</div>
-    <div>
-      <strong id="profileName"></strong>
-      <div class="muted" id="profileNumber"></div>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="header-logo">VK</div>
+        <input type="text" class="header-search" placeholder="Поиск">
+        <div class="header-icons">
+            <span>🔔</span>
+            <span>💬</span>
+        </div>
     </div>
-  </div>
-  <div class="card">
-    <label for="nickname">Имя пользователя</label>
-    <input id="nickname" maxlength="24" placeholder="Твой никнейм" style="margin-top:10px">
-    <button onclick="saveProfile()" style="width:100%;margin-top:12px">Сохранить</button>
-  </div>
-  <div class="card">
-    <strong>Аккаунты</strong>
-    <p class="muted">Добавляй другие аккаунты и переключайся между ними.</p>
-    <button onclick="addAccount()" style="width:100%">Добавить аккаунт</button>
-    <div id="accountList"></div>
-  </div>
-  <button class="secondary" onclick="openChat()" style="width:100%;margin-top:14px">Вернуться в чат</button>
-  <button onclick="logout()" style="width:100%;margin-top:10px;background:#ffecee;color:#c52b40">Выйти из аккаунта</button>
-</section>
 
-<section id="guestTools" class="page hidden">
-  <h2>Гостевой аккаунт</h2>
-  <p class="muted">Гости могут общаться, но не могут менять имя и аватар или открывать настройки профиля.</p>
-  <div class="card">
-    <strong id="guestName"></strong>
-    <p class="muted">Хочешь полноценный профиль?</p>
-    <button onclick="addAccount()" style="width:100%">Добавить номер</button>
-  </div>
-  <button class="secondary" onclick="openChat()" style="width:100%;margin-top:14px">Вернуться в чат</button>
-  <button onclick="logout()" style="width:100%;margin-top:10px;background:#ffecee;color:#c52b40">Выйти из гостя</button>
-</section>
-</div>
+    <!-- Приложение -->
+    <div class="app">
 
-<script>
-const SPECIAL_PHONE = "+79990000000";
-const STORAGE_KEY = "onechat_demo_accounts_v1";
-let accounts = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-let currentId = null;
-let pendingPhone = "";
-let nextGuest = Number(localStorage.getItem("onechat_guest_counter") || "1");
-let messages = [];
+        <!-- Левое меню (десктоп) -->
+        <div class="sidebar">
+            <div class="sidebar-item active"><span class="sidebar-icon">🏠</span> Моя страница</div>
+            <div class="sidebar-item"><span class="sidebar-icon">📰</span> Новости</div>
+            <div class="sidebar-item"><span class="sidebar-icon">💬</span> Мессенджер</div>
+            <div class="sidebar-item"><span class="sidebar-icon">👥</span> Друзья</div>
+            <div class="sidebar-item"><span class="sidebar-icon">🎬</span> Клипы</div>
+            <div class="sidebar-item"><span class="sidebar-icon">🎵</span> Музыка</div>
+            <div class="sidebar-item"><span class="sidebar-icon">🛒</span> Маркет</div>
+        </div>
 
-function saveAccounts(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts));
-}
-function current(){
-  return accounts.find(a => a.id === currentId);
-}
-function normalizePhone(v){
-  return v.replace(/[^\d+]/g, "");
-}
-function sendCode(){
-  const phone = normalizePhone(document.getElementById("phone").value.trim());
-  if(!/^\+\d{10,15}$/.test(phone)){
-    alert("Введи номер в международном формате, например +79990000000");
-    return;
-  }
-  pendingPhone = phone;
-  document.getElementById("phoneStep").classList.add("hidden");
-  document.getElementById("codeStep").classList.remove("hidden");
-  document.getElementById("sms").value = "";
-  document.getElementById("codeHint").textContent =
-    "Демонстрационный код: 123456. Настоящее SMS пока не отправляется.";
-  document.getElementById("sms").focus();
-}
-function backToPhone(){
-  document.getElementById("codeStep").classList.add("hidden");
-  document.getElementById("phoneStep").classList.remove("hidden");
-}
-document.getElementById("sms").addEventListener("input", e => {
-  e.target.value = e.target.value.replace(/\D/g, "").slice(0,6);
-  if(e.target.value.length === 6){
-    if(e.target.value !== "123456"){
-      alert("Неверный демонстрационный код.");
-      e.target.value = "";
-      return;
-    }
-    loginPhone(pendingPhone);
-  }
-});
-function loginPhone(phone){
-  let a = accounts.find(x => !x.guest && x.phone === phone);
-  if(!a){
-    a = {
-      id: crypto.randomUUID(),
-      phone,
-      guest:false,
-      name: phone === SPECIAL_PHONE ? "OneChat" : "user" + Math.floor(1000 + Math.random()*9000),
-      verified:true,
-      special:phone === SPECIAL_PHONE
-    };
-    accounts.push(a);
-  }
-  // Специальный статус в этом макете привязан к тестовому номеру.
-  a.special = a.phone === SPECIAL_PHONE;
-  saveAccounts();
-  currentId = a.id;
-  showChat();
-}
-function guestLogin(){
-  const n = nextGuest++;
-  localStorage.setItem("onechat_guest_counter", String(nextGuest));
-  const a = {
-    id:crypto.randomUUID(),
-    guest:true,
-    phone:"",
-    name:"guest"+n,
-    special:false
-  };
-  accounts.push(a);
-  saveAccounts();
-  currentId = a.id;
-  showChat();
-}
-function addAccount(){
-  document.getElementById("profile").classList.add("hidden");
-  document.getElementById("guestTools").classList.add("hidden");
-  document.getElementById("chat").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("phoneStep").classList.remove("hidden");
-  document.getElementById("codeStep").classList.add("hidden");
-  document.getElementById("phone").value = "";
-  document.getElementById("sms").value = "";
-}
-function showChat(){
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("profile").classList.add("hidden");
-  document.getElementById("guestTools").classList.add("hidden");
-  document.getElementById("chat").classList.remove("hidden");
-  document.getElementById("profileButton").classList.toggle("hidden", current().guest);
-  renderMessages();
-}
-function openChat(){showChat();}
-function openProfile(){
-  const a = current();
-  if(!a || a.guest) return;
-  document.getElementById("chat").classList.add("hidden");
-  document.getElementById("profile").classList.remove("hidden");
-  document.getElementById("profileName").innerHTML = escapeHTML(a.name) +
-    (a.special ? ' <span class="check">✓</span>' : "");
-  document.getElementById("profileNumber").textContent = a.phone;
-  document.getElementById("nickname").value = a.name;
-  document.getElementById("avatar").textContent = a.name.slice(0,1).toUpperCase();
-  renderAccounts();
-}
-function saveProfile(){
-  const a = current();
-  if(!a || a.guest) return;
-  const name = document.getElementById("nickname").value.trim();
-  if(!name){alert("Введи имя.");return;}
-  a.name = name.slice(0,24);
-  saveAccounts();
-  openProfile();
-}
-function renderAccounts(){
-  const list = document.getElementById("accountList");
-  list.innerHTML = "";
-  accounts.forEach(a=>{
-    const div = document.createElement("div");
-    div.className = "card";
-    const label = a.name + (a.special ? " ✓" : "") + (a.guest ? " (гость)" : "");
-    const info = document.createElement("div");
-    info.textContent = label;
-    div.appendChild(info);
-    const btn = document.createElement("button");
-    btn.className = "secondary";
-    btn.style.width = "100%";
-    btn.style.marginTop = "8px";
-    btn.textContent = a.id === currentId ? "Текущий аккаунт" : "Переключиться";
-    btn.disabled = a.id === currentId;
-    btn.onclick = ()=>{currentId=a.id;showChat();};
-    div.appendChild(btn);
-    list.appendChild(div);
-  });
-}
-function sendMessage(e){
-  e.preventDefault();
-  const input = document.getElementById("messageInput");
-  const value = input.value.trim();
-  if(!value)return;
-  const a = current();
-  messages.push({name:a.name,special:a.special,text:value,mine:true});
-  input.value = "";
-  renderMessages();
-}
-function renderMessages(){
-  const root = document.getElementById("messages");
-  root.innerHTML = "";
-  messages.forEach(m=>{
-    const bubble = document.createElement("div");
-    bubble.className = "bubble" + (m.mine ? " mine" : "");
-    const sender = document.createElement("div");
-    sender.className = "sender";
-    sender.textContent = m.name + (m.special ? " ✓" : "");
-    if(m.special){
-      sender.innerHTML = escapeHTML(m.name) + ' <span class="check">✓</span>';
-    }
-    const text = document.createElement("div");
-    text.textContent = m.text;
-    bubble.append(sender,text);
-    root.appendChild(bubble);
-  });
-  root.scrollTop = root.scrollHeight;
-}
-function logout(){
-  currentId = null;
-  document.getElementById("chat").classList.add("hidden");
-  document.getElementById("profile").classList.add("hidden");
-  document.getElementById("guestTools").classList.add("hidden");
-  document.getElementById("profileButton").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-  backToPhone();
-}
-function escapeHTML(s){
-  return String(s).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
-document.getElementById("profileButton").onclick = openProfile;
+        <!-- Лента -->
+        <div class="feed">
 
-// При возвращении к сохранённому демо-проекту можно выбрать уже созданный аккаунт.
-if(accounts.length){
-  document.getElementById("phoneStep").insertAdjacentHTML(
-    "beforeend",
-    '<div class="card"><strong>Сохранённые аккаунты</strong><div id="loginAccounts"></div></div>'
-  );
-  const list = document.getElementById("loginAccounts");
-  accounts.forEach(a=>{
-    const b = document.createElement("button");
-    b.className = "secondary";
-    b.style.width = "100%";
-    b.style.marginTop = "8px";
-    b.textContent = "Войти: " + a.name + (a.special ? " ✓" : "");
-    b.onclick = ()=>{currentId=a.id;showChat();};
-    list.appendChild(b);
-  });
-}
-</script>
+            <!-- Сторис -->
+            <div class="stories">
+                <div class="story">
+                    <div class="story-ring"><img src="avatar.png" alt=""></div>
+                    <div class="story-name">Моя история</div>
+                </div>
+                <div class="story">
+                    <div class="story-ring" style="background: #ccc;"><img src="avatar.png" alt="" style="opacity:0.5;"></div>
+                    <div class="story-name">Друг</div>
+                </div>
+                <div class="story">
+                    <div class="story-ring" style="background: linear-gradient(45deg, #f09433, #e6683c);"><img src="avatar.png" alt=""></div>
+                    <div class="story-name">Ещё</div>
+                </div>
+            </div>
+
+            <!-- Профиль (как будто мы на своей странице) -->
+            <div class="profile-header">
+                <div class="profile-cover"></div>
+                <div class="profile-info-row">
+                    <img src="avatar.png" alt="Avatar" class="profile-avatar-large">
+                    <div>
+                        <div class="profile-name">OldVK.ru</div>
+                        <div class="profile-status">Ностальгия по 2010-м · онлайн</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пост 1 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="avatar.png" alt="" class="post-avatar">
+                    <div>
+                        <div class="post-author">OldVK.ru</div>
+                        <div class="post-time">только что</div>
+                    </div>
+                </div>
+                <div class="post-text">
+                    Сделал современный прототип VK. Тут есть сторис, клипы, лента и нижняя навигация — всё как в 2026 году. Только аватарка осталась старая. 😎
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">❤️ 12</span>
+                    <span class="post-action">💬 3</span>
+                    <span class="post-action">↗️ Поделиться</span>
+                </div>
+            </div>
+
+            <!-- Блок клипов (как в современном VK) -->
+            <div class="post-card">
+                <div style="font-weight:600; margin-bottom:10px;">🎬 Клипы</div>
+                <div class="clips-grid">
+                    <div class="clip-thumb">Клип 1</div>
+                    <div class="clip-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);">Клип 2</div>
+                    <div class="clip-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">Клип 3</div>
+                </div>
+            </div>
+
+            <!-- Пост 2 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" style="background:#5c7a9e; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:12px;">А</div>
+                    <div>
+                        <div class="post-author">Андрей</div>
+                        <div class="post-time">5 минут назад</div>
+                    </div>
+                </div>
+                <div class="post-text">
+                    Ого, это же почти настоящий современный VK! Где кнопка «Поделиться в истории»?
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">❤️ 4</span>
+                    <span class="post-action">💬 1</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Правый сайдбар -->
+        <div class="right-sidebar">
+            <div class="widget">
+                <h4>Рекомендации</h4>
+                <div class="widget-item"><div class="widget-avatar"></div> Мемы 2026</div>
+                <div class="widget-item"><div class="widget-avatar"></div> VK Музыка</div>
+                <div class="widget-item"><div class="widget-avatar"></div> Технологии</div>
+            </div>
+            <div class="widget">
+                <h4>Друзья онлайн</h4>
+                <div class="widget-item"><div class="widget-avatar" style="background:#4a76a8;"></div> Екатерина</div>
+                <div class="widget-item"><div class="widget-avatar" style="background:#6b8ca9;"></div> Дмитрий</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Нижняя навигация (мобильная) -->
+    <div class="bottom-nav">
+        <div class="nav-item active"><span class="nav-icon">🏠</span>Главная</div>
+        <div class="nav-item"><span class="nav-icon">🔍</span>Поиск</div>
+        <div class="nav-item"><span class="nav-icon">🎬</span>Клипы</div>
+        <div class="nav-item"><span class="nav-icon">💬</span>Сообщения</div>
+        <div class="nav-item"><span class="nav-icon">👤</span>Профиль</div>
+    </div>
+
 </body>
 </html>
