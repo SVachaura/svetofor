@@ -2,274 +2,217 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VK — современный прототип</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ВКонтакте — Мобильная версия</title>
     <style>
-        :root {
-            --bg: #edeef0;
-            --card: #ffffff;
-            --text: #000000;
-            --text-secondary: #818c99;
-            --accent: #0077ff;
-            --header: #ffffff;
-            --border: #e1e3e6;
-            --hover: #f0f2f5;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 14px;
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 13px;
+            background: #edeef0;
+            color: #000;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        a { color: #2b587a; text-decoration: none; }
 
         /* Шапка */
         .header {
-            background: var(--header);
-            border-bottom: 1px solid var(--border);
-            padding: 8px 16px;
+            background: #4a76a8;
+            height: 44px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 0 10px;
+            color: white;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .header-logo {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: -1px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 1px #345070;
+            flex: 1;
         }
 
-        .header-search {
-            background: var(--hover);
+        .header-icon {
+            font-size: 18px;
+            margin-left: 15px;
+            opacity: 0.9;
+        }
+
+        /* Поиск */
+        .search-wrap {
+            background: #4a76a8;
+            padding: 0 10px 8px;
+            position: sticky;
+            top: 44px;
+            z-index: 99;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #365a80;
             border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            width: 280px;
-            font-size: 14px;
+            border-radius: 3px;
+            padding: 6px 10px;
+            color: white;
+            font-size: 13px;
             outline: none;
         }
+        .search-input::placeholder { color: #a8b8c8; }
 
-        .header-icons {
-            display: flex;
-            gap: 16px;
-            color: var(--text-secondary);
-            font-size: 18px;
+        /* Контент */
+        .content {
+            padding: 8px;
         }
 
-        /* Основной контейнер */
-        .app {
-            display: flex;
-            max-width: 1100px;
-            margin: 0 auto;
-            min-height: calc(100vh - 50px);
-            padding-bottom: 70px;
-        }
-
-        /* Левое меню */
-        .sidebar {
-            width: 200px;
-            flex-shrink: 0;
-            padding: 16px 8px;
-            display: none;
-        }
-
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: var(--text);
-            font-weight: 500;
-            margin-bottom: 2px;
-            cursor: pointer;
-        }
-
-        .sidebar-item:hover { background: var(--hover); }
-        .sidebar-item.active { background: var(--hover); color: var(--accent); }
-
-        .sidebar-icon {
-            width: 24px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        /* Центральная лента */
-        .feed {
-            flex: 1;
-            max-width: 600px;
-            padding: 12px;
-        }
-
-        /* Сторис */
-        .stories {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 12px;
+        /* Карточка профиля */
+        .profile-card {
+            background: white;
+            border: 1px solid #d3d9de;
+            border-radius: 3px;
+            padding: 10px;
             margin-bottom: 8px;
-            scrollbar-width: none;
+            display: flex;
+            gap: 10px;
         }
-        .stories::-webkit-scrollbar { display: none; }
 
-        .story {
-            flex-shrink: 0;
+        .avatar {
             width: 80px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .story-ring {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #0077ff, #00c6ff);
-            padding: 3px;
-            margin: 0 auto 4px;
-        }
-
-        .story-ring img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
+            height: 80px;
+            border-radius: 5px;
+            border: 1px solid #d3d9de;
             object-fit: cover;
-            border: 2px solid var(--card);
+            flex-shrink: 0;
         }
 
-        .story-name {
-            font-size: 11px;
-            color: var(--text-secondary);
-            white-space: nowrap;
+        .profile-info h2 {
+            font-size: 15px;
+            color: #2b587a;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: #555;
+            margin: 2px 0;
+            line-height: 1.3;
+        }
+
+        /* Меню разделов */
+        .menu {
+            background: white;
+            border: 1px solid #d3d9de;
+            border-radius: 3px;
+            margin-bottom: 8px;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        /* Карточка поста */
-        .post-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .post-header {
+        .menu-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e8eb;
+            color: #2b587a;
+            font-weight: bold;
+            font-size: 13px;
         }
+
+        .menu-item:last-child { border-bottom: none; }
+
+        .menu-item:active { background: #dfe3e8; }
+
+        .menu-icon {
+            width: 20px;
+            margin-right: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Стена */
+        .wall {
+            background: white;
+            border: 1px solid #d3d9de;
+            border-radius: 3px;
+            padding: 10px;
+        }
+
+        .wall-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #2b587a;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #d3d9de;
+            margin-bottom: 8px;
+        }
+
+        .post {
+            display: flex;
+            gap: 8px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .post:last-child { border-bottom: none; }
 
         .post-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+            border-radius: 4px;
+            background: #4a76a8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+            flex-shrink: 0;
         }
+
+        .post-content { flex: 1; }
 
         .post-author {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .post-time {
+            font-weight: bold;
+            color: #2b587a;
             font-size: 12px;
-            color: var(--text-secondary);
+            margin-bottom: 3px;
         }
 
         .post-text {
-            line-height: 1.5;
-            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .post-date {
+            font-size: 10px;
+            color: #999;
         }
 
         .post-actions {
             display: flex;
-            gap: 20px;
-            color: var(--text-secondary);
-            font-size: 13px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
-
-        .post-action { cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .post-action:hover { color: var(--accent); }
-
-        /* Клипы (вертикальная сетка) */
-        .clips-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-
-        .clip-thumb {
-            aspect-ratio: 9/16;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            padding: 8px;
-            color: white;
+            gap: 12px;
             font-size: 11px;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
+            color: #2b587a;
+            margin-top: 5px;
         }
 
-        /* Правый сайдбар (рекомендации) */
-        .right-sidebar {
-            width: 250px;
-            flex-shrink: 0;
-            padding: 16px 8px;
-            display: none;
-        }
-
-        .widget {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .widget h4 {
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: var(--text);
-        }
-
-        .widget-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 0;
-            font-size: 13px;
-        }
-
-        .widget-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #ccc;
-        }
-
-        /* Нижняя навигация (мобильная) */
+        /* Нижнее меню */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--header);
-            border-top: 1px solid var(--border);
+            background: #f0f2f5;
+            border-top: 1px solid #d3d9de;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            padding: 6px 0;
             z-index: 100;
         }
 
@@ -278,68 +221,24 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            color: var(--text-secondary);
-            font-size: 10px;
-            cursor: pointer;
-            padding: 4px 12px;
+            color: #2b587a;
+            font-size: 9px;
+            padding: 2px 8px;
         }
 
-        .nav-item.active { color: var(--accent); }
-        .nav-icon { font-size: 22px; }
+        .nav-item.active { color: #000; }
 
-        /* Профиль (заглушка) */
-        .profile-header {
-            background: var(--card);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
+        .nav-icon {
+            font-size: 18px;
         }
 
-        .profile-cover {
-            height: 120px;
-            background: linear-gradient(135deg, #4a76a8, #0077ff);
-        }
+        /* Отступ под нижнее меню */
+        .content { padding-bottom: 60px; }
 
-        .profile-info-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 16px;
-            padding: 0 20px 16px;
-            margin-top: -30px;
-        }
-
-        .profile-avatar-large {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 4px solid var(--card);
-            object-fit: cover;
-        }
-
-        .profile-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .profile-status {
-            color: var(--text-secondary);
-            font-size: 13px;
-        }
-
-        /* Адаптив */
-        @media (min-width: 900px) {
-            .sidebar { display: block; }
-            .right-sidebar { display: block; }
-            .bottom-nav { display: none; }
-            .app { gap: 8px; }
-            .stories { display: flex; }
-        }
-
-        @media (max-width: 899px) {
-            .feed { max-width: 100%; }
-            .header-search { width: 160px; }
+        /* Онлайн-статус */
+        .online {
+            color: #4a76a8;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -347,131 +246,98 @@
 
     <!-- Шапка -->
     <div class="header">
-        <div class="header-logo">VK</div>
-        <input type="text" class="header-search" placeholder="Поиск">
-        <div class="header-icons">
-            <span>🔔</span>
-            <span>💬</span>
-        </div>
+        <div class="header-logo">ВКонтакте</div>
+        <span class="header-icon">🔔</span>
+        <span class="header-icon">💬</span>
     </div>
 
-    <!-- Приложение -->
-    <div class="app">
+    <!-- Поиск -->
+    <div class="search-wrap">
+        <input type="text" class="search-input" placeholder="Поиск по сайту...">
+    </div>
 
-        <!-- Левое меню (десктоп) -->
-        <div class="sidebar">
-            <div class="sidebar-item active"><span class="sidebar-icon">🏠</span> Моя страница</div>
-            <div class="sidebar-item"><span class="sidebar-icon">📰</span> Новости</div>
-            <div class="sidebar-item"><span class="sidebar-icon">💬</span> Мессенджер</div>
-            <div class="sidebar-item"><span class="sidebar-icon">👥</span> Друзья</div>
-            <div class="sidebar-item"><span class="sidebar-icon">🎬</span> Клипы</div>
-            <div class="sidebar-item"><span class="sidebar-icon">🎵</span> Музыка</div>
-            <div class="sidebar-item"><span class="sidebar-icon">🛒</span> Маркет</div>
+    <!-- Контент -->
+    <div class="content">
+
+        <!-- Профиль -->
+        <div class="profile-card">
+            <img src="avatar.png" alt="Avatar" class="avatar">
+            <div class="profile-info">
+                <h2>OldVK.ru</h2>
+                <p class="online">● онлайн</p>
+                <p>Ностальгия по 2010-м</p>
+                <p>Город: Интернет</p>
+            </div>
         </div>
 
-        <!-- Лента -->
-        <div class="feed">
-
-            <!-- Сторис -->
-            <div class="stories">
-                <div class="story">
-                    <div class="story-ring"><img src="avatar.png" alt=""></div>
-                    <div class="story-name">Моя история</div>
-                </div>
-                <div class="story">
-                    <div class="story-ring" style="background: #ccc;"><img src="avatar.png" alt="" style="opacity:0.5;"></div>
-                    <div class="story-name">Друг</div>
-                </div>
-                <div class="story">
-                    <div class="story-ring" style="background: linear-gradient(45deg, #f09433, #e6683c);"><img src="avatar.png" alt=""></div>
-                    <div class="story-name">Ещё</div>
-                </div>
-            </div>
-
-            <!-- Профиль (как будто мы на своей странице) -->
-            <div class="profile-header">
-                <div class="profile-cover"></div>
-                <div class="profile-info-row">
-                    <img src="avatar.png" alt="Avatar" class="profile-avatar-large">
-                    <div>
-                        <div class="profile-name">OldVK.ru</div>
-                        <div class="profile-status">Ностальгия по 2010-м · онлайн</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Пост 1 -->
-            <div class="post-card">
-                <div class="post-header">
-                    <img src="avatar.png" alt="" class="post-avatar">
-                    <div>
-                        <div class="post-author">OldVK.ru</div>
-                        <div class="post-time">только что</div>
-                    </div>
-                </div>
-                <div class="post-text">
-                    Сделал современный прототип VK. Тут есть сторис, клипы, лента и нижняя навигация — всё как в 2026 году. Только аватарка осталась старая. 😎
-                </div>
-                <div class="post-actions">
-                    <span class="post-action">❤️ 12</span>
-                    <span class="post-action">💬 3</span>
-                    <span class="post-action">↗️ Поделиться</span>
-                </div>
-            </div>
-
-            <!-- Блок клипов (как в современном VK) -->
-            <div class="post-card">
-                <div style="font-weight:600; margin-bottom:10px;">🎬 Клипы</div>
-                <div class="clips-grid">
-                    <div class="clip-thumb">Клип 1</div>
-                    <div class="clip-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);">Клип 2</div>
-                    <div class="clip-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">Клип 3</div>
-                </div>
-            </div>
-
-            <!-- Пост 2 -->
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="post-avatar" style="background:#5c7a9e; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:12px;">А</div>
-                    <div>
-                        <div class="post-author">Андрей</div>
-                        <div class="post-time">5 минут назад</div>
-                    </div>
-                </div>
-                <div class="post-text">
-                    Ого, это же почти настоящий современный VK! Где кнопка «Поделиться в истории»?
-                </div>
-                <div class="post-actions">
-                    <span class="post-action">❤️ 4</span>
-                    <span class="post-action">💬 1</span>
-                </div>
-            </div>
-
+        <!-- Меню разделов -->
+        <div class="menu">
+            <div class="menu-item"><span class="menu-icon">👤</span> Моя страница</div>
+            <div class="menu-item"><span class="menu-icon">👥</span> Мои друзья</div>
+            <div class="menu-item"><span class="menu-icon">📷</span> Мои фотографии</div>
+            <div class="menu-item"><span class="menu-icon">🎵</span> Мои аудиозаписи</div>
+            <div class="menu-item"><span class="menu-icon">💬</span> Мои сообщения</div>
+            <div class="menu-item"><span class="menu-icon">📰</span> Мои группы</div>
+            <div class="menu-item"><span class="menu-icon">⚙️</span> Настройки</div>
         </div>
 
-        <!-- Правый сайдбар -->
-        <div class="right-sidebar">
-            <div class="widget">
-                <h4>Рекомендации</h4>
-                <div class="widget-item"><div class="widget-avatar"></div> Мемы 2026</div>
-                <div class="widget-item"><div class="widget-avatar"></div> VK Музыка</div>
-                <div class="widget-item"><div class="widget-avatar"></div> Технологии</div>
+        <!-- Стена -->
+        <div class="wall">
+            <div class="wall-title">Стена</div>
+
+            <div class="post">
+                <div class="post-avatar">OldVK</div>
+                <div class="post-content">
+                    <div class="post-author">OldVK.ru</div>
+                    <div class="post-text">
+                        Добро пожаловать в мобильную версию старого ВК! Тот самый дизайн, который открывался в браузере телефона в 2012 году.
+                    </div>
+                    <div class="post-date">сегодня в 14:32</div>
+                    <div class="post-actions">
+                        <span>❤️ 5</span>
+                        <span>💬 2</span>
+                    </div>
+                </div>
             </div>
-            <div class="widget">
-                <h4>Друзья онлайн</h4>
-                <div class="widget-item"><div class="widget-avatar" style="background:#4a76a8;"></div> Екатерина</div>
-                <div class="widget-item"><div class="widget-avatar" style="background:#6b8ca9;"></div> Дмитрий</div>
+
+            <div class="post">
+                <div class="post-avatar" style="background:#5c7a9e;">А</div>
+                <div class="post-content">
+                    <div class="post-author">Андрей</div>
+                    <div class="post-text">
+                        Ого, это же старый дизайн! Сразу вспомнил свои школьные годы и кнопочный телефон.
+                    </div>
+                    <div class="post-date">сегодня в 14:35</div>
+                    <div class="post-actions">
+                        <span>❤️ 2</span>
+                    </div>
+                </div>
             </div>
+
+            <div class="post">
+                <div class="post-avatar" style="background:#6b8ca9;">Е</div>
+                <div class="post-content">
+                    <div class="post-author">Екатерина</div>
+                    <div class="post-text">
+                        А где кнопка «Мне нравится»? Всё как в старые добрые времена!
+                    </div>
+                    <div class="post-date">сегодня в 14:40</div>
+                    <div class="post-actions">
+                        <span>❤️ 1</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Нижняя навигация (мобильная) -->
+    <!-- Нижнее меню -->
     <div class="bottom-nav">
         <div class="nav-item active"><span class="nav-icon">🏠</span>Главная</div>
-        <div class="nav-item"><span class="nav-icon">🔍</span>Поиск</div>
-        <div class="nav-item"><span class="nav-icon">🎬</span>Клипы</div>
+        <div class="nav-item"><span class="nav-icon">👥</span>Друзья</div>
         <div class="nav-item"><span class="nav-icon">💬</span>Сообщения</div>
+        <div class="nav-item"><span class="nav-icon">🔔</span>Уведомления</div>
         <div class="nav-item"><span class="nav-icon">👤</span>Профиль</div>
     </div>
 
