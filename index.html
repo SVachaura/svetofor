@@ -4,176 +4,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#4b729f">
-<title>OldVK</title>
+<title>GDZ NT — Без учебника</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#e9edf2;color:#333;font:13px Arial}
+:root{--blue:#2878ff;--bg:#f5f8ff;--text:#12213c;--muted:#60769d}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:Arial,sans-serif}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
-header{background:#4b729f;color:white;position:sticky;top:0;z-index:5}
-.top{max-width:1000px;margin:auto;height:52px;display:flex;align-items:center;gap:10px;padding:8px}
-.logo{width:36px;height:36px;object-fit:cover;border-radius:3px}
-.brand{font-size:21px;font-weight:bold}
-.search{margin-left:12px;width:230px;max-width:35%;padding:9px;border:0;border-radius:4px;background:#3c618d;color:white}
-.search::placeholder{color:#dbe5f0}
-.wrap{max-width:1000px;margin:15px auto;display:grid;grid-template-columns:160px minmax(0,1fr);gap:15px;padding:0 10px}
-nav{display:flex;flex-direction:column;gap:3px}
-nav button{border:0;background:none;text-align:left;padding:10px;color:#42658c;border-radius:4px}
-nav button:hover,nav button.active{background:#dce5ef}
-.card{background:white;border:1px solid #dce2e9;border-radius:4px;margin-bottom:12px;overflow:hidden}
-.head{padding:13px;border-bottom:1px solid #e7ebf0;color:#42658c;font-weight:bold}
-.body{padding:14px}
-.profile{display:grid;grid-template-columns:140px minmax(0,1fr);gap:15px}
-.avatar{width:100%;aspect-ratio:1;object-fit:cover;background:#dce7f2}
-.small{width:42px;height:42px;object-fit:cover;flex-shrink:0}
-h2{font-size:21px;font-weight:normal;margin:0 0 6px}
-.muted{color:#8995a3;font-size:12px}
-hr{border:0;border-top:1px solid #e7ebf0;margin:12px 0}
-.row{display:flex;gap:8px;margin:9px 0}
-.label{width:85px;color:#8995a3;flex-shrink:0}
-.btn{border:0;border-radius:4px;padding:9px 12px;background:#547ba5;color:white}
-.light{background:#e5ebf2;color:#42658c}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
-textarea,input.field{width:100%;padding:10px;border:1px solid #d6dce5;border-radius:4px}
-textarea{min-height:70px;resize:vertical}
-.right{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
-.post{padding:14px;border-bottom:1px solid #edf0f4}
-.posttop{display:flex;align-items:center;gap:10px}
-.name{font-weight:bold;color:#42658c}
-.posttext{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;margin:13px 0}
-.postactions{display:flex;gap:18px}
-.postactions button{border:0;background:none;color:#42658c;padding:2px 0}
-.postactions .liked{color:#d34e67}
-.person{display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee}
-.grow{flex:1}
-.msg{padding:10px;background:#f0f4f8;border-radius:4px;margin:8px 0}
-.mine{background:#e5edf7;margin-left:18px}
-.empty{text-align:center;padding:25px;color:#8995a3}
-.hidden{display:none!important}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#26384c;color:white;padding:12px 16px;border-radius:5px;z-index:10}
+header{height:76px;background:white;border-bottom:1px solid #e1eaff;
+display:flex;align-items:center;gap:13px;padding:0 22px}
+.logo{width:48px;height:48px;background:var(--blue);color:white;
+border-radius:15px;display:grid;place-items:center;font-size:23px;font-weight:bold}
+.brand{font-size:24px;font-weight:bold}
+.tag{color:var(--muted);margin-left:10px}
+.auth{margin-left:auto;display:flex;gap:9px}
+.btn{border:1px solid #dce6fa;background:white;color:var(--text);
+border-radius:12px;padding:11px 17px}
+.primary{background:var(--blue);color:white;border:0}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;
+gap:22px;max-width:1500px;margin:auto;padding:22px}
+nav{display:flex;flex-direction:column;gap:9px}
+.navitem{padding:14px;border-radius:13px;color:var(--muted);
+cursor:pointer}
+.navitem.active,.navitem:hover{background:#e5efff;color:var(--blue)}
+main{min-width:0}
+h1{font-size:38px;line-height:1.15;margin:20px 0 12px}
+.subtitle{color:var(--muted);line-height:1.7}
+.panel,.card,.sidecard{background:white;border:1px solid #e5edfc;
+border-radius:20px;padding:20px}
+.composer{margin-top:25px;box-shadow:0 12px 35px #dbe7ff66}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.tab{border:0;background:#f0f5ff;color:#34547f;
+padding:11px 15px;border-radius:13px}
+.tab.active{background:#e0ebff;color:#075bff}
+textarea{width:100%;height:130px;resize:vertical;border:1px solid #d6e2f8;
+border-radius:15px;padding:16px;outline:none}
+textarea:focus{border-color:var(--blue)}
+.file{display:none}
+.preview{max-width:100%;max-height:220px;border-radius:12px;
+margin-top:12px;display:none}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.hint{font-size:13px;color:var(--muted);background:#f4f7ff;
+padding:10px;border-radius:12px}
+.send{margin-left:auto;width:48px;height:48px;border-radius:15px;
+font-size:24px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px;margin-top:18px}
+.card{padding:17px}
+.card .emoji{font-size:25px}
+.card h3{margin:12px 0 7px;font-size:17px}
+.card p{font-size:14px;line-height:1.5;color:var(--muted);margin:0}
+.subjects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+gap:10px;margin-top:15px}
+.subject{background:white;border:1px solid #e5edfc;border-radius:14px;
+padding:13px 7px;text-align:center;font-size:13px}
+.side{display:flex;flex-direction:column;gap:16px}
+.sidecard h3{margin:0 0 15px}
+.example{display:block;width:100%;text-align:left;border:0;
+background:#f1f5fd;color:#38557f;border-radius:12px;
+padding:12px;margin:8px 0;font-size:13px}
+.example:hover{background:#e0ebff}
+.benefit{line-height:2;color:#45618d;font-size:14px}
+#result{white-space:pre-wrap;line-height:1.65;margin-top:16px}
+.status{font-size:13px;color:var(--muted);margin-top:10px}
+footer{padding:20px 24px;color:var(--muted);font-size:12px;
+border-top:1px solid #e1eaff;display:flex;justify-content:space-between}
+@media(max-width:1000px){
+.layout{grid-template-columns:180px minmax(0,1fr)}
+.side{grid-column:2;display:grid;grid-template-columns:1fr 1fr}
+}
 @media(max-width:650px){
- .top{gap:7px}.brand{font-size:18px}.search{min-width:0;flex:1;margin-left:3px}
- .wrap{display:block;margin:10px auto}
- nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;z-index:8;flex-direction:row;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom)}
- nav button{flex:1;text-align:center;font-size:10px;padding:8px 1px}
- main{padding-bottom:65px}
- .profile{grid-template-columns:100px minmax(0,1fr);gap:12px}
- .label{width:70px}
+header{height:64px;padding:0 12px;gap:9px}
+.logo{width:40px;height:40px;border-radius:12px}
+.brand{font-size:20px}.tag{display:none}
+.auth .btn:first-child{display:none}
+.auth .btn{padding:9px 11px;font-size:13px}
+.layout{display:flex;flex-direction:column;padding:13px;gap:14px}
+nav{flex-direction:row;overflow-x:auto;gap:5px}
+.navitem{white-space:nowrap;padding:10px;font-size:13px}
+h1{font-size:32px;margin-top:8px}
+.panel{padding:13px}.cards{grid-template-columns:1fr}
+.side{display:flex}
+.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}
+footer{gap:10px;flex-wrap:wrap;padding:16px}
 }
 </style>
 </head>
 <body>
 <header>
- <div class="top">
-  <img class="logo" src="avatar.png" alt="OldVK">
-  <span class="brand">OldVK</span>
-  <input class="search" id="search" placeholder="Поиск">
- </div>
+  <div class="logo">NT</div>
+  <div class="brand">GDZ NT</div>
+  <div class="tag">ГДЗ без учебника</div>
+  <div class="auth">
+    <button class="btn" onclick="alert('Вход добавим позже')">Войти</button>
+    <button class="btn primary" onclick="alert('Регистрацию добавим позже')">Регистрация</button>
+  </div>
 </header>
 
-<div class="wrap">
+<div class="layout">
 <nav>
- <button class="active" data-page="profile" onclick="page('profile')">👤 Моя страница</button>
- <button data-page="news" onclick="page('news')">▤ Новости</button>
- <button data-page="messages" onclick="page('messages')">✉ Сообщения</button>
- <button data-page="friends" onclick="page('friends')">♧ Друзья</button>
- <button data-page="photos" onclick="page('photos')">▧ Фотографии</button>
- <button data-page="settings" onclick="page('settings')">⚙ Настройки</button>
+  <div class="navitem active" onclick="goHome()">⌂ Главная</div>
+  <div class="navitem" onclick="showNotice('История ответов появится после подключения ИИ')">◷ История</div>
+  <div class="navitem" onclick="showNotice('Избранные ответы появятся позже')">☆ Избранное</div>
+  <div class="navitem" onclick="document.getElementById('subjects').scrollIntoView({behavior:'smooth'})">▤ Предметы</div>
+  <div class="navitem" onclick="showNotice('Настройки появятся в следующей версии')">⚙ Настройки</div>
 </nav>
 
-<main>
-<section id="profile">
- <div class="card">
-  <div class="head">Моя страница</div>
-  <div class="body profile">
-   <div>
-    <img src="avatar.png" class="avatar" alt="Аватар OldVK">
-    <button class="btn light" style="width:100%;margin-top:7px" onclick="notify('Загрузка фото появится позже')">Изменить фото</button>
-   </div>
-   <div>
-    <h2 id="pname">Пользователь OldVK</h2>
-    <span class="muted">Был недавно</span>
-    <hr>
-    <div class="row"><span class="label">Город:</span><span id="pcity">Не указан</span></div>
-    <div class="row"><span class="label">О себе:</span><span id="pabout">Добро пожаловать на мою страницу!</span></div>
-    <div class="actions">
-     <button class="btn" onclick="page('settings')">Редактировать</button>
-     <button class="btn light" onclick="page('news')">Новости</button>
+<main id="home">
+  <h1>Привет!<br>Я — GDZ NT</h1>
+  <p class="subtitle">Задавай любые вопросы, решай задачи,<br>
+  анализируй тексты и изображения.</p>
+
+  <section class="panel composer">
+    <div class="tabs">
+      <button class="tab active" id="textTab" onclick="setMode('text')">▤ Текст</button>
+      <button class="tab" onclick="document.getElementById('camera').click()">📷 Фото</button>
+      <button class="tab" onclick="document.getElementById('gallery').click()">▧ Галерея</button>
     </div>
-   </div>
+
+    <input class="file" id="camera" type="file" accept="image/*" capture="environment">
+    <input class="file" id="gallery" type="file" accept="image/*">
+
+    <textarea id="question" maxlength="2000"
+    placeholder="Напиши свой вопрос или задание..."></textarea>
+    <img id="preview" class="preview" alt="Предпросмотр изображения">
+
+    <div class="actions">
+      <button class="hint" onclick="insertExample('Найди все эпитеты в тексте и объясни их.')">✦ Пример вопроса</button>
+      <button class="hint" onclick="insertExample('Реши задачу и объясни решение по шагам.')">▦ Реши задачу</button>
+      <button class="hint" onclick="insertExample('Объясни простыми словами, как это работает.')">♧ Простыми словами</button>
+      <button class="btn primary send" onclick="solve()">➜</button>
+    </div>
+    <div class="status" id="status">Можно ввести вопрос или прикрепить фото.</div>
+    <div id="result"></div>
+  </section>
+
+  <div class="cards">
+    <div class="card"><div class="emoji">📄</div><h3>Текст</h3>
+      <p>Напиши вопрос своими словами или вставь задание.</p></div>
+    <div class="card"><div class="emoji">📷</div><h3>Фото</h3>
+      <p>Сфотографируй задание камерой телефона.</p></div>
+    <div class="card"><div class="emoji">🖼️</div><h3>Галерея</h3>
+      <p>Выбери изображение или скриншот из галереи.</p></div>
   </div>
- </div>
 
- <div class="card">
-  <div class="head">Новая запись</div>
-  <div class="body">
-   <textarea id="posttext" placeholder="Что у вас нового?"></textarea>
-   <div class="right"><span class="muted">Запись на вашей стене</span><button class="btn" onclick="addPost()">Опубликовать</button></div>
+  <h3 id="subjects" style="margin:26px 4px 10px">Популярные предметы</h3>
+  <div class="subjects">
+    <button class="subject" onclick="subject('Русский язык')">🔤<br>Русский язык</button>
+    <button class="subject" onclick="subject('Математика')">🧮<br>Математика</button>
+    <button class="subject" onclick="subject('Английский язык')">🇬🇧<br>Английский</button>
+    <button class="subject" onclick="subject('Физика')">⚛️<br>Физика</button>
+    <button class="subject" onclick="subject('История')">🏛️<br>История</button>
+    <button class="subject" onclick="subject('Биология')">🌿<br>Биология</button>
   </div>
- </div>
- <div class="card"><div class="head">Записи на стене</div><div id="wall"></div></div>
-</section>
-
-<section id="news" class="hidden">
- <div class="card"><div class="head">Новости</div><div id="newswall"></div></div>
-</section>
-
-<section id="friends" class="hidden">
- <div class="card"><div class="head">Друзья</div>
-  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Александр</a><div class="muted">Был недавно</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
-  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Мария</a><div class="muted">На сайте</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
-  <div class="person"><img src="avatar.png" class="small" alt=""><div class="grow"><a>Дмитрий</a><div class="muted">Был сегодня</div></div><button class="btn light" onclick="notify('Демо: запрос отправлен')">Добавить</button></div>
- </div>
-</section>
-
-<section id="messages" class="hidden">
- <div class="card"><div class="head">Сообщения</div><div class="body">
-  <div class="muted">Демонстрационная переписка</div>
-  <div class="msg">Александр: Привет! Как тебе OldVK?</div>
-  <div class="msg mine">Вы: Отлично! Продолжаем разработку.</div>
-  <div id="chat"></div>
-  <div class="right"><input id="message" class="field" placeholder="Сообщение..." style="flex:1;min-width:0"><button class="btn" onclick="send()">Отправить</button></div>
- </div></div>
-</section>
-
-<section id="photos" class="hidden">
- <div class="card"><div class="head">Фотографии</div><div class="empty">Фотографий пока нет.<br><br><button class="btn" onclick="notify('Загрузка фото появится позже')">Добавить фотографию</button></div></div>
-</section>
-
-<section id="settings" class="hidden">
- <div class="card"><div class="head">Настройки профиля</div><div class="body">
-  <label>Имя<input class="field" id="name" style="margin:6px 0 12px"></label>
-  <label>Город<input class="field" id="city" style="margin:6px 0 12px"></label>
-  <label>О себе<textarea id="about" style="margin-top:6px"></textarea></label>
-  <button class="btn" style="margin-top:12px" onclick="saveProfile()">Сохранить</button>
-  <p class="muted">Пока данные сохраняются только в этом браузере.</p>
- </div></div>
-</section>
 </main>
+
+<aside class="side">
+  <section class="sidecard">
+    <h3>💡 Примеры вопросов</h3>
+    <button class="example" onclick="insertExample('Найди все эпитеты в тексте.')">Найди все эпитеты в тексте.</button>
+    <button class="example" onclick="insertExample('Реши уравнение: 2x + 5 = 17')">Реши уравнение: 2x + 5 = 17</button>
+    <button class="example" onclick="insertExample('Объясни, как работает фотосинтез.')">Объясни, как работает фотосинтез.</button>
+    <button class="example" onclick="insertExample('Сделай краткий пересказ текста.')">Сделай краткий пересказ текста.</button>
+    <button class="example" onclick="insertExample('Что такое молекула?')">Что такое молекула?</button>
+  </section>
+  <section class="sidecard" style="background:#edf4ff">
+    <h3>✧ Почему GDZ NT?</h3>
+    <div class="benefit">✓ Решает разные вопросы<br>
+    ✓ Поддерживает текст и фото<br>
+    ✓ Объясняет простыми словами<br>
+    ✓ Все школьные предметы<br>
+    ✓ Доступен в любое время</div>
+  </section>
+  <section class="sidecard" style="background:#e1eaff;text-align:center">
+    <p style="color:#31548b;font-style:italic;line-height:1.7">
+    Не просто готовые ответы,<br>а решение с объяснением.</p>
+    <b>GDZ NT</b>
+  </section>
+</aside>
 </div>
-<div id="toast" class="hidden"></div>
+
+<footer><span>GDZ NT · ГДЗ без учебника</span><span>Твой вопрос. Наш интеллект.</span></footer>
 
 <script>
-const KEY='oldvk-data';
-let data={name:'Пользователь OldVK',city:'Не указан',about:'Добро пожаловать на мою страницу!',posts:[],likes:[],messages:[]};
-try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function notify(s){let t=document.getElementById('toast');t.textContent=s;t.classList.remove('hidden');clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.add('hidden'),2200)}
-function page(id){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'})}
-function profileRender(){pname.textContent=data.name;pcity.textContent=data.city;pabout.textContent=data.about;name.value=data.name;city.value=data.city;about.value=data.about}
-function renderPosts(){
- let html=data.posts.slice().reverse().map(p=>`<article class="post"><div class="posttop"><img src="avatar.png" class="small" alt=""><div><div class="name">${safe(data.name)}</div><div class="muted">${safe(p.date)}</div></div></div><div class="posttext">${safe(p.text)}</div><div class="postactions"><button class="${data.likes.includes(p.id)?'liked':''}" onclick="like('${p.id}')">♥ ${p.likes+(data.likes.includes(p.id)?1:0)} Нравится</button><button onclick="notify('Комментарии появятся позже')">Комментарий</button></div></article>`).join('')||'<div class="empty">Записей пока нет. Опубликуйте первую!</div>';
- wall.innerHTML=html;newswall.innerHTML=html;
+const question = document.getElementById('question');
+const statusBox = document.getElementById('status');
+const result = document.getElementById('result');
+const preview = document.getElementById('preview');
+let selectedImage = null;
+
+function insertExample(text){
+  question.value = text;
+  question.focus();
+  question.dispatchEvent(new Event('input'));
 }
-function addPost(){let el=document.getElementById('posttext'),v=el.value.trim();if(!v)return notify('Напишите текст записи');data.posts.push({id:String(Date.now()),text:v,date:new Date().toLocaleString('ru-RU'),likes:0});el.value='';save();renderPosts();notify('Запись опубликована')}
-function like(id){if(data.likes.includes(id))data.likes=data.likes.filter(x=>x!==id);else data.likes.push(id);save();renderPosts()}
-function saveProfile(){data.name=name.value.trim()||'Пользователь OldVK';data.city=city.value.trim()||'Не указан';data.about=about.value.trim()||'Пока ничего не указано';save();profileRender();renderPosts();page('profile');notify('Профиль сохранён')}
-function send(){let el=document.getElementById('message'),v=el.value.trim();if(!v)return;data.messages.push(v);save();renderChat();el.value=''}
-function renderChat(){chat.innerHTML=data.messages.map(m=>`<div class="msg mine">Вы: ${safe(m)}</div>`).join('')}
-document.getElementById('search').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.toLowerCase().trim();notify(q&&data.posts.some(p=>p.text.toLowerCase().includes(q))?'Найдена запись на стене':'Совпадений не найдено')}})
-profileRender();renderPosts();renderChat();
+function setMode(mode){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('textTab').classList.add('active');
+  question.focus();
+}
+function subject(name){
+  question.value = 'Предмет: '+name+'\n\nМой вопрос: ';
+  question.focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showNotice(message){
+  alert(message);
+}
+question.addEventListener('input',()=>{
+  statusBox.textContent = question.value.length+' / 2000 символов';
+});
+function handleImage(file){
+  if(!file)return;
+  if(!file.type.startsWith('image/')){
+    statusBox.textContent='Выбери файл изображения.';
+    return;
+  }
+  selectedImage=file;
+  preview.src=URL.createObjectURL(file);
+  preview.style.display='block';
+  statusBox.textContent='Фото выбрано: '+file.name+' — ИИ пока не подключён.';
+}
+document.getElementById('camera').addEventListener('change',e=>handleImage(e.target.files[0]));
+document.getElementById('gallery').addEventListener('change',e=>handleImage(e.target.files[0]));
+
+async function solve(){
+  const text=question.value.trim();
+  if(!text&&!selectedImage){
+    statusBox.textContent='Сначала напиши вопрос или выбери фото.';
+    question.focus();
+    return;
+  }
+  result.textContent='';
+  statusBox.textContent='Демо-режим: для настоящих ответов нужно подключить ИИ через сервер.';
+  result.textContent=
+    'Вопрос принят!\n\n'+
+    (text?'Текст: '+text+'\n\n':'')+
+    (selectedImage?'Изображение: '+selectedImage.name+'\n\n':'')+
+    'Это пока интерфейс-прототип. Следующий этап — подключить модель ИИ, '+
+    'чтобы она действительно решала задания и анализировала фотографии.';
+}
 </script>
 </body>
 </html>
