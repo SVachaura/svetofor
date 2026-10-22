@@ -3,251 +3,342 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GDZ NT — Без учебника</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>History of the Earth: Your World</title>
 <style>
 *{box-sizing:border-box}
-:root{--blue:#2878ff;--bg:#f5f8ff;--text:#12213c;--muted:#60769d}
-body{margin:0;background:var(--bg);color:var(--text);
-font-family:Arial,sans-serif}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-header{height:76px;background:white;border-bottom:1px solid #e1eaff;
-display:flex;align-items:center;gap:13px;padding:0 22px}
-.logo{width:48px;height:48px;background:var(--blue);color:white;
-border-radius:15px;display:grid;place-items:center;font-size:23px;font-weight:bold}
-.brand{font-size:24px;font-weight:bold}
-.tag{color:var(--muted);margin-left:10px}
-.auth{margin-left:auto;display:flex;gap:9px}
-.btn{border:1px solid #dce6fa;background:white;color:var(--text);
-border-radius:12px;padding:11px 17px}
-.primary{background:var(--blue);color:white;border:0}
-.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;
-gap:22px;max-width:1500px;margin:auto;padding:22px}
-nav{display:flex;flex-direction:column;gap:9px}
-.navitem{padding:14px;border-radius:13px;color:var(--muted);
-cursor:pointer}
-.navitem.active,.navitem:hover{background:#e5efff;color:var(--blue)}
-main{min-width:0}
-h1{font-size:38px;line-height:1.15;margin:20px 0 12px}
-.subtitle{color:var(--muted);line-height:1.7}
-.panel,.card,.sidecard{background:white;border:1px solid #e5edfc;
-border-radius:20px;padding:20px}
-.composer{margin-top:25px;box-shadow:0 12px 35px #dbe7ff66}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
-.tab{border:0;background:#f0f5ff;color:#34547f;
-padding:11px 15px;border-radius:13px}
-.tab.active{background:#e0ebff;color:#075bff}
-textarea{width:100%;height:130px;resize:vertical;border:1px solid #d6e2f8;
-border-radius:15px;padding:16px;outline:none}
-textarea:focus{border-color:var(--blue)}
-.file{display:none}
-.preview{max-width:100%;max-height:220px;border-radius:12px;
-margin-top:12px;display:none}
-.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.hint{font-size:13px;color:var(--muted);background:#f4f7ff;
-padding:10px;border-radius:12px}
-.send{margin-left:auto;width:48px;height:48px;border-radius:15px;
-font-size:24px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-gap:12px;margin-top:18px}
-.card{padding:17px}
-.card .emoji{font-size:25px}
-.card h3{margin:12px 0 7px;font-size:17px}
-.card p{font-size:14px;line-height:1.5;color:var(--muted);margin:0}
-.subjects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-gap:10px;margin-top:15px}
-.subject{background:white;border:1px solid #e5edfc;border-radius:14px;
-padding:13px 7px;text-align:center;font-size:13px}
-.side{display:flex;flex-direction:column;gap:16px}
-.sidecard h3{margin:0 0 15px}
-.example{display:block;width:100%;text-align:left;border:0;
-background:#f1f5fd;color:#38557f;border-radius:12px;
-padding:12px;margin:8px 0;font-size:13px}
-.example:hover{background:#e0ebff}
-.benefit{line-height:2;color:#45618d;font-size:14px}
-#result{white-space:pre-wrap;line-height:1.65;margin-top:16px}
-.status{font-size:13px;color:var(--muted);margin-top:10px}
-footer{padding:20px 24px;color:var(--muted);font-size:12px;
-border-top:1px solid #e1eaff;display:flex;justify-content:space-between}
-@media(max-width:1000px){
-.layout{grid-template-columns:180px minmax(0,1fr)}
-.side{grid-column:2;display:grid;grid-template-columns:1fr 1fr}
-}
-@media(max-width:650px){
-header{height:64px;padding:0 12px;gap:9px}
-.logo{width:40px;height:40px;border-radius:12px}
-.brand{font-size:20px}.tag{display:none}
-.auth .btn:first-child{display:none}
-.auth .btn{padding:9px 11px;font-size:13px}
-.layout{display:flex;flex-direction:column;padding:13px;gap:14px}
-nav{flex-direction:row;overflow-x:auto;gap:5px}
-.navitem{white-space:nowrap;padding:10px;font-size:13px}
-h1{font-size:32px;margin-top:8px}
-.panel{padding:13px}.cards{grid-template-columns:1fr}
-.side{display:flex}
-.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}
-footer{gap:10px;flex-wrap:wrap;padding:16px}
-}
+:root{--blue:#2878ff;--bg:#f2f5fa;--card:#fff;--text:#172033;--muted:#7c879b}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px;background:#e9effa;color:#24334d;font-weight:600}
+button:active{transform:scale(.97)}
+.primary{background:var(--blue);color:white}
+.app{max-width:900px;margin:auto;min-height:100dvh}
+header{padding:18px 16px;background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e5eaf2}
+.logo{font-weight:900;font-size:17px}
+.logo small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+main{padding:15px}
+.screen{display:none}
+.screen.active{display:block}
+h2{font-size:23px;margin:8px 0 16px}
+h3{margin:0 0 10px}
+.card{background:var(--card);padding:15px;border-radius:18px;margin-bottom:13px;box-shadow:0 3px 14px #233b6010}
+.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.menu-btn{min-height:100px;text-align:left;background:var(--card);border:1px solid #e5eaf2;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.emoji{font-size:27px}
+label{display:block;font-size:13px;color:var(--muted);margin:13px 0 6px}
+input,select,textarea{width:100%;border:1px solid #dce3ee;border-radius:11px;padding:12px;background:var(--card);color:var(--text)}
+textarea{resize:vertical;min-height:85px}
+.row{display:flex;align-items:center;gap:8px}
+.row>*{flex:1;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.actions button{flex:1}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#map{width:100%;height:350px;display:block;border-radius:15px;background:#e8f1f8;touch-action:none;border:1px solid #d8e2ee}
+.tools{display:flex;gap:7px;overflow-x:auto;padding:8px 0}
+.tools button{white-space:nowrap;flex-shrink:0}
+.tools .chosen{background:var(--blue);color:white}
+nav{position:sticky;bottom:0;background:var(--card);border-top:1px solid #e3e9f2;padding:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;z-index:5}
+nav button{padding:10px 2px;background:transparent;font-size:11px}
+nav button span{display:block;font-size:20px;margin-bottom:4px}
+nav button.selected{background:#eaf1ff;color:var(--blue)}
+.event{padding:13px;border:1px solid #e2e8f0;border-radius:13px;margin:10px 0}
+.tag{font-size:11px;background:#eaf1ff;color:#2464d8;padding:5px 8px;border-radius:8px;display:inline-block}
+.entry{border-left:3px solid var(--blue);padding:4px 0 8px 12px;margin:13px 0}
+.small{font-size:12px}
+hr{border:0;border-top:1px solid #e7ebf2;margin:15px 0}
+.hidden{display:none!important}
+@media(min-width:650px){main{padding:24px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}#map{height:460px}}
 </style>
 </head>
 <body>
+<div class="app">
 <header>
-  <div class="logo">NT</div>
-  <div class="brand">GDZ NT</div>
-  <div class="tag">ГДЗ без учебника</div>
-  <div class="auth">
-    <button class="btn" onclick="alert('Вход добавим позже')">Войти</button>
-    <button class="btn primary" onclick="alert('Регистрацию добавим позже')">Регистрация</button>
-  </div>
+ <div class="logo">🌍 History of the Earth<small>Your World · Создай свою историю</small></div>
+ <button onclick="show('settings')">⚙️</button>
 </header>
 
-<div class="layout">
-<nav>
-  <div class="navitem active" onclick="goHome()">⌂ Главная</div>
-  <div class="navitem" onclick="showNotice('История ответов появится после подключения ИИ')">◷ История</div>
-  <div class="navitem" onclick="showNotice('Избранные ответы появятся позже')">☆ Избранное</div>
-  <div class="navitem" onclick="document.getElementById('subjects').scrollIntoView({behavior:'smooth'})">▤ Предметы</div>
-  <div class="navitem" onclick="showNotice('Настройки появятся в следующей версии')">⚙ Настройки</div>
-</nav>
-
-<main id="home">
-  <h1>Привет!<br>Я — GDZ NT</h1>
-  <p class="subtitle">Задавай любые вопросы, решай задачи,<br>
-  анализируй тексты и изображения.</p>
-
-  <section class="panel composer">
-    <div class="tabs">
-      <button class="tab active" id="textTab" onclick="setMode('text')">▤ Текст</button>
-      <button class="tab" onclick="document.getElementById('camera').click()">📷 Фото</button>
-      <button class="tab" onclick="document.getElementById('gallery').click()">▧ Галерея</button>
-    </div>
-
-    <input class="file" id="camera" type="file" accept="image/*" capture="environment">
-    <input class="file" id="gallery" type="file" accept="image/*">
-
-    <textarea id="question" maxlength="2000"
-    placeholder="Напиши свой вопрос или задание..."></textarea>
-    <img id="preview" class="preview" alt="Предпросмотр изображения">
-
-    <div class="actions">
-      <button class="hint" onclick="insertExample('Найди все эпитеты в тексте и объясни их.')">✦ Пример вопроса</button>
-      <button class="hint" onclick="insertExample('Реши задачу и объясни решение по шагам.')">▦ Реши задачу</button>
-      <button class="hint" onclick="insertExample('Объясни простыми словами, как это работает.')">♧ Простыми словами</button>
-      <button class="btn primary send" onclick="solve()">➜</button>
-    </div>
-    <div class="status" id="status">Можно ввести вопрос или прикрепить фото.</div>
-    <div id="result"></div>
-  </section>
-
-  <div class="cards">
-    <div class="card"><div class="emoji">📄</div><h3>Текст</h3>
-      <p>Напиши вопрос своими словами или вставь задание.</p></div>
-    <div class="card"><div class="emoji">📷</div><h3>Фото</h3>
-      <p>Сфотографируй задание камерой телефона.</p></div>
-    <div class="card"><div class="emoji">🖼️</div><h3>Галерея</h3>
-      <p>Выбери изображение или скриншот из галереи.</p></div>
+<main>
+<section id="home" class="screen active">
+ <div class="card">
+  <div class="muted">ТВОЯ ВСЕЛЕННАЯ</div>
+  <h2 id="homeName">My World</h2>
+  <div class="row">
+   <div><div class="muted">Текущий год</div><h3 id="homeYear">1</h3></div>
+   <div><div class="muted">Государств</div><h3 id="homeCountries">0</h3></div>
+   <div><div class="muted">Событий</div><h3 id="homeEvents">0</h3></div>
   </div>
+  <button class="primary" style="width:100%" onclick="show('mapScreen')">Продолжить создание мира →</button>
+ </div>
+ <h2>Главное меню</h2>
+ <div class="grid">
+  <button class="menu-btn" onclick="show('mapScreen')"><span class="emoji">🗺️</span>Карта мира<small class="muted">Рисуй государства</small></button>
+  <button class="menu-btn" onclick="show('events')"><span class="emoji">📜</span>Events<small class="muted">Получай идеи событий</small></button>
+  <button class="menu-btn" onclick="show('book')"><span class="emoji">📖</span>Книга истории<small class="muted">Все события по годам</small></button>
+  <button class="menu-btn" onclick="show('countries')"><span class="emoji">🏳️</span>Государства<small class="muted">Правители и столицы</small></button>
+  <button class="menu-btn" onclick="show('settings')"><span class="emoji">⚙️</span>Настройки мира<small class="muted">Правила и название</small></button>
+  <button class="menu-btn" onclick="exportWorld()"><span class="emoji">💾</span>Экспорт мира<small class="muted">Сохранить резервную копию</small></button>
+ </div>
+</section>
 
-  <h3 id="subjects" style="margin:26px 4px 10px">Популярные предметы</h3>
-  <div class="subjects">
-    <button class="subject" onclick="subject('Русский язык')">🔤<br>Русский язык</button>
-    <button class="subject" onclick="subject('Математика')">🧮<br>Математика</button>
-    <button class="subject" onclick="subject('Английский язык')">🇬🇧<br>Английский</button>
-    <button class="subject" onclick="subject('Физика')">⚛️<br>Физика</button>
-    <button class="subject" onclick="subject('История')">🏛️<br>История</button>
-    <button class="subject" onclick="subject('Биология')">🌿<br>Биология</button>
+<section id="settings" class="screen">
+ <h2>⚙️ Настройки мира</h2>
+ <div class="card">
+  <label>Название мира</label><input id="worldName" value="My World" maxlength="60">
+  <label>Первый год</label><input id="startYear" type="number" value="1">
+  <label>Текущий год</label><input id="yearInput" type="number" value="1">
+  <label>Стиль карты</label>
+  <select id="mapStyle"><option value="draw">Рисованная карта</option><option value="political">Политическая карта</option><option value="paper">Старая бумага</option></select>
+  <label>Шанс появления идей Events: <b id="chanceLabel">50%</b></label>
+  <input id="chance" type="range" min="0" max="100" value="50" oninput="chanceLabel.textContent=this.value+'%'">
+  <p class="muted">Процент влияет только на появление идеи при нажатии Events. Принятая идея выполняется без дополнительного броска вероятности.</p>
+  <label>Правила мира</label>
+  <select id="worldRules"><option>Все события создаёт игрок</option><option>Только ручное редактирование карты</option></select>
+  <button class="primary" style="width:100%;margin-top:16px" onclick="saveSettings()">Сохранить настройки</button>
+ </div>
+</section>
+
+<section id="mapScreen" class="screen">
+ <div class="topline"><h2>🗺️ Карта мира</h2><span class="tag" id="yearTag">Год 1</span></div>
+ <div class="card">
+  <div class="tools">
+   <button class="chosen" id="brushBtn" onclick="setTool('brush')">🖌️ Кисть</button>
+   <button id="eraseBtn" onclick="setTool('erase')">Ластик</button>
+   <button id="panBtn" onclick="setTool('pan')">✋ Перемещение</button>
+   <button onclick="undoMap()">↶ Отмена</button>
+   <button onclick="clearMap()">Очистить</button>
   </div>
+  <canvas id="map"></canvas>
+  <p class="muted">Проводи пальцем по карте, чтобы рисовать. Выбери страну и цвет ниже.</p>
+  <label>Государство для рисования</label>
+  <select id="paintCountry" onchange="syncColor()"></select>
+  <div class="row">
+   <div><label>Цвет кисти</label><input id="paintColor" type="color" value="#df4545"></div>
+   <div><label>Размер кисти</label><input id="brushSize" type="range" min="3" max="45" value="18"></div>
+  </div>
+  <div class="actions"><button onclick="show('countries')">Страны</button><button onclick="show('events')">Events</button></div>
+ </div>
+ <div class="card">
+  <h3>Время</h3>
+  <div class="row"><button onclick="changeYear(-1)">← Год</button><button class="primary" onclick="changeYear(1)">Следующий год →</button></div>
+ </div>
+</section>
+
+<section id="countries" class="screen">
+ <h2>🏳️ Государства</h2>
+ <div class="card">
+  <h3>Создать государство</h3>
+  <label>Название</label><input id="countryName" placeholder="Например, Красная империя">
+  <div class="row">
+   <div><label>Цвет</label><input id="countryColor" type="color" value="#df4545"></div>
+   <div><label>Столица</label><input id="countryCapital" placeholder="Столица"></div>
+  </div>
+  <label>Правитель</label><input id="countryRuler" placeholder="Имя правителя">
+  <button class="primary" style="width:100%;margin-top:14px" onclick="addCountry()">＋ Создать государство</button>
+ </div>
+ <div id="countryList"></div>
+</section>
+
+<section id="events" class="screen">
+ <h2>📜 Events</h2>
+ <div class="card">
+  <div class="topline"><div><div class="muted">ТЕКУЩИЙ ГОД</div><h3 id="eventYear">1 год</h3></div><span class="tag">Твои решения</span></div>
+  <p class="muted">Нажми кнопку — получи идею для истории. Если идея появилась, ты можешь принять её на 100% или запросить другую. Ничего не происходит без твоего решения.</p>
+  <button class="primary" style="width:100%" onclick="generateIdea()">🎲 Получить идею события</button>
+  <div id="ideaBox"></div>
+ </div>
+ <div class="card">
+  <h3>✍️ Создать своё событие</h3>
+  <label>Название</label><input id="customTitle" placeholder="Например, Великий союз">
+  <label>Описание</label><textarea id="customDescription" placeholder="Что произошло в этом году?"></textarea>
+  <button class="primary" style="width:100%" onclick="addCustomEvent()">Записать в книгу</button>
+ </div>
+</section>
+
+<section id="book" class="screen">
+ <h2>📖 Книга истории</h2>
+ <div class="card">
+  <label>Найти события по году</label><input id="bookSearch" type="number" placeholder="Все годы" oninput="renderBook()">
+  <div id="bookList"></div>
+ </div>
+</section>
 </main>
 
-<aside class="side">
-  <section class="sidecard">
-    <h3>💡 Примеры вопросов</h3>
-    <button class="example" onclick="insertExample('Найди все эпитеты в тексте.')">Найди все эпитеты в тексте.</button>
-    <button class="example" onclick="insertExample('Реши уравнение: 2x + 5 = 17')">Реши уравнение: 2x + 5 = 17</button>
-    <button class="example" onclick="insertExample('Объясни, как работает фотосинтез.')">Объясни, как работает фотосинтез.</button>
-    <button class="example" onclick="insertExample('Сделай краткий пересказ текста.')">Сделай краткий пересказ текста.</button>
-    <button class="example" onclick="insertExample('Что такое молекула?')">Что такое молекула?</button>
-  </section>
-  <section class="sidecard" style="background:#edf4ff">
-    <h3>✧ Почему GDZ NT?</h3>
-    <div class="benefit">✓ Решает разные вопросы<br>
-    ✓ Поддерживает текст и фото<br>
-    ✓ Объясняет простыми словами<br>
-    ✓ Все школьные предметы<br>
-    ✓ Доступен в любое время</div>
-  </section>
-  <section class="sidecard" style="background:#e1eaff;text-align:center">
-    <p style="color:#31548b;font-style:italic;line-height:1.7">
-    Не просто готовые ответы,<br>а решение с объяснением.</p>
-    <b>GDZ NT</b>
-  </section>
-</aside>
+<nav>
+ <button class="selected" data-screen="home" onclick="show('home')"><span>⌂</span>Главная</button>
+ <button data-screen="mapScreen" onclick="show('mapScreen')"><span>🗺️</span>Карта</button>
+ <button data-screen="events" onclick="show('events')"><span>📜</span>Events</button>
+ <button data-screen="book" onclick="show('book')"><span>📖</span>Книга</button>
+</nav>
 </div>
 
-<footer><span>GDZ NT · ГДЗ без учебника</span><span>Твой вопрос. Наш интеллект.</span></footer>
-
 <script>
-const question = document.getElementById('question');
-const statusBox = document.getElementById('status');
-const result = document.getElementById('result');
-const preview = document.getElementById('preview');
-let selectedImage = null;
-
-function insertExample(text){
-  question.value = text;
-  question.focus();
-  question.dispatchEvent(new Event('input'));
+const $=id=>document.getElementById(id);
+let world={name:"My World",year:1,startYear:1,countries:[],events:[],paint:[],chance:50};
+let tool="brush",undoStack=[],ideaNow=null;
+const ideas=[
+ {title:"Красная империя расширяет территорию",desc:"Государство меняет границы за счёт соседних земель.",type:"Территории"},
+ {title:"Две страны создают союз",desc:"Два государства заключают союз и обещают сотрудничать.",type:"Дипломатия"},
+ {title:"Появляется новое государство",desc:"На карте возникает независимая страна.",type:"Государства"},
+ {title:"Меняется правитель",desc:"В государстве начинается новая эпоха правления.",type:"Политика"},
+ {title:"Основана новая столица",desc:"Страна объявляет новый город своей столицей.",type:"Города"},
+ {title:"Начинается война",desc:"Одно государство объявляет войну другому.",type:"Война"},
+ {title:"Подписан мирный договор",desc:"Противники заканчивают войну и подписывают соглашение.",type:"Дипломатия"},
+ {title:"В стране происходит революция",desc:"Существующая власть сменяется новым правительством.",type:"Политика"},
+ {title:"Создана федерация",desc:"Несколько государств объединяются в федерацию.",type:"Государства"},
+ {title:"Государство меняет название",desc:"Страна принимает новое официальное название.",type:"Государства"},
+ {title:"Открыт новый торговый путь",desc:"Между странами начинается новый маршрут торговли.",type:"Экономика"},
+ {title:"Начинается эпоха открытий",desc:"Исследователи открывают неизвестные территории.",type:"Исследования"},
+ {title:"Основан новый город",desc:"На карте появляется новый крупный населённый пункт.",type:"Города"},
+ {title:"Империя распадается",desc:"Одна большая держава разделяется на несколько стран.",type:"Государства"},
+ {title:"Создана новая религия",desc:"В мире возникает новое религиозное движение.",type:"Культура"},
+ {title:"Происходит природная катастрофа",desc:"Стихийное бедствие меняет жизнь одного из регионов.",type:"Катастрофы"}
+];
+function save(){try{localStorage.setItem("hteyw",JSON.stringify(world))}catch(e){}}
+function load(){try{const s=localStorage.getItem("hteyw");if(s)world=JSON.parse(s)}catch(e){}}
+function show(id){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("selected",x.dataset.screen===id));
+ if(id==="mapScreen")drawMap();
+ if(id==="countries")renderCountries();
+ if(id==="book")renderBook();
+ updateUI();window.scrollTo(0,0)
 }
-function setMode(mode){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('textTab').classList.add('active');
-  question.focus();
+function updateUI(){
+ $("homeName").textContent=world.name;$("worldName").value=world.name;
+ $("homeYear").textContent=world.year;$("homeCountries").textContent=world.countries.length;
+ $("homeEvents").textContent=world.events.length;
+ $("yearInput").value=world.year;$("startYear").value=world.startYear;
+ $("yearTag").textContent="Год "+world.year;$("eventYear").textContent=world.year+" год";
+ $("chance").value=world.chance;$("chanceLabel").textContent=world.chance+"%";
+ const sel=$("paintCountry"),old=sel.value;
+ sel.innerHTML='<option value="">Свободная кисть</option>'+world.countries.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+ sel.value=world.countries.some(c=>c.id===old)?old:"";
 }
-function subject(name){
-  question.value = 'Предмет: '+name+'\n\nМой вопрос: ';
-  question.focus();
-  window.scrollTo({top:0,behavior:'smooth'});
+function saveSettings(){
+ world.name=$("worldName").value.trim()||"My World";
+ world.startYear=Number($("startYear").value)||1;
+ world.year=Number($("yearInput").value)||world.startYear;
+ world.chance=Number($("chance").value);
+ save();updateUI();show("home")
 }
-function goHome(){
-  window.scrollTo({top:0,behavior:'smooth'});
+function changeYear(d){world.year+=d;save();updateUI();show("mapScreen")}
+function addCountry(){
+ const name=$("countryName").value.trim();if(!name)return alert("Введи название государства");
+ world.countries.push({id:Date.now()+Math.random(),name,color:$("countryColor").value,capital:$("countryCapital").value,ruler:$("countryRuler").value});
+ $("countryName").value="";$("countryCapital").value="";$("countryRuler").value="";
+ save();renderCountries();updateUI()
 }
-function showNotice(message){
-  alert(message);
+function renderCountries(){
+ $("countryList").innerHTML=world.countries.length?world.countries.map(c=>`
+ <div class="card"><div class="row"><div style="width:20px;height:35px;flex:0 0 20px;background:${c.color};border-radius:6px"></div><div><b>${esc(c.name)}</b><div class="muted">${esc(c.capital||"Столица не указана")} · ${esc(c.ruler||"Правитель не указан")}</div></div></div>
+ <div class="actions"><button onclick="editCountry('${c.id}')">Изменить</button><button onclick="deleteCountry('${c.id}')">Удалить</button></div></div>`).join(""):'<p class="muted">Пока нет государств. Создай первое!</p>';
+ updateUI()
 }
-question.addEventListener('input',()=>{
-  statusBox.textContent = question.value.length+' / 2000 символов';
+function editCountry(id){
+ const c=world.countries.find(x=>String(x.id)===String(id));if(!c)return;
+ const n=prompt("Название государства",c.name);if(n===null)return;
+ c.name=n.trim()||c.name;c.capital=prompt("Столица",c.capital)||c.capital;c.ruler=prompt("Правитель",c.ruler)||c.ruler;
+ const color=prompt("Цвет в формате #rrggbb",c.color);if(color&&/^#[0-9a-f]{6}$/i.test(color))c.color=color;
+ save();renderCountries();drawMap()
+}
+function deleteCountry(id){
+ if(!confirm("Удалить государство?"))return;
+ world.countries=world.countries.filter(c=>String(c.id)!==String(id));save();renderCountries();drawMap()
+}
+function syncColor(){const c=world.countries.find(c=>String(c.id)===$("paintCountry").value);if(c)$("paintColor").value=c.color}
+function setTool(t){
+ tool=t;["brush","erase","pan"].forEach(x=>$(x+"Btn").classList.toggle("chosen",x===t))
+}
+const canvas=$("map"),ctx=canvas.getContext("2d");
+function setupCanvas(){
+ const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));
+ ctx.setTransform(dpr,0,0,dpr,0,0);drawMap()
+}
+function drawMap(){
+ const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;
+ ctx.clearRect(0,0,w,h);
+ const style=$("mapStyle")?.value;
+ ctx.fillStyle=style==="paper"?"#eee0bd":style==="political"?"#e1e8d7":"#e8f1f8";ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle=style==="paper"?"#d7c69d":"#d5e3ed";ctx.lineWidth=1;
+ for(let x=0;x<w;x+=28){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+ for(let y=0;y<h;y+=28){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ if(world.paint.length){
+  const tmp=document.createElement("canvas");tmp.width=canvas.width;tmp.height=canvas.height;
+  const t=tmp.getContext("2d");
+  t.drawImage(canvas,0,0);
+  // Reconstruct saved strokes in CSS-pixel coordinates.
+  world.paint.forEach(s=>drawStroke(ctx,s,w,h));
+ }
+}
+function drawStroke(c,s,w,h){
+ if(!s.points||!s.points.length)return;
+ c.save();c.lineCap="round";c.lineJoin="round";
+ c.strokeStyle=s.color;c.lineWidth=s.size;c.globalCompositeOperation=s.erase?"destination-out":"source-over";
+ c.beginPath();c.moveTo(s.points[0].x*w,s.points[0].y*h);
+ for(let i=1;i<s.points.length;i++)c.lineTo(s.points[i].x*w,s.points[i].y*h);
+ if(s.points.length===1){c.lineTo(s.points[0].x*w+.1,s.points[0].y*h+.1)}
+ c.stroke();c.restore()
+}
+function redrawStrokes(){
+ const w=canvas.clientWidth,h=canvas.clientHeight;
+ ctx.clearRect(0,0,w,h);const style=$("mapStyle").value;
+ ctx.fillStyle=style==="paper"?"#eee0bd":style==="political"?"#e1e8d7":"#e8f1f8";ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle=style==="paper"?"#d7c69d":"#d5e3ed";
+ for(let x=0;x<w;x+=28){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+ for(let y=0;y<h;y+=28){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ world.paint.forEach(s=>drawStroke(ctx,s,w,h))
+}
+let activeStroke=null,drawing=false;
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height}}
+canvas.addEventListener("pointerdown",e=>{
+ if(tool==="pan")return;
+ e.preventDefault();canvas.setPointerCapture(e.pointerId);drawing=true;
+ undoStack.push(JSON.stringify(world.paint));if(undoStack.length>20)undoStack.shift();
+ const p=point(e),country=world.countries.find(c=>String(c.id)===$("paintCountry").value);
+ activeStroke={color:tool==="erase"?"#000":country?country.color:$("paintColor").value,size:Number($("brushSize").value),erase:tool==="erase",points:[p]};
+ if(tool==="brush"&&country)$("paintColor").value=country.color;
+ world.paint.push(activeStroke);redrawStrokes()
 });
-function handleImage(file){
-  if(!file)return;
-  if(!file.type.startsWith('image/')){
-    statusBox.textContent='Выбери файл изображения.';
-    return;
-  }
-  selectedImage=file;
-  preview.src=URL.createObjectURL(file);
-  preview.style.display='block';
-  statusBox.textContent='Фото выбрано: '+file.name+' — ИИ пока не подключён.';
+canvas.addEventListener("pointermove",e=>{
+ if(!drawing||!activeStroke)return;e.preventDefault();activeStroke.points.push(point(e));redrawStrokes()
+});
+function endDraw(){if(!drawing)return;drawing=false;activeStroke=null;save()}
+canvas.addEventListener("pointerup",endDraw);canvas.addEventListener("pointercancel",endDraw);
+function undoMap(){if(!undoStack.length)return;world.paint=JSON.parse(undoStack.pop());save();redrawStrokes()}
+function clearMap(){if(!confirm("Очистить всю карту?"))return;undoStack.push(JSON.stringify(world.paint));world.paint=[];save();redrawStrokes()}
+function generateIdea(){
+ if(Math.random()*100>=world.chance){$("ideaBox").innerHTML='<div class="event"><b>Сегодня идей нет</b><p class="muted">Шанс появления идеи не сработал. Попробуй ещё раз.</p><button class="primary" onclick="generateIdea()">Попробовать снова</button></div>';return}
+ ideaNow=ideas[Math.floor(Math.random()*ideas.length)];
+ $("ideaBox").innerHTML=`<div class="event"><span class="tag">${esc(ideaNow.type)} · ${world.year} год</span><h3 style="margin-top:12px">${esc(ideaNow.title)}</h3><p>${esc(ideaNow.desc)}</p><p class="muted">Идея появилась. Принятие — 100%.</p><div class="actions"><button class="primary" onclick="acceptIdea()">✓ Accept</button><button onclick="generateIdea()">↻ Другая идея</button><button onclick="ideaNow=null;document.getElementById('ideaBox').innerHTML=''">Отказаться</button></div></div>`
 }
-document.getElementById('camera').addEventListener('change',e=>handleImage(e.target.files[0]));
-document.getElementById('gallery').addEventListener('change',e=>handleImage(e.target.files[0]));
-
-async function solve(){
-  const text=question.value.trim();
-  if(!text&&!selectedImage){
-    statusBox.textContent='Сначала напиши вопрос или выбери фото.';
-    question.focus();
-    return;
-  }
-  result.textContent='';
-  statusBox.textContent='Демо-режим: для настоящих ответов нужно подключить ИИ через сервер.';
-  result.textContent=
-    'Вопрос принят!\n\n'+
-    (text?'Текст: '+text+'\n\n':'')+
-    (selectedImage?'Изображение: '+selectedImage.name+'\n\n':'')+
-    'Это пока интерфейс-прототип. Следующий этап — подключить модель ИИ, '+
-    'чтобы она действительно решала задания и анализировала фотографии.';
+function acceptIdea(){
+ if(!ideaNow)return;
+ const ev={year:world.year,title:ideaNow.title,description:ideaNow.desc,type:ideaNow.type};
+ world.events.push(ev);ideaNow=null;$("ideaBox").innerHTML='<div class="event"><b>✓ Событие записано!</b><p class="muted">Оно добавлено в книгу истории.</p><button onclick="show(\'book\')">Открыть книгу</button></div>';
+ save();updateUI()
 }
+function addCustomEvent(){
+ const title=$("customTitle").value.trim(),description=$("customDescription").value.trim();
+ if(!title)return alert("Напиши название события");
+ world.events.push({year:world.year,title,description,type:"Своё событие"});
+ $("customTitle").value="";$("customDescription").value="";
+ save();updateUI();alert("Событие записано в книгу!")
+}
+function renderBook(){
+ const q=$("bookSearch").value;
+ const events=world.events.filter(e=>q===""||String(e.year)===q).slice().reverse();
+ $("bookList").innerHTML=events.length?events.map(e=>`<div class="entry"><span class="tag">${e.year} год · ${esc(e.type||"Событие")}</span><h3 style="margin-top:8px">${esc(e.title)}</h3><p class="muted">${esc(e.description||"")}</p></div>`).join(""):'<p class="muted">Записей пока нет. Добавь событие через Events.</p>'
+}
+function exportWorld(){
+ const blob=new Blob([JSON.stringify(world,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="your-world.json";a.click();URL.revokeObjectURL(url)
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("mapStyle").addEventListener("change",redrawStrokes);
+load();updateUI();setupCanvas();window.addEventListener("resize",setupCanvas);
 </script>
 </body>
 </html>
