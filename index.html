@@ -3,294 +3,578 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090b0f">
-<title>APK Cleaner</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e32636">
+<title>Red Prizrak</title>
+
 <style>
-*{box-sizing:border-box}
-:root{color-scheme:dark}
-body{
- margin:0;background:#090b0f;color:#f3f5f8;
- font-family:Arial,sans-serif;padding:20px 15px 40px
+:root {
+  --bg:#ffffff;
+  --card:#ffffff;
+  --text:#171717;
+  --muted:#888888;
+  --red:#e32636;
+  --button:#e32636;
+  --buttonText:#ffffff;
+  --line:#eeeeee;
 }
-main{max-width:700px;margin:auto}
-header{display:flex;align-items:center;gap:12px;margin-bottom:30px}
-.logo{
- width:46px;height:46px;border-radius:15px;
- background:#a3ff68;color:#10150d;
- display:grid;place-items:center;font-size:25px;font-weight:bold
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
-.brand{font-size:21px;font-weight:800}
-.sub{color:#818997;font-size:12px;margin-top:5px}
-.pill{
- margin-left:auto;border:1px solid #29342a;
- padding:7px 9px;border-radius:20px;color:#a3ff68;font-size:11px
+
+body {
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
 }
-h1{font-size:35px;letter-spacing:-1.5px;margin:0 0 12px}
-p{color:#929ba9;line-height:1.6;font-size:14px}
-.green{color:#a3ff68}
-.panel{
- background:#11151b;border:1px solid #252b34;
- border-radius:20px;padding:19px;margin-top:17px
+
+body.red {
+  --bg:#df2636;
+  --card:#ed3040;
+  --text:#ffffff;
+  --muted:#ffe0e3;
+  --red:#ffffff;
+  --button:#ffffff;
+  --buttonText:#df2636;
+  --line:#ffffff40;
 }
-.label{
- font-size:11px;letter-spacing:1.4px;
- color:#858e9c;font-weight:bold;margin-bottom:15px
+
+.app {
+  max-width:480px;
+  margin:auto;
+  min-height:100vh;
+  padding:20px 16px 100px;
 }
-.drop{
- border:1px dashed #414b59;border-radius:16px;
- padding:27px 12px;text-align:center;background:#0c1015
+
+header {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:25px;
 }
-.upload-icon{font-size:32px;margin-bottom:12px}
-.drop strong{display:block;margin-bottom:8px}
-.drop p{font-size:12px;margin:0 0 17px}
-button,.filebutton{
- display:inline-flex;align-items:center;justify-content:center;
- gap:8px;border:0;border-radius:12px;padding:14px 17px;
- font-size:14px;font-weight:750;cursor:pointer
+
+.avatar {
+  width:52px;
+  height:52px;
+  border:0;
+  border-radius:17px;
+  background:var(--button);
+  color:var(--buttonText);
+  font-size:27px;
+  cursor:pointer;
 }
-.primary{background:#a3ff68;color:#10150d;width:100%}
-.secondary{background:#222833;color:white;width:100%}
-button:disabled{opacity:.35;cursor:not-allowed}
-input[type=file]{display:none}
-.filebox{
- display:none;margin-top:15px;background:#191f28;
- padding:13px;border-radius:12px;overflow-wrap:anywhere
+
+.brand h1 {
+  font-size:21px;
+  font-weight:900;
 }
-.filetitle{font-size:13px;font-weight:bold}
-.small{font-size:11px;color:#9099a7;margin-top:6px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric{
- background:#141920;border:1px solid #262d37;
- border-radius:14px;padding:15px;min-width:0
+
+.brand p {
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:4px;
 }
-.metric .value{font-size:17px;font-weight:bold;margin-top:10px;overflow-wrap:anywhere}
-.metric .caption{font-size:11px;color:#9099a7}
-.status{display:flex;align-items:center;gap:8px;font-size:13px}
-.dot{width:8px;height:8px;border-radius:50%;background:#78818d}
-.dot.greenbg{background:#a3ff68}
-.line{height:1px;background:#272d36;margin:16px 0}
-.result{font-size:13px;line-height:1.7;color:#c2c9d2}
-.notice{
- background:#201c13;border:1px solid #4b3b20;
- color:#e8c88a;padding:13px;border-radius:12px;
- font-size:12px;line-height:1.6;margin-top:13px
+
+.tabs {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  padding:5px;
+  background:var(--line);
+  border-radius:15px;
+  margin-bottom:24px;
 }
-.log{font:12px/1.8 monospace;color:#9ba5b4;overflow-wrap:anywhere}
-.actions{display:grid;gap:10px;margin-top:15px}
-footer{text-align:center;color:#616a77;font-size:11px;margin-top:28px}
-@media(min-width:550px){body{padding:35px 22px}.grid{grid-template-columns:repeat(4,1fr)}}
+
+.tab {
+  border:0;
+  padding:12px 3px;
+  border-radius:11px;
+  background:transparent;
+  color:var(--muted);
+  font-weight:bold;
+  font-size:12px;
+}
+
+.tab.active {
+  background:var(--card);
+  color:var(--text);
+}
+
+.page {
+  display:none;
+  animation:show .25s ease;
+}
+
+.page.active {
+  display:block;
+}
+
+@keyframes show {
+  from {opacity:0;transform:translateY(8px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+h2 {
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.subtitle {
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:25px;
+}
+
+label {
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:17px 0 9px;
+}
+
+input,textarea {
+  width:100%;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--card);
+  color:var(--text);
+  font-size:15px;
+  outline:none;
+}
+
+textarea {
+  min-height:125px;
+  resize:vertical;
+}
+
+input:focus,textarea:focus {
+  border-color:var(--red);
+}
+
+button {
+  font-family:inherit;
+}
+
+.send {
+  width:100%;
+  margin-top:18px;
+  padding:16px;
+  border:0;
+  border-radius:14px;
+  background:var(--button);
+  color:var(--buttonText);
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:17px;
+  margin-bottom:13px;
+}
+
+.support-item {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-decoration:none;
+  color:var(--text);
+  cursor:pointer;
+}
+
+.support-icon {
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:var(--line);
+  font-size:22px;
+}
+
+.support-item h3 {
+  font-size:15px;
+  margin-bottom:5px;
+}
+
+.support-item p {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.arrow {
+  margin-left:auto;
+  font-size:23px;
+  color:var(--muted);
+}
+
+.history-item {
+  padding:15px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.history-item:last-child {
+  border:0;
+}
+
+.history-number {
+  font-size:12px;
+  font-weight:bold;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.history-text {
+  font-size:15px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.notice {
+  font-size:11px;
+  line-height:1.5;
+  color:var(--muted);
+  margin-top:15px;
+}
+
+.empty {
+  text-align:center;
+  padding:30px 5px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+footer {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  padding:17px;
+  text-align:center;
+  background:var(--bg);
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:11px;
+}
+
+.toast {
+  position:fixed;
+  bottom:75px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#171717;
+  color:white;
+  padding:13px 18px;
+  border-radius:12px;
+  font-size:13px;
+  display:none;
+  width:max-content;
+  max-width:90%;
+}
+
+.toast.show {
+  display:block;
+}
+
+@media(max-width:360px) {
+  .tab {font-size:10px}
+}
 </style>
 </head>
+
 <body>
-<main>
+
+<div class="app">
+
 <header>
- <div class="logo">A</div>
- <div>
-  <div class="brand">APK <span class="green">CLEANER</span></div>
-  <div class="sub">ANDROID SECURITY TOOLKIT</div>
- </div>
- <div class="pill">● PROTOTYPE</div>
+  <button class="avatar" id="themeButton">👻</button>
+
+  <div class="brand">
+    <h1>Red Prizrak</h1>
+    <p>ANONYMOUS SMS</p>
+  </div>
 </header>
 
-<h1>Проверь свой <span class="green">APK.</span></h1>
-<p>Предварительный анализ установщиков Android. Выбери файл, чтобы начать проверку.</p>
+<nav class="tabs">
+  <button class="tab active" data-page="send">Отправить</button>
+  <button class="tab" data-page="history">История</button>
+  <button class="tab" data-page="support">Поддержка</button>
+</nav>
 
-<section class="panel">
- <div class="label">01 / ЗАГРУЗКА ФАЙЛА</div>
- <div class="drop">
-  <div class="upload-icon">↥</div>
-  <strong>Выбери APK-файл</strong>
-  <p>Файл останется в браузере в рамках этого прототипа.</p>
-  <label class="filebutton primary" for="apk" style="width:100%">
-   Выбрать APK
-  </label>
-  <input id="apk" type="file" accept=".apk,application/vnd.android.package-archive">
- </div>
- <div class="filebox" id="filebox">
-  <div class="filetitle" id="filename"></div>
-  <div class="small" id="filesize"></div>
-  <div class="small" id="hash">SHA-256: ожидает анализа</div>
- </div>
+<!-- ОТПРАВКА -->
+
+<section class="page active" id="send">
+
+  <h2>Новое сообщение</h2>
+  <p class="subtitle">
+    Отправь анонимное сообщение.
+  </p>
+
+  <label>Номер телефона</label>
+  <input
+    id="phone"
+    type="tel"
+    placeholder="+7 999 123-45-67"
+  >
+
+  <label>Текст сообщения</label>
+  <textarea
+    id="message"
+    maxlength="500"
+    placeholder="Напиши сообщение..."
+  ></textarea>
+
+  <button class="send" onclick="sendMessage()">
+    Отправить SMS
+  </button>
+
+  <p class="notice">
+    Демонстрационный режим: настоящие SMS пока
+    не отправляются. Для реальной отправки потребуется
+    SMS-провайдер и сервер. Используй отправку только
+    законно и с соблюдением правил против спама.
+  </p>
+
 </section>
 
-<section class="panel">
- <div class="label">02 / АНАЛИЗ БЕЗОПАСНОСТИ</div>
- <div class="status">
-  <span class="dot" id="dot"></span>
-  <span id="status">Файл не выбран</span>
- </div>
- <div class="line"></div>
- <div class="grid">
-  <div class="metric">
-   <div class="caption">Формат</div>
-   <div class="value" id="format">—</div>
+<!-- ИСТОРИЯ -->
+
+<section class="page" id="history">
+
+  <h2>История</h2>
+  <p class="subtitle">
+    Все отправленные сообщения.
+  </p>
+
+  <div class="card" id="historyList">
+    <div class="empty">
+      Пока сообщений нет.
+    </div>
   </div>
-  <div class="metric">
-   <div class="caption">Размер</div>
-   <div class="value" id="size">—</div>
-  </div>
-  <div class="metric">
-   <div class="caption">SHA-256</div>
-   <div class="value" id="hashstatus">—</div>
-  </div>
-  <div class="metric">
-   <div class="caption">Вердикт</div>
-   <div class="value" id="verdict">—</div>
-  </div>
- </div>
- <div class="actions">
-  <button class="primary" id="scan" disabled>⌕　Проверить APK</button>
- </div>
- <div class="notice">
-  ⚠️ Проверка в браузере не является полноценным антивирусным сканированием.
-  Неизвестный результат не означает, что файл безопасен.
- </div>
- <div class="line"></div>
- <div class="label">ЖУРНАЛ ПРОВЕРКИ</div>
- <div class="log" id="log">[SYSTEM] APK Cleaner готов к работе.</div>
+
 </section>
 
-<section class="panel">
- <div class="label">03 / ОЧИСТКА APK</div>
- <h2 style="font-size:21px;margin:0">Удаление угроз</h2>
- <p>После обнаружения угроз специальный анализатор должен определить, можно ли безопасно удалить вредоносные компоненты.</p>
- <div class="status">
-  <span class="dot"></span>
-  <span id="cleanstatus">Ожидание результатов анализа</span>
- </div>
- <div class="actions">
-  <button class="secondary" id="clean" disabled>Очистить APK</button>
-  <button class="secondary" id="download" disabled>Скачать новый APK</button>
- </div>
- <p id="cleaninfo" style="font-size:12px">
-  Модуль очистки ещё не подключён. Сайт не будет создавать фиктивно «безопасные» файлы.
- </p>
+<!-- ПОДДЕРЖКА -->
+
+<section class="page" id="support">
+
+  <h2>Поддержать автора</h2>
+
+  <p class="subtitle">
+    Помоги развитию Red Prizrak!
+  </p>
+
+  <div class="card support-item"
+       onclick="supportMoney()">
+
+    <div class="support-icon">❤️</div>
+
+    <div>
+      <h3>Поддержать деньгами</h3>
+      <p>Добровольная финансовая поддержка.</p>
+    </div>
+
+    <span class="arrow">›</span>
+  </div>
+
+  <a
+    class="card support-item"
+    href="https://t.me/k0tikcom"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+
+    <div class="support-icon">✈️</div>
+
+    <div>
+      <h3>Подписаться на Telegram</h3>
+      <p>Канал автора @k0tikcom</p>
+    </div>
+
+    <span class="arrow">›</span>
+  </a>
+
+  <p class="notice">
+    Поддержка помогает развивать приложение
+    и создавать новые возможности.
+  </p>
+
 </section>
 
-<footer>APK CLEANER · ANDROID SECURITY · DEMO</footer>
-</main>
+</div>
+
+<footer>
+  Red Prizrak · 2026
+</footer>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const $ = id => document.getElementById(id);
-let selected = null;
-let inspected = false;
-let digest = null;
 
-function log(message){
- $("log").textContent += "\n" + message;
+// ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
+
+document.querySelectorAll(".tab").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(".tab").forEach(b =>
+      b.classList.remove("active")
+    );
+
+    document.querySelectorAll(".page").forEach(p =>
+      p.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+    document.getElementById(
+      button.dataset.page
+    ).classList.add("active");
+
+  });
+
+});
+
+
+// СМЕНА ТЕМЫ ПО АВАТАРКЕ
+
+document.getElementById("themeButton")
+.addEventListener("click", () => {
+
+  document.body.classList.toggle("red");
+
+});
+
+
+// СООБЩЕНИЯ
+
+let nextNumber = 1;
+
+let messages = [];
+
+function escapeHTML(text) {
+  return text.replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
 }
 
-function formatSize(bytes){
- if(bytes < 1024) return bytes + " B";
- if(bytes < 1048576) return (bytes/1024).toFixed(1) + " KB";
- return (bytes/1048576).toFixed(2) + " MB";
+function sendMessage() {
+
+  const phone = document
+    .getElementById("phone").value.trim();
+
+  const message = document
+    .getElementById("message").value.trim();
+
+  if (!phone || !message) {
+    toast("Заполни все поля!");
+    return;
+  }
+
+  if (!/^\+?[0-9\s()\-]{7,20}$/.test(phone)) {
+    toast("Проверь номер телефона.");
+    return;
+  }
+
+  const number = nextNumber++;
+
+  messages.unshift({
+    number,
+    phone,
+    message
+  });
+
+  updateHistory();
+
+  document.getElementById("message").value = "";
+
+  toast(
+    "Демо-сообщение #" + number +
+    " добавлено. SMS не отправлено."
+  );
+
 }
 
-$("apk").addEventListener("change", async e => {
- selected = e.target.files[0];
- inspected = false;
- digest = null;
- $("scan").disabled = !selected;
- $("clean").disabled = true;
- $("download").disabled = true;
- $("filebox").style.display = selected ? "block" : "none";
- if(!selected) return;
 
- $("filename").textContent = selected.name;
- $("filesize").textContent = formatSize(selected.size);
- $("hash").textContent = "SHA-256: вычисляется...";
- $("status").textContent = "Файл выбран — ожидает проверки";
- $("dot").className = "dot";
- $("format").textContent = "APK?";
- $("size").textContent = formatSize(selected.size);
- $("hashstatus").textContent = "Ожидание";
- $("verdict").textContent = "Не проверен";
- $("cleanstatus").textContent = "Ожидание результатов анализа";
- $("cleaninfo").textContent =
-  "Модуль очистки не подключён. Изменение APK требует специализированного инструмента.";
- $("log").textContent = "[SYSTEM] Выбран файл: " + selected.name;
- log("[INFO] Размер: " + selected.size + " байт.");
+// ОБНОВЛЕНИЕ ИСТОРИИ
 
- try{
-  if(selected.size === 0) throw new Error("Файл пустой");
-  if(selected.size > 200 * 1024 * 1024){
-   $("hash").textContent = "Файл слишком большой для демо";
-   log("[WARN] Размер превышает лимит прототипа: 200 MB.");
-   return;
-  }
-  if(!crypto.subtle) throw new Error("SHA-256 недоступен в этом контексте");
-  const bytes = await selected.arrayBuffer();
-  digest = [...new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))]
-    .map(b=>b.toString(16).padStart(2,"0")).join("");
-  $("hash").textContent = "SHA-256: " + digest;
-  log("[INFO] SHA-256 вычислен.");
- }catch(err){
-  $("hash").textContent = "Хеш не вычислен";
-  log("[WARN] " + err.message);
- }
-});
+function updateHistory() {
 
-$("scan").addEventListener("click", async () => {
- if(!selected) return;
- $("scan").disabled = true;
- $("status").textContent = "Выполняется базовая проверка...";
- $("dot").className = "dot";
- $("verdict").textContent = "Анализ...";
- $("log").textContent = "[SCAN] Начало базового анализа.";
- log("[SCAN] Проверка расширения и сигнатуры контейнера.");
+  const list = document.getElementById("historyList");
 
- try{
-  const head = new Uint8Array(await selected.slice(0,4).arrayBuffer());
-  const zip = head.length === 4 &&
-    head[0] === 0x50 && head[1] === 0x4b &&
-    head[2] === 0x03 && head[3] === 0x04;
-  const ext = selected.name.toLowerCase().endsWith(".apk");
-
-  $("format").textContent = zip ? "ZIP-контейнер" : "Не распознан";
-  log(zip ? "[PASS] Найдена ZIP-сигнатура." :
-              "[WARN] Ожидаемая ZIP-сигнатура не найдена.");
-  log(ext ? "[PASS] Расширение APK." :
-              "[WARN] Расширение файла не APK.");
-
-  if(digest){
-   $("hashstatus").textContent = "Готов";
-   log("[INFO] SHA-256: " + digest);
-  }else{
-   $("hashstatus").textContent = "Недоступен";
+  if (messages.length === 0) {
+    list.innerHTML =
+      '<div class="empty">Пока сообщений нет.</div>';
+    return;
   }
 
-  if(zip && ext && selected.size > 0){
-   $("verdict").textContent = "Неизвестно";
-   $("status").textContent = "Базовые проверки завершены";
-   $("dot").className = "dot greenbg";
-   log("[INFO] Контейнер похож на APK, но содержимое не проверено на вирусы.");
-  }else{
-   $("verdict").textContent = "Ошибка формата";
-   $("status").textContent = "Файл требует дополнительной проверки";
-   log("[WARN] Файл не прошёл базовую проверку формата.");
-  }
+  list.innerHTML = messages.map(item => `
 
-  $("cleanstatus").textContent = "Нужен полноценный анализатор";
-  $("cleaninfo").textContent =
-   "По одной ZIP-сигнатуре нельзя определить заражение. Очистка и создание нового APK недоступны до подключения анализатора.";
-  inspected = true;
- }catch(err){
-  $("status").textContent = "Ошибка проверки";
-  $("verdict").textContent = "Неизвестно";
-  log("[ERROR] " + err.message);
- }finally{
-  $("scan").disabled = false;
- }
-});
+    <div class="history-item">
 
-$("clean").addEventListener("click", () => {
- alert("Модуль очистки пока не подключён. Для безопасной обработки APK необходим отдельный анализатор.");
-});
+      <div class="history-number">
+        СООБЩЕНИЕ #${item.number}
+      </div>
 
-$("download").addEventListener("click", () => {
- alert("Новый APK пока не создан. Скачивание оригинала под видом очищенного запрещено.");
-});
+      <div class="history-text">
+        Тебе пришло сообщения: #${item.number}
+
+        ${escapeHTML(item.message)}
+      </div>
+
+      <div class="notice">
+        Получатель: ${escapeHTML(item.phone)}
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+// ПОДДЕРЖКА
+
+function supportMoney() {
+
+  toast(
+    "Платёжная ссылка пока не подключена."
+  );
+
+}
+
+
+// УВЕДОМЛЕНИЯ
+
+function toast(text) {
+
+  const element = document.getElementById("toast");
+
+  element.textContent = text;
+  element.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    element.classList.remove("show");
+  }, 2800);
+
+}
+
 </script>
+
 </body>
 </html>
