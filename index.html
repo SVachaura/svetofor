@@ -3,676 +3,270 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#e32636">
-<title>Red Prizrak - Anonymous SMS</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red Prizrak — Anonymous SMS</title>
 <style>
-:root{
-  --bg:#fff;
-  --card:#fff;
-  --text:#171717;
-  --muted:#888;
-  --red:#e32636;
-  --button:#e32636;
-  --buttonText:#fff;
-  --line:#eee;
-  --shadow:0 8px 25px #0000000d;
-}
-
-body.dark{
-  --bg:#df2636;
-  --card:#ed3040;
+:root {
+  --bg:#100d16;
+  --panel:#1c1723;
   --text:#fff;
-  --muted:#ffe0e3;
-  --red:#fff;
-  --button:#fff;
-  --buttonText:#df2636;
-  --line:#ffffff35;
-  --shadow:0 8px 25px #780b1930;
+  --muted:#a99eae;
+  --accent:#f04448;
+  --field:#120f19;
+  --line:#382b3b;
+  --button-text:#fff;
 }
-
-*{
-  box-sizing:border-box;
+body.light {
+  --bg:#fff8f5;
+  --panel:#fff;
+  --text:#281c25;
+  --muted:#887780;
+  --accent:#df2636;
+  --field:#fff8f5;
+  --line:#f0dadd;
+  --button-text:#fff;
+}
+* {box-sizing:border-box}
+body {
   margin:0;
-  padding:0;
-}
-
-body{
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:.3s;
   min-height:100vh;
+  padding:24px 17px 35px;
+  background:
+    radial-gradient(ellipse at 50% 0%,#54202e 0%,transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  transition:.3s;
 }
-
-.app{
-  max-width:480px;
-  margin:auto;
-  padding:24px 17px 50px;
+body.light {
+  background:
+    radial-gradient(ellipse at 50% 0%,#ffe0d9 0%,transparent 55%),
+    var(--bg);
 }
-
-header{
+.container {max-width:440px;margin:auto;position:relative}
+.decoration {
+  position:fixed;
+  pointer-events:none;
+  opacity:.15;
+  font-size:30px;
+  z-index:0;
+}
+.d1 {top:35px;left:12px}
+.d2 {top:150px;right:12px}
+.d3 {bottom:45px;left:20px}
+.d4 {bottom:120px;right:18px}
+.moon {
+  position:absolute;
+  top:4px;
+  right:18px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#ffdf9a;
+  box-shadow:0 0 30px #ffdf9a66;
+}
+.moon:after {
+  content:"";
+  position:absolute;
+  left:-9px;
+  top:-5px;
+  width:45px;
+  height:45px;
+  background:var(--bg);
+  border-radius:50%;
+}
+body.light .moon {opacity:.5}
+header {
+  position:relative;
+  z-index:1;
   text-align:center;
+  padding-top:25px;
   margin-bottom:28px;
 }
-
-.avatar{
-  width:100px;
-  height:100px;
-  border-radius:27px;
-  border:2px solid var(--red);
-  background:var(--button);
-  color:var(--buttonText);
-  display:flex;
+.avatar {
+  width:112px;
+  height:112px;
+  border-radius:32px;
+  background:white;
+  border:3px solid var(--accent);
+  display:inline-flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 15px;
+  box-shadow:0 0 28px #f0444840;
   cursor:pointer;
-  transition:.3s;
-  box-shadow:var(--shadow);
+  transition:.25s;
 }
-
-.avatar:active{
-  transform:scale(.92);
+.avatar:active {transform:scale(.94)}
+.avatar svg {width:72px;height:72px;fill:#df2636}
+h1 {
+  margin:17px 0 5px;
+  font-size:26px;
+  letter-spacing:1px;
 }
-
-.avatar svg{
-  width:65px;
-  height:65px;
-}
-
-h1{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:-.7px;
-}
-
-.subtitle{
-  color:var(--muted);
-  font-size:11px;
+h1 span {color:var(--accent)}
+.subtitle {color:var(--muted);font-size:13px}
+.halloween-title {
+  color:var(--accent);
+  font-size:12px;
   letter-spacing:3px;
-  margin-top:6px;
+  margin-top:13px;
 }
-
-.halloween{
-  margin-top:12px;
-  color:var(--red);
-  font-size:13px;
-  font-weight:bold;
-}
-
-.menu{
-  display:flex;
-  flex-direction:column;
-  gap:13px;
-}
-
-.menu-button{
-  width:100%;
+.card {
+  position:relative;
+  z-index:1;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
   padding:19px;
-  border-radius:17px;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:15px;
-  text-align:left;
-  cursor:pointer;
-  box-shadow:var(--shadow);
-  transition:.2s;
+  margin-bottom:16px;
+  box-shadow:0 9px 28px #00000018;
 }
-
-.menu-button:active{
-  transform:scale(.97);
-}
-
-.menu-icon{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--button);
-  color:var(--buttonText);
-  font-size:23px;
-}
-
-.menu-text{
-  flex:1;
-}
-
-.menu-text strong{
-  font-size:15px;
+label {
   display:block;
-  margin-bottom:5px;
-}
-
-.menu-text small{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.arrow{
-  color:var(--muted);
-  font-size:23px;
-}
-
-.page{
-  display:none;
-  animation:appear .25s ease;
-}
-
-.page.active{
-  display:block;
-}
-
-@keyframes appear{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.back{
-  border:0;
-  background:var(--button);
-  color:var(--buttonText);
-  padding:11px 16px;
-  border-radius:12px;
+  font-size:14px;
   font-weight:bold;
-  margin-bottom:23px;
-  cursor:pointer;
+  margin-bottom:10px;
 }
-
-h2{
-  font-size:24px;
-  margin-bottom:8px;
-}
-
-.description{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:22px;
-  line-height:1.5;
-}
-
-label{
-  display:block;
-  font-weight:bold;
-  font-size:13px;
-  margin:17px 0 9px;
-}
-
-input,textarea{
+input,textarea {
   width:100%;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--text);
   padding:15px;
+  border:1px solid var(--line);
   border-radius:13px;
+  background:var(--field);
+  color:var(--text);
+  font-size:16px;
   outline:none;
-  font-size:15px;
+  font-family:Arial,sans-serif;
 }
-
-textarea{
-  min-height:125px;
-  resize:vertical;
-}
-
-.primary{
+input:focus,textarea:focus {border-color:var(--accent)}
+textarea {height:145px;resize:vertical}
+button {
   width:100%;
   border:0;
   border-radius:14px;
   padding:16px;
-  margin-top:18px;
-  background:var(--button);
-  color:var(--buttonText);
   font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.card{
-  border:1px solid var(--line);
-  background:var(--card);
-  border-radius:17px;
-  padding:17px;
-  margin-bottom:13px;
-  box-shadow:var(--shadow);
-}
-
-.history-item{
-  border-bottom:1px solid var(--line);
-  padding:15px 0;
-  overflow-wrap:anywhere;
-}
-
-.history-item:last-child{
-  border:0;
-}
-
-.history-number{
-  color:var(--muted);
-  font-size:11px;
   font-weight:bold;
-  margin-bottom:8px;
+  cursor:pointer;
+  transition:.2s;
 }
-
-.history-message{
-  font-size:14px;
-  white-space:pre-wrap;
-}
-
-.support-item{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  text-decoration:none;
-  color:var(--text);
-}
-
-.support-icon{
-  width:45px;
-  height:45px;
-  background:var(--button);
-  color:var(--buttonText);
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-size:22px;
-}
-
-.support-item p{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
-}
-
-.notice{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
+button:active {transform:scale(.97)}
+.send {
+  background:var(--accent);
+  color:var(--button-text);
+  box-shadow:0 5px 18px #f0444840;
   margin-top:15px;
 }
-
-.empty{
-  color:var(--muted);
+.support {
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--text);
+  margin-top:12px;
+}
+.status {
   text-align:center;
-  padding:25px;
+  min-height:20px;
+  margin-top:12px;
   font-size:13px;
-}
-
-footer{
-  text-align:center;
-  margin-top:35px;
   color:var(--muted);
-  font-size:11px;
 }
-
-.toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#171717;
-  color:#fff;
-  padding:13px 17px;
-  border-radius:12px;
+footer {
+  text-align:center;
+  margin-top:30px;
   font-size:12px;
-  display:none;
-  width:max-content;
-  max-width:90%;
+  color:var(--muted);
 }
-
-.toast.show{
-  display:block;
-}
-
-.pumpkin{
-  position:fixed;
-  opacity:.10;
-  pointer-events:none;
-  font-size:45px;
-  z-index:-1;
-}
-
-.p1{top:120px;left:8px}
-.p2{top:360px;right:7px}
-.p3{bottom:90px;left:12px}
-
+footer .pumpkin {font-size:24px;margin-bottom:8px}
 </style>
 </head>
 
 <body>
-
-<div class="pumpkin p1">🎃</div>
-<div class="pumpkin p2">👻</div>
-<div class="pumpkin p3">🕸️</div>
-
-<div class="app">
-
-<!-- ГЛАВНЫЙ ЭКРАН -->
-
-<section id="home" class="page active">
-
-<header>
-
-<button class="avatar" id="avatar" onclick="toggleTheme()">
-  <svg viewBox="0 0 100 100" id="ghost">
-    <path d="M19 49 C19 24 34 12 50 12 C66 12 81 24 81 49 L81 82 L65 73 L50 84 L35 73 L19 82 Z"
-    fill="#e32636"/>
-    <ellipse cx="39" cy="47" rx="5" ry="8" fill="white"/>
-    <ellipse cx="61" cy="47" rx="5" ry="8" fill="white"/>
-  </svg>
-</button>
-
-<h1>Red Prizrak</h1>
-
-<div class="subtitle">ANONYMOUS SMS</div>
-
-<div class="halloween">🎃 HALLOWEEN EDITION 👻</div>
-
-</header>
-
-<div class="menu">
-
-<button class="menu-button" onclick="openPage('number')">
-  <div class="menu-icon">📱</div>
-  <div class="menu-text">
-    <strong>Номер</strong>
-    <small>Выбрать получателя</small>
-  </div>
-  <span class="arrow">›</span>
-</button>
-
-<button class="menu-button" onclick="openPage('messages')">
-  <div class="menu-icon">💬</div>
-  <div class="menu-text">
-    <strong>Сообщения</strong>
-    <small>Написать и посмотреть историю</small>
-  </div>
-  <span class="arrow">›</span>
-</button>
-
-<button class="menu-button" onclick="openPage('support')">
-  <div class="menu-icon">❤️</div>
-  <div class="menu-text">
-    <strong>Поддержать автора</strong>
-    <small>Помочь развитию проекта</small>
-  </div>
-  <span class="arrow">›</span>
-</button>
-
-</div>
-
-<footer>
-  Red Prizrak - Anonymous SMS<br>
-  Happy Halloween 🎃
-</footer>
-
-</section>
-
-
-<!-- НОМЕР -->
-
-<section id="number" class="page">
-
-<button class="back" onclick="openPage('home')">← Назад</button>
-
-<h2>📱 Номер</h2>
-<p class="description">
-  Укажи международный номер получателя.
-</p>
-
-<label>Номер телефона</label>
-<input id="phone" type="tel" placeholder="+7 999 123-45-67">
-
-<button class="primary" onclick="savePhone()">
-  Сохранить номер
-</button>
-
-<p class="notice">
-  Используй только номера людей, которым разрешено отправлять сообщения.
-</p>
-
-</section>
-
-
-<!-- СООБЩЕНИЯ -->
-
-<section id="messages" class="page">
-
-<button class="back" onclick="openPage('home')">← Назад</button>
-
-<h2>💬 Сообщения</h2>
-<p class="description">
-  Создай новое сообщение.
-</p>
-
-<label>Номер получателя</label>
-<input id="messagePhone" type="tel" placeholder="+7 999 123-45-67">
-
-<label>Текст</label>
-<textarea id="messageText" maxlength="500"
-placeholder="Напиши сообщение..."></textarea>
-
-<button class="primary" onclick="sendMessage()">
-  Создать сообщение
-</button>
-
-<p class="notice">
-  Это демонстрационный режим. Настоящие SMS пока не отправляются.
-</p>
-
-<h2 style="margin-top:30px">История</h2>
-
-<div class="card" id="history">
-  <div class="empty">Сообщений пока нет 👻</div>
-</div>
-
-</section>
-
-
-<!-- ПОДДЕРЖКА -->
-
-<section id="support" class="page">
-
-<button class="back" onclick="openPage('home')">← Назад</button>
-
-<h2>❤️ Поддержать автора</h2>
-
-<p class="description">
-  Поддержи развитие Red Prizrak!
-</p>
-
-<div class="card support-item" onclick="donate()">
-  <div class="support-icon">💰</div>
-  <div>
-    <strong>Поддержать деньгами</strong>
-    <p>Добровольная поддержка проекта</p>
-  </div>
-  <span class="arrow">›</span>
-</div>
-
-<a class="card support-item"
-href="https://t.me/k0tikcom"
-target="_blank"
-rel="noopener noreferrer">
-
-  <div class="support-icon">✈️</div>
-  <div>
-    <strong>Подписаться на Telegram</strong>
-    <p>@k0tikcom</p>
-  </div>
-  <span class="arrow">›</span>
-
-</a>
-
-<p class="notice">
-  Подписка на канал помогает автору развивать проект
-  и работать с рекламными размещениями.
-</p>
-
-</section>
-
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-
-let currentNumber = 1;
-let messages = [];
-let savedPhone = "";
-
-// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
-
-function toggleTheme(){
-
-  document.body.classList.toggle("dark");
-
-  const ghost = document.getElementById("ghost");
-
-  const red = document.body.classList.contains("dark");
-
-  ghost.querySelector("path").setAttribute(
-    "fill", red ? "#ffffff" : "#e32636"
-  );
-
-  ghost.querySelectorAll("ellipse").forEach(eye=>{
-    eye.setAttribute("fill",red ? "#df2636" : "#ffffff");
-  });
-
-}
-
-// ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
-
-function openPage(id){
-
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
-
-  document.getElementById(id).classList.add("active");
-
-  window.scrollTo(0,0);
-
-}
-
-// УВЕДОМЛЕНИЕ
-
-function toast(text){
-
-  const el = document.getElementById("toast");
-
-  el.textContent = text;
-  el.classList.add("show");
-
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer = setTimeout(()=>{
-    el.classList.remove("show");
-  },2600);
-
-}
-
-// СОХРАНЕНИЕ НОМЕРА
-
-function savePhone(){
-
-  const phone = document.getElementById("phone").value.trim();
-
-  if(!/^\+?[0-9\s()\-]{7,20}$/.test(phone)){
-    toast("Проверь номер телефона!");
-    return;
-  }
-
-  savedPhone = phone;
-
-  document.getElementById("messagePhone").value = phone;
-
-  toast("Номер сохранён!");
-
-  openPage("messages");
-
-}
-
-// ЭКРАНИРОВАНИЕ ТЕКСТА
-
-function escapeHTML(s){
-  return s.replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[c]);
-}
-
-// СОЗДАНИЕ СООБЩЕНИЯ
-
-function sendMessage(){
-
-  const phone = document.getElementById("messagePhone").value.trim();
-  const text = document.getElementById("messageText").value.trim();
-
-  if(!/^\+?[0-9\s()\-]{7,20}$/.test(phone) || !text){
-    toast("Проверь номер и сообщение!");
-    return;
-  }
-
-  const number = currentNumber++;
-
-  messages.unshift({number,phone,text});
-
-  renderHistory();
-
-  document.getElementById("messageText").value = "";
-
-  toast("Демо-сообщение #" + number + " создано. SMS не отправлено.");
-
-}
-
-// ИСТОРИЯ
-
-function renderHistory(){
-
-  const box = document.getElementById("history");
-
-  box.innerHTML = messages.map(m=>`
-
-    <div class="history-item">
-
-      <div class="history-number">
-        СООБЩЕНИЕ #${m.number}
-      </div>
-
-      <div class="history-message">
-        Тебе пришло сообщения: #${m.number}
-
-        ${escapeHTML(m.text)}
-      </div>
-
-      <div class="notice">
-        Номер: ${escapeHTML(m.phone)}
-      </div>
-
+<div class="decoration d1">🦇</div>
+<div class="decoration d2">🕸️</div>
+<div class="decoration d3">🎃</div>
+<div class="decoration d4">👻</div>
+
+<div class="container">
+  <div class="moon"></div>
+
+  <header>
+    <div class="avatar" onclick="toggleTheme()" title="Сменить тему">
+      <svg viewBox="0 0 100 100">
+        <path d="M50 7 C25 7 12 25 12 48 V80
+        C12 89 20 94 28 87 L38 79
+        C45 85 55 85 62 79 L72 87
+        C80 94 88 89 88 80 V48
+        C88 25 75 7 50 7Z"/>
+        <rect x="32" y="38" width="9" height="19" rx="4" fill="white"/>
+        <rect x="59" y="38" width="9" height="19" rx="4" fill="white"/>
+      </svg>
     </div>
 
-  `).join("");
+    <h1>RED <span>PRIZRAK</span></h1>
+    <div class="subtitle">Anonymous SMS</div>
+    <div class="halloween-title">☠ HALLOWEEN EDITION ☠</div>
+  </header>
 
+  <main>
+    <section class="card">
+      <label>📱 Номер получателя</label>
+      <input id="phone" type="tel" placeholder="+49 123 456789">
+    </section>
+
+    <section class="card">
+      <label>👻 Сообщение</label>
+      <textarea id="message" maxlength="1000"
+        placeholder="Напиши своё сообщение..."></textarea>
+
+      <button class="send" onclick="sendMessage()">
+        🎃 ОТПРАВИТЬ
+      </button>
+      <div class="status" id="status"></div>
+    </section>
+
+    <section class="card">
+      <button class="support" onclick="support()">
+        🕯️ Поддержать автора
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="pumpkin">🎃 🦇 🎃</div>
+    RED PRIZRAK © 2026
+    <br>Enter the Halloween world...
+  </footer>
+</div>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light");
 }
 
-// ДЕНЬГИ
+function sendMessage() {
+  const phone = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const status = document.getElementById("status");
 
-function donate(){
+  if (!phone || !message) {
+    status.textContent = "👻 Заполни номер и сообщение!";
+    return;
+  }
 
-  toast("Платёжная ссылка пока не подключена.");
+  if (!/^\+[0-9\s()-]{7,20}$/.test(phone)) {
+    status.textContent = "⚠️ Проверь номер телефона.";
+    return;
+  }
 
+  status.textContent =
+    "🎃 Интерфейс готов! Для настоящей отправки подключи SMS-сервер.";
+
+  // Здесь пока нет реальной отправки SMS.
 }
 
+function support() {
+  window.open("https://t.me/k0tikcom", "_blank");
+}
 </script>
-
 </body>
 </html>
