@@ -3,432 +3,200 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>LEGO WORLD</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Red Prizrak</title>
 <style>
+:root{
+ --bg:#100d16;--panel:#1c1723;--text:#fff;
+ --muted:#a99eae;--accent:#f04448;
+ --field:#120f19;--line:#382b3b;
+}
+body.light{
+ --bg:#fff8f5;--panel:#fff;--text:#281c25;
+ --muted:#887780;--accent:#df2636;
+ --field:#fff8f5;--line:#f0dadd;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#101a2c;color:white;font-family:Arial;overflow:hidden}
-button{border:0;border-radius:13px;padding:13px;background:#263d5b;color:white;font-weight:bold}
-button:active{transform:scale(.96)}
-#game{position:relative;width:100vw;height:100dvh;display:none}
-canvas{display:block}
-#menu{position:absolute;inset:0;background:linear-gradient(145deg,#101a2c,#203c61);z-index:10;overflow:auto;padding:22px}
-.logo{text-align:center;color:#ffcf35;font-size:30px;font-weight:1000;margin:35px 0 5px}
-.subtitle{text-align:center;color:#a9bdd6;margin-bottom:30px}
-.menuButtons{display:grid;gap:12px;max-width:440px;margin:auto}
-.big{background:#ffcf35;color:#182033;font-size:18px;padding:17px}
-.panel{display:none;max-width:500px;margin:20px auto;background:#172941;border-radius:20px;padding:16px}
-.card{background:#263e5c;border-radius:15px;padding:14px;margin:10px 0}
-.card.selected{border:2px solid #ffcf35}
-.small{font-size:12px;color:#aebfd3}
-#top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none}
-#top>*{pointer-events:auto}
-#exit{background:#bd3939}
-#controls{position:absolute;bottom:18px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}
-.pad,.actions{display:grid;gap:6px;pointer-events:auto}
-.pad{grid-template-columns:48px 48px 48px;grid-template-rows:48px 48px}
-.pad button{padding:0;font-size:20px;background:#172b48dd}
-.up{grid-column:2}.left{grid-column:1;grid-row:2}
-.down{grid-column:2;grid-row:2}.right{grid-column:3;grid-row:2}
-.actions button{width:75px;height:53px;background:#ffcf35;color:#182033}
-#talk{position:absolute;bottom:145px;right:18px;background:#ffcf35;color:#182033;display:none}
-#dialog{display:none;position:absolute;bottom:210px;left:15px;right:15px;background:#14243aee;padding:16px;border-radius:16px}
+body{
+ margin:0;padding:20px 16px 40px;
+ min-height:100vh;color:var(--text);
+ background:radial-gradient(ellipse at 50% 0%,#54202e 0%,transparent 55%),var(--bg);
+ font-family:Arial,sans-serif;transition:.3s;
+}
+body.light{background:radial-gradient(ellipse at 50% 0%,#ffe0d9,transparent 55%),var(--bg)}
+.container{max-width:440px;margin:auto;position:relative}
+header{text-align:center;padding:25px 0}
+.avatar{
+ width:105px;height:105px;background:white;
+ border:3px solid var(--accent);border-radius:30px;
+ display:inline-flex;align-items:center;justify-content:center;
+ cursor:pointer;box-shadow:0 0 28px #f0444840;
+}
+.avatar svg{width:70px;height:70px;fill:#df2636}
+h1{font-size:26px;margin:14px 0 5px;letter-spacing:1px}
+h1 span{color:var(--accent)}
+.subtitle{color:var(--muted);font-size:13px}
+.edition{color:var(--accent);font-size:11px;letter-spacing:3px;margin-top:12px}
+.decoration{position:fixed;opacity:.13;pointer-events:none;font-size:30px}
+.d1{top:25px;left:10px}.d2{top:170px;right:10px}
+.d3{bottom:30px;left:15px}.d4{bottom:130px;right:15px}
+.card{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:22px;padding:19px;margin-bottom:15px;
+ box-shadow:0 8px 25px #00000018;
+}
+label{display:block;font-size:14px;font-weight:bold;margin-bottom:10px}
+input,textarea{
+ width:100%;padding:15px;border:1px solid var(--line);
+ border-radius:13px;background:var(--field);
+ color:var(--text);font-size:16px;outline:none;
+}
+textarea{height:140px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--accent)}
+button{
+ border:0;border-radius:14px;padding:16px;
+ font-size:15px;font-weight:bold;cursor:pointer;
+ transition:.2s;
+}
+button:active{transform:scale(.97)}
+.primary{width:100%;background:var(--accent);color:white;margin-top:14px}
+.secondary{
+ width:100%;background:transparent;color:var(--text);
+ border:1px solid var(--accent);margin-top:12px;
+}
+.status{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;min-height:18px}
+.page{display:none}
+.page.active{display:block}
+.back{background:transparent;color:var(--accent);padding:5px 0 16px}
+.amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.amount{
+ background:var(--field);color:var(--text);
+ border:1px solid var(--line);font-size:21px;
+}
+.amount.selected{background:var(--accent);color:white;border-color:var(--accent)}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.custom{margin-top:10px}
+.pay-title{text-align:center;margin:5px 0 15px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 </style>
 </head>
 <body>
+<div class="decoration d1">🦇</div>
+<div class="decoration d2">🕸️</div>
+<div class="decoration d3">🎃</div>
+<div class="decoration d4">👻</div>
 
-<div id="menu">
- <div class="logo">🧱 LEGO WORLD</div>
- <div class="subtitle">Твой собственный LEGO-мир</div>
- <div class="menuButtons" id="mainMenu">
-  <button class="big" id="play">▶ ИГРАТЬ</button>
-  <button onclick="panel('worlds')">🌍 МИРЫ</button>
-  <button onclick="panel('skins')">🧍 ПЕРСОНАЖ</button>
-  <button onclick="panel('shop')">🛒 МАГАЗИН</button>
-  <button onclick="panel('settings')">⚙️ НАСТРОЙКИ</button>
+<div class="container">
+<header>
+ <div class="avatar" onclick="toggleTheme()">
+  <svg viewBox="0 0 100 100">
+   <path d="M50 7C25 7 12 25 12 48V80C12 89 20 94 28 87L38 79C45 85 55 85 62 79L72 87C80 94 88 89 88 80V48C88 25 75 7 50 7Z"/>
+   <rect x="32" y="38" width="9" height="19" rx="4" fill="white"/>
+   <rect x="59" y="38" width="9" height="19" rx="4" fill="white"/>
+  </svg>
  </div>
- <div class="panel" id="worlds">
-  <h2>🌍 Миры</h2>
-  <div class="card" id="w0">🧱 Classic World<br><button onclick="selectWorld(0)">Выбрать</button></div>
-  <div class="card" id="w1">🏖️ Coast World<br><button onclick="selectWorld(1)">Выбрать</button></div>
-  <div class="card" id="w2">🌲 Forest World<br><button onclick="selectWorld(2)">Выбрать</button></div>
-  <button onclick="back()">Назад</button>
- </div>
- <div class="panel" id="skins">
-  <h2>🧍 Персонаж</h2>
-  <div id="skinList"></div>
-  <button onclick="back()">Назад</button>
- </div>
- <div class="panel" id="shop">
-  <h2>🛒 Магазин</h2>
-  <div class="card">🚀 Астронавт — 19 ₽ <button onclick="buy(3)">Купить</button></div>
-  <div class="card">🔴 Street — 19 ₽ <button onclick="buy(4)">Купить</button></div>
-  <p class="small">Покупка пока демонстрационная.</p>
-  <button onclick="back()">Назад</button>
- </div>
- <div class="panel" id="settings">
-  <h2>⚙️ Настройки</h2>
-  <p>Управление: экранные кнопки или WASD.</p>
-  <p>Камера: вращение пальцем.</p>
-  <button onclick="back()">Назад</button>
- </div>
-</div>
+ <h1>RED <span>PRIZRAK</span></h1>
+ <div class="subtitle">Anonymous SMS</div>
+ <div class="edition">☠ HALLOWEEN EDITION ☠</div>
+</header>
 
-<div id="game">
- <div id="top">
-  <div style="background:#101a2ddd;padding:11px;border-radius:12px">🧱 <span id="worldName">Classic</span></div>
-  <button id="exit">В МЕНЮ</button>
+<!-- ГЛАВНАЯ -->
+<section id="home" class="page active">
+ <div class="card">
+  <label>📱 Номер получателя</label>
+  <input id="phone" type="tel" placeholder="+7 999 123-45-67">
  </div>
- <button id="talk">💬 Поговорить</button>
- <div id="dialog">
-  <b id="npcName"></b><p id="npcText"></p>
-  <button onclick="closeDialog()">Закрыть</button>
+ <div class="card">
+  <label>👻 Сообщение</label>
+  <textarea id="message" maxlength="1000" placeholder="Напиши сообщение..."></textarea>
+  <button class="primary" onclick="sendSMS()">🎃 ОТПРАВИТЬ SMS</button>
+  <div class="status" id="smsStatus"></div>
  </div>
- <div id="controls">
-  <div class="pad">
-   <button class="up" data-move="forward">▲</button>
-   <button class="left" data-move="left">◀</button>
-   <button class="down" data-move="back">▼</button>
-   <button class="right" data-move="right">▶</button>
+ <button class="secondary" onclick="openPage('support')">🕯️ Поддержать автора</button>
+</section>
+
+<!-- ПОДДЕРЖКА -->
+<section id="support" class="page">
+ <button class="back" onclick="openPage('home')">← Назад</button>
+ <div class="card">
+  <div class="pay-title">
+   <div style="font-size:35px">🎃</div>
+   <h2>Поддержать автора</h2>
+   <div class="small">Выбери сумму поддержки</div>
   </div>
-  <div class="actions"><button id="jump">ПРЫЖОК</button></div>
+  <div class="amounts">
+   <button class="amount" onclick="chooseAmount(50,this)">50 ₽</button>
+   <button class="amount" onclick="chooseAmount(100,this)">100 ₽</button>
+   <button class="amount" onclick="chooseAmount(150,this)">150 ₽</button>
+   <button class="amount" onclick="chooseAmount(200,this)">200 ₽</button>
+  </div>
+  <label>Или выбери свою сумму</label>
+  <input class="custom" id="customAmount" type="number" min="1" max="100000" placeholder="Сумма в рублях" oninput="customChanged()">
+  <button class="primary" onclick="pay()">❤️ Поддержать</button>
+  <div class="status" id="payStatus"></div>
+  <p class="small">Платёжный сервис пока не подключён. Кнопка демонстрирует выбор суммы, но деньги не списываются.</p>
  </div>
+</section>
+
+<footer>
+ 🎃 🦇 🎃<br><br>
+ RED PRIZRAK © 2026
+</footer>
 </div>
 
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
-</script>
+<script>
+let selectedAmount=0;
 
-<script type="module">
-import * as THREE from "three";
-
-const $=id=>document.getElementById(id);
-let world=0,skin=0,owned=[true,false,false,false,false];
-const skinData=[
- {name:"Classic",shirt:0x1264d9,pants:0x164dba},
- {name:"Street",shirt:0xe73535,pants:0x252525},
- {name:"Worker",shirt:0x28a65b,pants:0x303b4d},
- {name:"Astronaut",shirt:0xeceff4,pants:0xd1d8e0},
- {name:"Red Street",shirt:0xc51e35,pants:0x252525}
-];
-
-window.panel=id=>{
- document.querySelectorAll(".panel").forEach(x=>x.style.display="none");
- $("mainMenu").style.display="none";$(id).style.display="block";
-};
-window.back=()=>{
- document.querySelectorAll(".panel").forEach(x=>x.style.display="none");
- $("mainMenu").style.display="grid";
-};
-window.selectWorld=n=>{
- world=n;
- document.querySelectorAll("#worlds .card").forEach((x,i)=>x.classList.toggle("selected",i===n));
- $("worldName").textContent=["Classic","Coast","Forest"][n];
-};
-function renderSkins(){
- $("skinList").innerHTML="";
- skinData.forEach((s,i)=>{
-  let d=document.createElement("div");d.className="card";
-  d.innerHTML=`<b>${s.name}</b><br><span class="small">${owned[i]?"Доступен":"Закрыт"}</span><br><button>${skin===i?"Выбран":"Надеть"}</button>`;
-  d.querySelector("button").onclick=()=>{
-   if(owned[i]){skin=i;renderSkins();}
-   else alert("Этот скин пока закрыт. Посмотри магазин.");
-  };
-  $("skinList").append(d);
- });
-}
-renderSkins();
-window.buy=i=>{owned[i]=true;renderSkins();alert("Скин открыт в демонстрационном режиме!");};
-
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x8ac9fa);
-scene.fog=new THREE.Fog(0x8ac9fa,75,220);
-const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,500);
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-$("game").prepend(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xffffff,0x657b54,2));
-const sun=new THREE.DirectionalLight(0xffffff,2.2);
-sun.position.set(-30,60,30);sun.castShadow=true;scene.add(sun);
-
-const mat=c=>new THREE.MeshStandardMaterial({color:c,roughness:.75});
-const ground=mat(0x62b64b),road=mat(0x444c57),yellow=mat(0xffd629);
-function cube(x,y,z,a,b,c,m,parent=scene){
- const o=new THREE.Mesh(new THREE.BoxGeometry(a,b,c),m);
- o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;
- parent.add(o);return o;
-}
-function cyl(x,y,z,r,h,m,parent=scene){
- const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,32),m);
- o.position.set(x,y,z);o.castShadow=true;parent.add(o);return o;
+function toggleTheme(){
+ document.body.classList.toggle('light');
 }
 
-// Мир
-cube(0,-.3,0,240,.5,240,ground);
-cube(0,-.02,0,10,.12,210,road);
-for(let z=-100;z<105;z+=7)cube(0,.06,z,.18,.04,3,yellow);
+function openPage(name){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(name).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
 
-function house(x,z,color){
- const g=new THREE.Group();scene.add(g);
- cube(x,1.6,z,7,3.2,6,mat(color),g);
- cube(x,3.45,z,7.4,.35,6.4,mat(0x873c39),g);
- cube(x,1,z+3.06,1.4,2,.12,mat(0x784525),g);
- cube(x-2,2,z+3.1,1.3,1,.12,mat(0x75d8ff),g);
- cube(x+2,2,z+3.1,1.3,1,.12,mat(0x75d8ff),g);
-}
-function tree(x,z){
- cyl(x,.9,z,.4,1.8,mat(0x85502b));
- cube(x,2.6,z,2.5,2.5,2.5,mat(0x269c47));
-}
-function buildWorld(){
- // Удаляем прежние декорации
- for(let i=scene.children.length-1;i>=0;i--){
-  const o=scene.children[i];
-  if(o.userData.decoration){scene.remove(o);}
+function sendSMS(){
+ const phone=document.getElementById('phone').value.trim();
+ const message=document.getElementById('message').value.trim();
+ const status=document.getElementById('smsStatus');
+
+ if(!phone||!message){
+  status.textContent='👻 Заполни номер и сообщение!';
+  return;
  }
- // Дополнительные объекты
- const add=(o)=>{o.userData.decoration=true;return o;};
- if(world===0){
-  for(let x of [-25,-14,14,25])
-   for(let z of [-55,-30,0,30,55])add(tree(x,z));
-  house(-17,-15,0xf2c34b);house(17,-35,0x79a9ed);
-  house(-17,25,0xe28b55);house(17,45,0xd7d7e8);
- }else if(world===1){
-  add(cube(0,-.01,75,240,.1,65,mat(0xe9d18c)));
-  add(cube(0,-.02,108,240,.1,30,mat(0x299fda)));
-  for(let x=-70;x<80;x+=18){
-   add(cyl(x,1,70,.3,2,mat(0x85502b)));
-   add(cube(x,2.5,70,3,2,3,mat(0x239a4b)));
-  }
-  house(-20,10,0xffc35b);house(20,20,0x79a9ed);
- }else{
-  for(let x=-75;x<=75;x+=15)
-   for(let z=-85;z<=85;z+=18)add(tree(x,z));
-  add(cube(0,-.01,50,28,.1,35,mat(0x359dd1)));
-  house(-20,-20,0x9a724b);
+ if(!/^\+[0-9\s()-]{7,20}$/.test(phone)){
+  status.textContent='⚠️ Проверь номер телефона.';
+  return;
  }
+ status.textContent='🎃 Демо-режим: SMS-сервер ещё не подключён.';
 }
-buildWorld();
 
-// Более детальная минифигурка
-function minifig(x,z,shirt,pantsColor,options={}){
- const g=new THREE.Group();scene.add(g);g.position.set(x,0,z);
- const skin=mat(options.skin||0xffd52c);
- const shirt=mat(shirt),pants=mat(pantsColor);
- const dark=mat(0x272727),black=mat(0x161616);
+function chooseAmount(amount,button){
+ selectedAmount=amount;
+ document.getElementById('customAmount').value='';
+ document.querySelectorAll('.amount').forEach(b=>b.classList.remove('selected'));
+ button.classList.add('selected');
+ document.getElementById('payStatus').textContent='Выбрано: '+amount+' ₽';
+}
 
- // Ноги с формой минифигурки
- const legs=[];
- for(let side of [-1,1]){
-  const leg=new THREE.Group();leg.position.set(side*.23,.96,0);g.add(leg);
-  cube(0,-.22,0,.43,.8,.48,pants,leg);
-  cube(0,-.57,.07,.44,.22,.58,pants,leg);
-  legs.push(leg);
+function customChanged(){
+ const value=Number(document.getElementById('customAmount').value);
+ selectedAmount=value>0?value:0;
+ document.querySelectorAll('.amount').forEach(b=>b.classList.remove('selected'));
+ document.getElementById('payStatus').textContent=
+ value>0?'Выбрано: '+value+' ₽':'';
+}
+
+function pay(){
+ const status=document.getElementById('payStatus');
+ if(!selectedAmount||selectedAmount<1||selectedAmount>100000){
+  status.textContent='Выбери сумму от 1 до 100 000 ₽.';
+  return;
  }
- // Торс: плечи, талия и нижняя часть
- const torso=new THREE.Group();torso.position.y=1.42;g.add(torso);
- cube(0,.18,0,1.03,.82,.48,shirt,torso);
- cube(0,-.25,0,.78,.12,.45,shirt,torso);
- // воротник
- cyl(0,.62,0,.21,.16,skin,torso);
-
- // Руки с плечевыми соединениями
- const arms=[];
- for(let side of [-1,1]){
-  const arm=new THREE.Group();arm.position.set(side*.58,.43,0);torso.add(arm);
-  cyl(0,-.13,0,.19,.5,shirt,arm);
-  const forearm=cube(0,-.43,0,.28,.42,.3,shirt,arm);
-  // C-образная кисть
-  const hand=new THREE.Group();hand.position.set(0,-.69,0);arm.add(hand);
-  const handMat=skin;
-  cyl(0,-.09,0,.16,.22,handMat,hand);
-  // вырез в кисти имитируем прорезью и открытым кольцом
-  const grip=new THREE.Mesh(
-   new THREE.TorusGeometry(.13,.055,8,16,Math.PI*1.55),
-   handMat
-  );
-  grip.rotation.z=Math.PI/2;grip.position.set(0,-.09,.02);hand.add(grip);
-  arms.push(arm);
- }
- // Голова: круглая с цилиндрическим силуэтом
- const head=new THREE.Group();head.position.y=2.48;g.add(head);
- cyl(0,0,0,.48,.85,skin,head);
- cyl(0,.46,0,.19,.13,skin,head);
- // Лицо спереди
- cube(0,.02,.466,.48,.045,.025,black,head);
- cube(-.14,.15,.48,.07,.09,.04,black,head);
- cube(.14,.15,.48,.07,.09,.04,black,head);
- // Улыбка
- const smile=new THREE.Mesh(
-  new THREE.TorusGeometry(.13,.018,6,20,Math.PI),
-  mat(0x7b2b16)
- );
- smile.position.set(0,-.13,.49);smile.rotation.z=Math.PI;head.add(smile);
-
- // Волосы или шлем
- if(options.hair){
-  cube(0,.48,0,.85,.22,.85,mat(options.hair),head);
- }
- if(options.hat){
-  cyl(0,.55,0,.52,.16,mat(options.hat),head);
- }
- g.userData.legs=legs;g.userData.arms=arms;g.userData.head=head;
- return g;
+ status.textContent='Выбрано '+selectedAmount+' ₽. Платёжный сервис пока не подключён.';
 }
-
-let player;
-let npcs=[];
-function spawnCharacters(){
- if(player)scene.remove(player);
- npcs.forEach(n=>scene.remove(n.g));
- npcs=[];
- const s=skinData[skin];
- player=minifig(0,8,s.shirt,s.pants);
- const data=[
-  [-12,-12,0xe53935,0x164dba,"Макс","Привет! Хороший сегодня день!"],
-  [12,-25,0x28a65b,0x303b4d,"Алекс","Я работаю в магазине."],
-  [-20,22,0x8c50c8,0x252525,"Дима","Я строю новый дом."],
-  [20,50,0xf2c34b,0x164dba,"Илья","Люблю гулять по этому городу."],
-  [-35,45,0x16a5a5,0x303b4d,"Саша","Здесь очень красиво!"]
- ];
- data.forEach((d,i)=>{
-  const g=minifig(d[0],d[1],d[2],d[3],{hair:i%2?0x53301e:null});
-  npcs.push({g,name:d[4],text:d[5],homeX:d[0],homeZ:d[1],
-   targetX:d[0],targetZ:d[1],timer:Math.random()*4,phase:Math.random()*6});
- });
-}
-spawnCharacters();
-
-const keys={};let angle=0,jumpV=0,jumping=false,walkClock=0;
-function moveCharacter(g,moving,t){
- g.userData.legs.forEach((leg,i)=>{
-  leg.rotation.x=moving?Math.sin(t+i*Math.PI)*.55:0;
- });
- g.userData.arms.forEach((arm,i)=>{
-  arm.rotation.x=moving?-Math.sin(t+i*Math.PI)*.45:0;
- });
-}
-function movePlayer(dt){
- let dx=0,dz=0;
- if(keys.forward||keys.w)dz-=1;
- if(keys.back||keys.s)dz+=1;
- if(keys.left||keys.a)dx-=1;
- if(keys.right||keys.d)dx+=1;
- const moving=dx!==0||dz!==0;
- if(moving){
-  const len=Math.hypot(dx,dz);dx/=len;dz/=len;
-  const mx=dx*Math.cos(angle)+dz*Math.sin(angle);
-  const mz=-dx*Math.sin(angle)+dz*Math.cos(angle);
-  player.position.x+=mx*dt*8;
-  player.position.z+=mz*dt*8;
-  player.rotation.y=Math.atan2(mx,mz);
- }
- walkClock+=dt*(moving?10:2);
- moveCharacter(player,moving,walkClock);
- if(jumping){
-  player.position.y+=jumpV*dt;jumpV-=14*dt;
-  if(player.position.y<=0){player.position.y=0;jumping=false;}
- }
-}
-function moveNPCs(dt){
- npcs.forEach((n,i)=>{
-  n.timer-=dt;
-  if(n.timer<=0){
-   n.timer=3+Math.random()*5;
-   n.targetX=n.homeX+(Math.random()-.5)*20;
-   n.targetZ=n.homeZ+(Math.random()-.5)*20;
-  }
-  const dx=n.targetX-n.g.position.x,dz=n.targetZ-n.g.position.z;
-  const dist=Math.hypot(dx,dz);
-  const moving=dist>.5;
-  if(moving){
-   const speed=1.1;
-   n.g.position.x+=dx/dist*speed*dt;
-   n.g.position.z+=dz/dist*speed*dt;
-   n.g.rotation.y=Math.atan2(dx,dz);
-  }
-  n.phase+=dt*5;
-  moveCharacter(n.g,moving,n.phase);
- });
-}
-function cameraUpdate(){
- const t=new THREE.Vector3(player.position.x,2.3,player.position.z);
- camera.position.set(t.x+Math.sin(angle)*12,t.y+6,t.z+Math.cos(angle)*12);
- camera.lookAt(t);
-}
-
-document.querySelectorAll("[data-move]").forEach(b=>{
- const k=b.dataset.move;
- b.addEventListener("pointerdown",e=>{e.preventDefault();keys[k]=true;});
- ["pointerup","pointerleave","pointercancel"].forEach(ev=>
- b.addEventListener(ev,()=>keys[k]=false));
-});
-$("jump").onclick=()=>{if(!jumping){jumping=true;jumpV=7;}};
-window.addEventListener("keydown",e=>{
- keys[e.key.toLowerCase()]=true;
- if(e.code==="Space"&&!jumping){jumping=true;jumpV=7;}
-});
-window.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
-
-let lastX=null;
-renderer.domElement.addEventListener("pointerdown",e=>{lastX=e.clientX;});
-window.addEventListener("pointermove",e=>{
- if(lastX!==null){angle+=(lastX-e.clientX)*.008;lastX=e.clientX;}
-});
-window.addEventListener("pointerup",()=>lastX=null);
-
-// Поиск ближайшего NPC
-let nearest=null;
-function checkNPC(){
- nearest=null;let best=5;
- npcs.forEach(n=>{
-  const d=player.position.distanceTo(n.g.position);
-  if(d<best){best=d;nearest=n;}
- });
- $("talk").style.display=nearest?"block":"none";
-}
-$("talk").onclick=()=>{
- if(!nearest)return;
- $("npcName").textContent=nearest.name;
- $("npcText").textContent=nearest.text;
- $("dialog").style.display="block";
-};
-window.closeDialog=()=>{$("dialog").style.display="none";};
-
-$("play").onclick=()=>{
- $("menu").style.display="none";$("game").style.display="block";
- gameStarted=true;
- selectWorld(world);
- buildWorld();
- spawnCharacters();
- resize();
-};
-$("exit").onclick=()=>{
- $("game").style.display="none";$("menu").style.display="block";
- $("dialog").style.display="none";
- gameStarted=false;back();
-};
-
-function resize(){
- camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight);
-}
-window.addEventListener("resize",resize);
-resize();
-
-const timer=new THREE.Clock();
-function animate(){
- requestAnimationFrame(animate);
- const dt=Math.min(timer.getDelta(),.04);
- if(gameStarted){
-  movePlayer(dt);moveNPCs(dt);cameraUpdate();checkNPC();
- }
- renderer.render(scene,camera);
-}
-animate();
 </script>
 </body>
 </html>
