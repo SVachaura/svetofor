@@ -4,199 +4,327 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Red Prizrak</title>
+<title>Crosshair Studio</title>
 <style>
-:root{
- --bg:#100d16;--panel:#1c1723;--text:#fff;
- --muted:#a99eae;--accent:#f04448;
- --field:#120f19;--line:#382b3b;
-}
-body.light{
- --bg:#fff8f5;--panel:#fff;--text:#281c25;
- --muted:#887780;--accent:#df2636;
- --field:#fff8f5;--line:#f0dadd;
-}
 *{box-sizing:border-box}
 body{
- margin:0;padding:20px 16px 40px;
- min-height:100vh;color:var(--text);
- background:radial-gradient(ellipse at 50% 0%,#54202e 0%,transparent 55%),var(--bg);
- font-family:Arial,sans-serif;transition:.3s;
+ margin:0;background:#0b1020;color:#fff;
+ font-family:Arial,sans-serif;
 }
-body.light{background:radial-gradient(ellipse at 50% 0%,#ffe0d9,transparent 55%),var(--bg)}
-.container{max-width:440px;margin:auto;position:relative}
-header{text-align:center;padding:25px 0}
-.avatar{
- width:105px;height:105px;background:white;
- border:3px solid var(--accent);border-radius:30px;
- display:inline-flex;align-items:center;justify-content:center;
- cursor:pointer;box-shadow:0 0 28px #f0444840;
+header{
+ padding:20px;display:flex;align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid #26314a;
 }
-.avatar svg{width:70px;height:70px;fill:#df2636}
-h1{font-size:26px;margin:14px 0 5px;letter-spacing:1px}
-h1 span{color:var(--accent)}
-.subtitle{color:var(--muted);font-size:13px}
-.edition{color:var(--accent);font-size:11px;letter-spacing:3px;margin-top:12px}
-.decoration{position:fixed;opacity:.13;pointer-events:none;font-size:30px}
-.d1{top:25px;left:10px}.d2{top:170px;right:10px}
-.d3{bottom:30px;left:15px}.d4{bottom:130px;right:15px}
+.logo{font-size:22px;font-weight:900}
+.logo span{color:#5794ff}
+main{max-width:1100px;margin:auto;padding:18px}
 .card{
- background:var(--panel);border:1px solid var(--line);
- border-radius:22px;padding:19px;margin-bottom:15px;
- box-shadow:0 8px 25px #00000018;
+ background:#141d32;border:1px solid #263653;
+ padding:18px;border-radius:18px;margin-bottom:16px;
 }
-label{display:block;font-size:14px;font-weight:bold;margin-bottom:10px}
-input,textarea{
- width:100%;padding:15px;border:1px solid var(--line);
- border-radius:13px;background:var(--field);
- color:var(--text);font-size:16px;outline:none;
+h2{font-size:17px;margin:0 0 15px}
+.preview{
+ height:300px;background:#080c15;
+ border-radius:14px;display:flex;
+ align-items:center;justify-content:center;
+ position:relative;overflow:hidden;
 }
-textarea{height:140px;resize:vertical}
-input:focus,textarea:focus{border-color:var(--accent)}
+canvas{width:100%;height:100%;touch-action:none}
+.grid{
+ display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+label{font-size:13px;color:#aab9d1}
+input[type=range]{width:100%;accent-color:#5794ff}
+input[type=color]{width:100%;height:38px;border:0;background:none}
+.control{margin:15px 0}
 button{
- border:0;border-radius:14px;padding:16px;
- font-size:15px;font-weight:bold;cursor:pointer;
- transition:.2s;
+ border:0;border-radius:12px;padding:13px;
+ background:#5794ff;color:white;font-weight:bold;
+ cursor:pointer;
 }
+button.secondary{background:#263653}
 button:active{transform:scale(.97)}
-.primary{width:100%;background:var(--accent);color:white;margin-top:14px}
-.secondary{
- width:100%;background:transparent;color:var(--text);
- border:1px solid var(--accent);margin-top:12px;
+.buttons{display:flex;gap:9px;flex-wrap:wrap}
+.buttons button{flex:1}
+textarea{
+ width:100%;height:130px;background:#080c15;
+ color:#9dc3ff;border:1px solid #344866;
+ border-radius:12px;padding:12px;resize:vertical;
 }
-.status{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;min-height:18px}
-.page{display:none}
-.page.active{display:block}
-.back{background:transparent;color:var(--accent);padding:5px 0 16px}
-.amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
-.amount{
- background:var(--field);color:var(--text);
- border:1px solid var(--line);font-size:21px;
+input[type=file]{width:100%;margin-top:10px}
+.small{font-size:12px;color:#91a2bd}
+@media(max-width:600px){
+ .grid{grid-template-columns:1fr}
+ .preview{height:260px}
 }
-.amount.selected{background:var(--accent);color:white;border-color:var(--accent)}
-.small{font-size:12px;color:var(--muted);line-height:1.5}
-.custom{margin-top:10px}
-.pay-title{text-align:center;margin:5px 0 15px}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 </style>
 </head>
 <body>
-<div class="decoration d1">🦇</div>
-<div class="decoration d2">🕸️</div>
-<div class="decoration d3">🎃</div>
-<div class="decoration d4">👻</div>
 
-<div class="container">
 <header>
- <div class="avatar" onclick="toggleTheme()">
-  <svg viewBox="0 0 100 100">
-   <path d="M50 7C25 7 12 25 12 48V80C12 89 20 94 28 87L38 79C45 85 55 85 62 79L72 87C80 94 88 89 88 80V48C88 25 75 7 50 7Z"/>
-   <rect x="32" y="38" width="9" height="19" rx="4" fill="white"/>
-   <rect x="59" y="38" width="9" height="19" rx="4" fill="white"/>
-  </svg>
- </div>
- <h1>RED <span>PRIZRAK</span></h1>
- <div class="subtitle">Anonymous SMS</div>
- <div class="edition">☠ HALLOWEEN EDITION ☠</div>
+ <div class="logo">✛ <span>Crosshair</span> Studio</div>
+ <div class="small">CS2 EDITOR v0.1</div>
 </header>
 
-<!-- ГЛАВНАЯ -->
-<section id="home" class="page active">
- <div class="card">
-  <label>📱 Номер получателя</label>
-  <input id="phone" type="tel" placeholder="+7 999 123-45-67">
- </div>
- <div class="card">
-  <label>👻 Сообщение</label>
-  <textarea id="message" maxlength="1000" placeholder="Напиши сообщение..."></textarea>
-  <button class="primary" onclick="sendSMS()">🎃 ОТПРАВИТЬ SMS</button>
-  <div class="status" id="smsStatus"></div>
- </div>
- <button class="secondary" onclick="openPage('support')">🕯️ Поддержать автора</button>
-</section>
+<main>
 
-<!-- ПОДДЕРЖКА -->
-<section id="support" class="page">
- <button class="back" onclick="openPage('home')">← Назад</button>
- <div class="card">
-  <div class="pay-title">
-   <div style="font-size:35px">🎃</div>
-   <h2>Поддержать автора</h2>
-   <div class="small">Выбери сумму поддержки</div>
-  </div>
-  <div class="amounts">
-   <button class="amount" onclick="chooseAmount(50,this)">50 ₽</button>
-   <button class="amount" onclick="chooseAmount(100,this)">100 ₽</button>
-   <button class="amount" onclick="chooseAmount(150,this)">150 ₽</button>
-   <button class="amount" onclick="chooseAmount(200,this)">200 ₽</button>
-  </div>
-  <label>Или выбери свою сумму</label>
-  <input class="custom" id="customAmount" type="number" min="1" max="100000" placeholder="Сумма в рублях" oninput="customChanged()">
-  <button class="primary" onclick="pay()">❤️ Поддержать</button>
-  <div class="status" id="payStatus"></div>
-  <p class="small">Платёжный сервис пока не подключён. Кнопка демонстрирует выбор суммы, но деньги не списываются.</p>
+<div class="card">
+ <h2>Предпросмотр прицела</h2>
+ <div class="preview">
+  <canvas id="canvas"></canvas>
  </div>
-</section>
-
-<footer>
- 🎃 🦇 🎃<br><br>
- RED PRIZRAK © 2026
-</footer>
+ <p class="small">Можно рисовать пальцем прямо на холсте.</p>
+ <div class="buttons">
+  <button class="secondary" onclick="clearDrawing()">Очистить рисунок</button>
+  <button class="secondary" onclick="reset()">Сбросить всё</button>
+ </div>
 </div>
 
+<div class="card">
+ <h2>Настройка прицела</h2>
+
+ <div class="grid">
+  <div class="control">
+   <label>Длина линий: <b id="lengthVal">8</b></label>
+   <input id="length" type="range" min="1" max="30" value="8">
+  </div>
+
+  <div class="control">
+   <label>Толщина: <b id="thicknessVal">2</b></label>
+   <input id="thickness" type="range" min="1" max="10" value="2">
+  </div>
+
+  <div class="control">
+   <label>Расстояние: <b id="gapVal">3</b></label>
+   <input id="gap" type="range" min="0" max="20" value="3">
+  </div>
+
+  <div class="control">
+   <label>Размер точки: <b id="dotVal">0</b></label>
+   <input id="dot" type="range" min="0" max="8" value="0">
+  </div>
+
+  <div class="control">
+   <label>Цвет прицела</label>
+   <input id="color" type="color" value="#00ff66">
+  </div>
+
+  <div class="control">
+   <label>Обводка</label>
+   <input id="outline" type="checkbox">
+  </div>
+ </div>
+</div>
+
+<div class="card">
+ <h2>Загрузка фотографии</h2>
+ <p class="small">Выбери изображение прицела с устройства.</p>
+ <input type="file" id="photo" accept="image/*">
+ <div class="buttons" style="margin-top:12px">
+  <button class="secondary" onclick="analyzePhoto()">Распознать прицел</button>
+ </div>
+ <p id="photoStatus" class="small"></p>
+</div>
+
+<div class="card">
+ <h2>Генератор кода CS2</h2>
+ <textarea id="code" readonly></textarea>
+ <div class="buttons" style="margin-top:12px">
+  <button onclick="generate()">Обновить код</button>
+  <button onclick="copyCode()">Копировать код</button>
+ </div>
+ <p class="small">
+ Код формируется из параметров редактора. После копирования
+ его можно импортировать в CS2 через настройки прицела,
+ если используется поддерживаемый формат.
+ </p>
+</div>
+
+</main>
+
 <script>
-let selectedAmount=0;
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
 
-function toggleTheme(){
- document.body.classList.toggle('light');
+const ids=["length","thickness","gap","dot"];
+let drawing=false;
+let strokes=[];
+
+function resize(){
+ const r=canvas.getBoundingClientRect();
+ const old=canvas.width?canvas.width:0;
+ canvas.width=r.width*devicePixelRatio;
+ canvas.height=r.height*devicePixelRatio;
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ draw();
+}
+window.addEventListener("resize",resize);
+
+function val(id){
+ return Number(document.getElementById(id).value);
 }
 
-function openPage(name){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(name).classList.add('active');
- window.scrollTo({top:0,behavior:'smooth'});
+function draw(){
+ const w=canvas.clientWidth;
+ const h=canvas.clientHeight;
+ ctx.clearRect(0,0,w,h);
+
+ const x=w/2,y=h/2;
+ const len=val("length");
+ const thick=val("thickness");
+ const gap=val("gap");
+ const dot=val("dot");
+ const color=document.getElementById("color").value;
+ const outline=document.getElementById("outline").checked;
+
+ function line(x1,y1,x2,y2){
+  if(outline){
+   ctx.strokeStyle="#000";
+   ctx.lineWidth=thick+2;
+   ctx.beginPath();ctx.moveTo(x1,y1);
+   ctx.lineTo(x2,y2);ctx.stroke();
+  }
+  ctx.strokeStyle=color;
+  ctx.lineWidth=thick;
+  ctx.lineCap="square";
+  ctx.beginPath();ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);ctx.stroke();
+ }
+
+ line(x-len-gap,y,x-gap,y);
+ line(x+gap,y,x+len+gap,y);
+ line(x,y-len-gap,x,y-gap);
+ line(x,y+gap,x,y+len+gap);
+
+ if(dot>0){
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.arc(x,y,dot,0,Math.PI*2);
+  ctx.fill();
+ }
+
+ strokes.forEach(s=>{
+  ctx.strokeStyle=s.color;
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  s.points.forEach((p,i)=>{
+   if(i===0)ctx.moveTo(p.x,p.y);
+   else ctx.lineTo(p.x,p.y);
+  });
+  ctx.stroke();
+ });
 }
 
-function sendSMS(){
- const phone=document.getElementById('phone').value.trim();
- const message=document.getElementById('message').value.trim();
- const status=document.getElementById('smsStatus');
+ids.forEach(id=>{
+ document.getElementById(id).addEventListener("input",()=>{
+  document.getElementById(id+"Val").textContent=val(id);
+  draw();generate();
+ });
+});
 
- if(!phone||!message){
-  status.textContent='👻 Заполни номер и сообщение!';
+["color","outline"].forEach(id=>{
+ document.getElementById(id).addEventListener("input",()=>{
+  draw();generate();
+ });
+});
+
+function position(e){
+ const r=canvas.getBoundingClientRect();
+ return {x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+canvas.addEventListener("pointerdown",e=>{
+ drawing=true;
+ canvas.setPointerCapture(e.pointerId);
+ strokes.push({
+  color:document.getElementById("color").value,
+  points:[position(e)]
+ });
+ draw();
+});
+
+canvas.addEventListener("pointermove",e=>{
+ if(!drawing)return;
+ strokes[strokes.length-1].points.push(position(e));
+ draw();
+});
+
+canvas.addEventListener("pointerup",()=>drawing=false);
+canvas.addEventListener("pointercancel",()=>drawing=false);
+
+function clearDrawing(){
+ strokes=[];
+ draw();
+}
+
+function reset(){
+ ids.forEach(id=>{
+  document.getElementById(id).value=
+   {length:8,thickness:2,gap:3,dot:0}[id];
+  document.getElementById(id+"Val").textContent=val(id);
+ });
+ document.getElementById("color").value="#00ff66";
+ document.getElementById("outline").checked=false;
+ strokes=[];
+ draw();generate();
+}
+
+function generate(){
+ const len=val("length");
+ const thick=val("thickness");
+ const gap=val("gap");
+ const dot=val("dot");
+ const color=document.getElementById("color").value;
+ const rgb=[
+  parseInt(color.slice(1,3),16),
+  parseInt(color.slice(3,5),16),
+  parseInt(color.slice(5,7),16)
+ ];
+
+ // CS2 console configuration
+ const commands=[
+  "cl_crosshairstyle 4",
+  "cl_crosshairsize "+len,
+  "cl_crosshairthickness "+thick,
+  "cl_crosshairgap "+(-gap),
+  "cl_crosshairdot "+(dot>0?1:0),
+  "cl_crosshair_drawoutline "+
+   (document.getElementById("outline").checked?1:0),
+  "cl_crosshaircolor 5",
+  "cl_crosshaircolor_r "+rgb[0],
+  "cl_crosshaircolor_g "+rgb[1],
+  "cl_crosshaircolor_b "+rgb[2]
+ ];
+ document.getElementById("code").value=commands.join("\n");
+}
+
+function copyCode(){
+ const code=document.getElementById("code");
+ code.select();
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(code.value)
+   .then(()=>alert("Код скопирован!"))
+   .catch(()=>alert("Выдели и скопируй код вручную"));
+ }else{
+  document.execCommand("copy");
+  alert("Код скопирован!");
+ }
+}
+
+function analyzePhoto(){
+ const file=document.getElementById("photo").files[0];
+ const status=document.getElementById("photoStatus");
+ if(!file){
+  status.textContent="Сначала выбери изображение.";
   return;
  }
- if(!/^\+[0-9\s()-]{7,20}$/.test(phone)){
-  status.textContent='⚠️ Проверь номер телефона.';
-  return;
- }
- status.textContent='🎃 Демо-режим: SMS-сервер ещё не подключён.';
+ status.textContent=
+ "Изображение загружено. Автоматическое распознавание формы пока не подключено. Можно настроить параметры вручную.";
 }
 
-function chooseAmount(amount,button){
- selectedAmount=amount;
- document.getElementById('customAmount').value='';
- document.querySelectorAll('.amount').forEach(b=>b.classList.remove('selected'));
- button.classList.add('selected');
- document.getElementById('payStatus').textContent='Выбрано: '+amount+' ₽';
-}
-
-function customChanged(){
- const value=Number(document.getElementById('customAmount').value);
- selectedAmount=value>0?value:0;
- document.querySelectorAll('.amount').forEach(b=>b.classList.remove('selected'));
- document.getElementById('payStatus').textContent=
- value>0?'Выбрано: '+value+' ₽':'';
-}
-
-function pay(){
- const status=document.getElementById('payStatus');
- if(!selectedAmount||selectedAmount<1||selectedAmount>100000){
-  status.textContent='Выбери сумму от 1 до 100 000 ₽.';
-  return;
- }
- status.textContent='Выбрано '+selectedAmount+' ₽. Платёжный сервис пока не подключён.';
-}
+resize();
+generate();
 </script>
 </body>
 </html>
