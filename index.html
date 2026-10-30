@@ -3,328 +3,389 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crosshair Studio</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>8000 BTC: Chapter 1</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#0b1020;color:#fff;
- font-family:Arial,sans-serif;
-}
-header{
- padding:20px;display:flex;align-items:center;
- justify-content:space-between;
- border-bottom:1px solid #26314a;
-}
-.logo{font-size:22px;font-weight:900}
-.logo span{color:#5794ff}
-main{max-width:1100px;margin:auto;padding:18px}
-.card{
- background:#141d32;border:1px solid #263653;
- padding:18px;border-radius:18px;margin-bottom:16px;
-}
-h2{font-size:17px;margin:0 0 15px}
-.preview{
- height:300px;background:#080c15;
- border-radius:14px;display:flex;
- align-items:center;justify-content:center;
- position:relative;overflow:hidden;
-}
-canvas{width:100%;height:100%;touch-action:none}
-.grid{
- display:grid;grid-template-columns:1fr 1fr;gap:12px;
-}
-label{font-size:13px;color:#aab9d1}
-input[type=range]{width:100%;accent-color:#5794ff}
-input[type=color]{width:100%;height:38px;border:0;background:none}
-.control{margin:15px 0}
-button{
- border:0;border-radius:12px;padding:13px;
- background:#5794ff;color:white;font-weight:bold;
- cursor:pointer;
-}
-button.secondary{background:#263653}
-button:active{transform:scale(.97)}
-.buttons{display:flex;gap:9px;flex-wrap:wrap}
-.buttons button{flex:1}
-textarea{
- width:100%;height:130px;background:#080c15;
- color:#9dc3ff;border:1px solid #344866;
- border-radius:12px;padding:12px;resize:vertical;
-}
-input[type=file]{width:100%;margin-top:10px}
-.small{font-size:12px;color:#91a2bd}
-@media(max-width:600px){
- .grid{grid-template-columns:1fr}
- .preview{height:260px}
-}
+body{margin:0;background:#111;color:white;font-family:Arial;overflow:hidden}
+button{border:0;border-radius:12px;padding:14px 20px;color:white;background:#343d46;font-weight:bold}
+button:active{background:#647b8d}
+#game{position:fixed;inset:0;display:none}
+#menu{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(#0005,#000c),url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200') center/cover}
+h1{font-size:38px;margin:0;text-shadow:0 3px 12px black}
+.sub{letter-spacing:5px;color:#c4cbd0;margin:8px 0 35px}
+.buttons{width:80%;max-width:300px;display:grid;gap:12px}
+.buttons button{background:#263440dd;font-size:16px}
+#hud{position:absolute;inset:0;pointer-events:none;display:none}
+#top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
+.panel{background:#101820db;padding:10px 13px;border-radius:12px;font-size:13px}
+#inventory{position:absolute;left:12px;top:68px;background:#101820dd;padding:12px;border-radius:12px;font-size:13px;line-height:1.7}
+#hint{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#101820dd;padding:10px 15px;border-radius:12px;white-space:nowrap;font-size:13px}
+#controls{position:absolute;bottom:18px;left:15px;right:15px;display:flex;justify-content:space-between;align-items:end;pointer-events:auto}
+#move{display:grid;grid-template-columns:55px 55px 55px;grid-template-rows:55px 55px}
+#move button{padding:0;font-size:23px;background:#182631dd;border:1px solid #65778688}
+#move button:nth-child(1){grid-column:2}
+#move button:nth-child(2){grid-column:1;grid-row:2}
+#move button:nth-child(3){grid-column:2;grid-row:2}
+#move button:nth-child(4){grid-column:3;grid-row:2}
+#actions{display:grid;gap:9px}
+#actions button{background:#263e4cdd;min-width:100px}
+#settings{display:none;position:fixed;inset:0;background:#000c;align-items:center;justify-content:center}
+#settings .box{background:#202a33;padding:25px;border-radius:18px;width:85%;max-width:340px}
+#settings button{width:100%;margin-top:10px}
+#build{display:none;position:absolute;inset:0;background:#000b;align-items:center;justify-content:center;pointer-events:auto}
+#build .box{background:#202a33;padding:22px;border-radius:18px;width:85%;max-width:340px}
+#build button{width:100%;margin-top:10px}
 </style>
 </head>
 <body>
 
-<header>
- <div class="logo">✛ <span>Crosshair</span> Studio</div>
- <div class="small">CS2 EDITOR v0.1</div>
-</header>
-
-<main>
-
-<div class="card">
- <h2>Предпросмотр прицела</h2>
- <div class="preview">
-  <canvas id="canvas"></canvas>
- </div>
- <p class="small">Можно рисовать пальцем прямо на холсте.</p>
- <div class="buttons">
-  <button class="secondary" onclick="clearDrawing()">Очистить рисунок</button>
-  <button class="secondary" onclick="reset()">Сбросить всё</button>
- </div>
+<div id="menu">
+<h1>8000 BTC</h1>
+<div class="sub">CHAPTER 1</div>
+<div class="buttons">
+<button onclick="startGame()">НОВАЯ ИГРА</button>
+<button onclick="startGame()">ПРОДОЛЖИТЬ</button>
+<button onclick="openSettings()">НАСТРОЙКИ</button>
+</div>
+<div style="margin-top:35px;color:#aaa;font-size:12px">PRE-ALPHA 0.1</div>
 </div>
 
-<div class="card">
- <h2>Настройка прицела</h2>
+<div id="game"></div>
 
- <div class="grid">
-  <div class="control">
-   <label>Длина линий: <b id="lengthVal">8</b></label>
-   <input id="length" type="range" min="1" max="30" value="8">
-  </div>
-
-  <div class="control">
-   <label>Толщина: <b id="thicknessVal">2</b></label>
-   <input id="thickness" type="range" min="1" max="10" value="2">
-  </div>
-
-  <div class="control">
-   <label>Расстояние: <b id="gapVal">3</b></label>
-   <input id="gap" type="range" min="0" max="20" value="3">
-  </div>
-
-  <div class="control">
-   <label>Размер точки: <b id="dotVal">0</b></label>
-   <input id="dot" type="range" min="0" max="8" value="0">
-  </div>
-
-  <div class="control">
-   <label>Цвет прицела</label>
-   <input id="color" type="color" value="#00ff66">
-  </div>
-
-  <div class="control">
-   <label>Обводка</label>
-   <input id="outline" type="checkbox">
-  </div>
- </div>
+<div id="hud">
+<div id="top">
+<div class="panel">🏠 База: не построена</div>
+<div class="panel">💵 <span id="money">0</span>$</div>
+</div>
+<div id="inventory">
+<b>ИНВЕНТАРЬ</b><br>
+🪵 Дерево: <span id="wood">0</span><br>
+🔩 Металл: <span id="metal">0</span><br>
+📦 Мусор: <span id="trash">0</span>
+</div>
+<div id="hint">Исследуй территорию</div>
+<div id="controls">
+<div id="move">
+<button data-key="w">▲</button>
+<button data-key="a">◀</button>
+<button data-key="s">▼</button>
+<button data-key="d">▶</button>
+</div>
+<div id="actions">
+<button onclick="collect()">СОБРАТЬ</button>
+<button onclick="openBuild()">СТРОИТЬ</button>
+<button onclick="openSettings()">⚙</button>
+</div>
+</div>
 </div>
 
-<div class="card">
- <h2>Загрузка фотографии</h2>
- <p class="small">Выбери изображение прицела с устройства.</p>
- <input type="file" id="photo" accept="image/*">
- <div class="buttons" style="margin-top:12px">
-  <button class="secondary" onclick="analyzePhoto()">Распознать прицел</button>
- </div>
- <p id="photoStatus" class="small"></p>
+<div id="build">
+<div class="box">
+<h3>🏗️ Строительство</h3>
+<p id="buildInfo">Собери материалы для своего дома.</p>
+<button onclick="buildHouse()">ПОСТРОИТЬ ДОМ</button>
+<button onclick="closeBuild()">НАЗАД</button>
+</div>
 </div>
 
-<div class="card">
- <h2>Генератор кода CS2</h2>
- <textarea id="code" readonly></textarea>
- <div class="buttons" style="margin-top:12px">
-  <button onclick="generate()">Обновить код</button>
-  <button onclick="copyCode()">Копировать код</button>
- </div>
- <p class="small">
- Код формируется из параметров редактора. После копирования
- его можно импортировать в CS2 через настройки прицела,
- если используется поддерживаемый формат.
- </p>
+<div id="settings">
+<div class="box">
+<h2>Настройки</h2>
+<label>Графика</label>
+<select id="quality" style="width:100%;padding:10px;margin-top:8px">
+<option>Низкая</option><option selected>Средняя</option><option>Высокая</option>
+</select>
+<button onclick="closeSettings()">СОХРАНИТЬ</button>
+</div>
 </div>
 
-</main>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+</script>
 
-<script>
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d");
+<script type="module">
+import * as THREE from 'three';
 
-const ids=["length","thickness","gap","dot"];
-let drawing=false;
-let strokes=[];
+let scene,camera,renderer,player;
+let objects=[],keys={};
+let money=0,wood=0,metal=0,trash=0;
+let house=false,started=false;
+let yaw=0;
+let lastX=0,lastY=0;
 
-function resize(){
- const r=canvas.getBoundingClientRect();
- const old=canvas.width?canvas.width:0;
- canvas.width=r.width*devicePixelRatio;
- canvas.height=r.height*devicePixelRatio;
- ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- draw();
-}
-window.addEventListener("resize",resize);
+const game=document.getElementById('game');
+const hud=document.getElementById('hud');
 
-function val(id){
- return Number(document.getElementById(id).value);
+function material(color){
+ return new THREE.MeshStandardMaterial({color,roughness:1});
 }
 
-function draw(){
- const w=canvas.clientWidth;
- const h=canvas.clientHeight;
- ctx.clearRect(0,0,w,h);
+function box(x,y,z,sx,sy,sz,color){
+ const m=new THREE.Mesh(
+  new THREE.BoxGeometry(sx,sy,sz),material(color)
+ );
+ m.position.set(x,y,z);
+ m.castShadow=true;
+ m.receiveShadow=true;
+ scene.add(m);
+ return m;
+}
 
- const x=w/2,y=h/2;
- const len=val("length");
- const thick=val("thickness");
- const gap=val("gap");
- const dot=val("dot");
- const color=document.getElementById("color").value;
- const outline=document.getElementById("outline").checked;
+function startGame(){
+ document.getElementById('menu').style.display='none';
+ game.style.display='block';
+ hud.style.display='block';
+ document.getElementById('settings').style.display='none';
+ if(!started)init();
+ started=true;
+}
 
- function line(x1,y1,x2,y2){
-  if(outline){
-   ctx.strokeStyle="#000";
-   ctx.lineWidth=thick+2;
-   ctx.beginPath();ctx.moveTo(x1,y1);
-   ctx.lineTo(x2,y2);ctx.stroke();
-  }
-  ctx.strokeStyle=color;
-  ctx.lineWidth=thick;
-  ctx.lineCap="square";
-  ctx.beginPath();ctx.moveTo(x1,y1);
-  ctx.lineTo(x2,y2);ctx.stroke();
+function init(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x9aadb1);
+ scene.fog=new THREE.Fog(0x9aadb1,35,115);
+
+ camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,250);
+
+ renderer=new THREE.WebGLRenderer({antialias:true});
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ game.appendChild(renderer.domElement);
+
+ scene.add(new THREE.HemisphereLight(0xffffff,0x53604c,2));
+
+ const sun=new THREE.DirectionalLight(0xffffff,2);
+ sun.position.set(-30,50,20);
+ sun.castShadow=true;
+ scene.add(sun);
+
+ // Земля
+ const ground=new THREE.Mesh(
+  new THREE.PlaneGeometry(220,220),
+  material(0x716b5c)
+ );
+ ground.rotation.x=-Math.PI/2;
+ ground.receiveShadow=true;
+ scene.add(ground);
+
+ // Огромная мусорная гора
+ const mountain=new THREE.Mesh(
+  new THREE.SphereGeometry(1,24,16),
+  material(0x554c43)
+ );
+ mountain.position.set(0,2,-25);
+ mountain.scale.set(35,13,18);
+ mountain.castShadow=true;
+ scene.add(mountain);
+
+ // Разные куски мусора
+ const colors=[0x777777,0x8b5739,0x395a62,0x9a9a85,0x403e38,0x566c42,0xaaaaaa];
+ const types=['wood','metal','trash'];
+
+ for(let i=0;i<210;i++){
+  const x=(Math.random()-.5)*65;
+  const z=-10-Math.random()*43;
+  const size=.3+Math.random()*1.2;
+  const type=types[Math.floor(Math.random()*3)];
+  const m=new THREE.Mesh(
+   new THREE.BoxGeometry(size,size*.65,size),
+   material(colors[Math.floor(Math.random()*colors.length)])
+  );
+  m.position.set(x,size*.35,z);
+  m.rotation.y=Math.random()*Math.PI;
+  m.castShadow=true;
+  scene.add(m);
+  objects.push({mesh:m,type,used:false});
  }
 
- line(x-len-gap,y,x-gap,y);
- line(x+gap,y,x+len+gap,y);
- line(x,y-len-gap,x,y-gap);
- line(x,y+gap,x,y+len+gap);
-
- if(dot>0){
-  ctx.fillStyle=color;
-  ctx.beginPath();
-  ctx.arc(x,y,dot,0,Math.PI*2);
-  ctx.fill();
+ // Дополнительные отдельные объекты
+ for(let i=0;i<45;i++){
+  const x=(Math.random()-.5)*75;
+  const z=-5-Math.random()*50;
+  const m=new THREE.Mesh(
+   new THREE.CylinderGeometry(.25,.3,.6,10),
+   material(0x718b91)
+  );
+  m.position.set(x,.3,z);
+  scene.add(m);
+  objects.push({mesh:m,type:'metal',used:false});
  }
 
- strokes.forEach(s=>{
-  ctx.strokeStyle=s.color;
-  ctx.lineWidth=3;
-  ctx.beginPath();
-  s.points.forEach((p,i)=>{
-   if(i===0)ctx.moveTo(p.x,p.y);
-   else ctx.lineTo(p.x,p.y);
-  });
-  ctx.stroke();
- });
+ // Персонаж
+ player=new THREE.Group();
+ const body=new THREE.Mesh(
+  new THREE.CylinderGeometry(.35,.4,1.2,12),
+  material(0x304e68)
+ );
+ body.position.y=.9;
+ player.add(body);
+
+ const head=new THREE.Mesh(
+  new THREE.SphereGeometry(.28,12,12),
+  material(0xc49a72)
+ );
+ head.position.y=1.7;
+ player.add(head);
+ player.position.set(0,0,10);
+ scene.add(player);
+
+ camera.position.set(0,5,17);
+ animate();
 }
 
-ids.forEach(id=>{
- document.getElementById(id).addEventListener("input",()=>{
-  document.getElementById(id+"Val").textContent=val(id);
-  draw();generate();
- });
-});
+function animate(){
+ requestAnimationFrame(animate);
+ if(!started)return;
 
-["color","outline"].forEach(id=>{
- document.getElementById(id).addEventListener("input",()=>{
-  draw();generate();
- });
-});
+ const speed=.12;
+ let dx=0,dz=0;
 
-function position(e){
- const r=canvas.getBoundingClientRect();
- return {x:e.clientX-r.left,y:e.clientY-r.top};
-}
+ if(keys.w)dz-=1;
+ if(keys.s)dz+=1;
+ if(keys.a)dx-=1;
+ if(keys.d)dx+=1;
 
-canvas.addEventListener("pointerdown",e=>{
- drawing=true;
- canvas.setPointerCapture(e.pointerId);
- strokes.push({
-  color:document.getElementById("color").value,
-  points:[position(e)]
- });
- draw();
-});
-
-canvas.addEventListener("pointermove",e=>{
- if(!drawing)return;
- strokes[strokes.length-1].points.push(position(e));
- draw();
-});
-
-canvas.addEventListener("pointerup",()=>drawing=false);
-canvas.addEventListener("pointercancel",()=>drawing=false);
-
-function clearDrawing(){
- strokes=[];
- draw();
-}
-
-function reset(){
- ids.forEach(id=>{
-  document.getElementById(id).value=
-   {length:8,thickness:2,gap:3,dot:0}[id];
-  document.getElementById(id+"Val").textContent=val(id);
- });
- document.getElementById("color").value="#00ff66";
- document.getElementById("outline").checked=false;
- strokes=[];
- draw();generate();
-}
-
-function generate(){
- const len=val("length");
- const thick=val("thickness");
- const gap=val("gap");
- const dot=val("dot");
- const color=document.getElementById("color").value;
- const rgb=[
-  parseInt(color.slice(1,3),16),
-  parseInt(color.slice(3,5),16),
-  parseInt(color.slice(5,7),16)
- ];
-
- // CS2 console configuration
- const commands=[
-  "cl_crosshairstyle 4",
-  "cl_crosshairsize "+len,
-  "cl_crosshairthickness "+thick,
-  "cl_crosshairgap "+(-gap),
-  "cl_crosshairdot "+(dot>0?1:0),
-  "cl_crosshair_drawoutline "+
-   (document.getElementById("outline").checked?1:0),
-  "cl_crosshaircolor 5",
-  "cl_crosshaircolor_r "+rgb[0],
-  "cl_crosshaircolor_g "+rgb[1],
-  "cl_crosshaircolor_b "+rgb[2]
- ];
- document.getElementById("code").value=commands.join("\n");
-}
-
-function copyCode(){
- const code=document.getElementById("code");
- code.select();
- if(navigator.clipboard){
-  navigator.clipboard.writeText(code.value)
-   .then(()=>alert("Код скопирован!"))
-   .catch(()=>alert("Выдели и скопируй код вручную"));
- }else{
-  document.execCommand("copy");
-  alert("Код скопирован!");
+ const len=Math.hypot(dx,dz);
+ if(len>0){
+  dx/=len;dz/=len;
+  player.position.x+=dx*speed;
+  player.position.z+=dz*speed;
+  player.rotation.y=Math.atan2(dx,dz);
  }
+
+ player.position.x=Math.max(-48,Math.min(48,player.position.x));
+ player.position.z=Math.max(-48,Math.min(25,player.position.z));
+
+ // Камера следует за игроком
+ const target=new THREE.Vector3(
+  player.position.x+Math.sin(yaw)*9,
+  6,
+  player.position.z+Math.cos(yaw)*9
+ );
+ camera.position.lerp(target,.08);
+ camera.lookAt(player.position.x,1,player.position.z);
+
+ renderer.render(scene,camera);
 }
 
-function analyzePhoto(){
- const file=document.getElementById("photo").files[0];
- const status=document.getElementById("photoStatus");
- if(!file){
-  status.textContent="Сначала выбери изображение.";
+window.collect=function(){
+ if(!started)return;
+ let nearest=null,dist=3;
+
+ for(const o of objects){
+  if(o.used)continue;
+  const d=o.mesh.position.distanceTo(player.position);
+  if(d<dist){dist=d;nearest=o;}
+ }
+
+ if(!nearest){
+  hint('Рядом нет предметов');
   return;
  }
- status.textContent=
- "Изображение загружено. Автоматическое распознавание формы пока не подключено. Можно настроить параметры вручную.";
+
+ nearest.used=true;
+ scene.remove(nearest.mesh);
+
+ if(nearest.type==='wood')wood++;
+ else if(nearest.type==='metal')metal++;
+ else trash++;
+
+ if(Math.random()<.18)money+=10;
+
+ update();
+ hint('Предмет собран!');
+};
+
+function update(){
+ document.getElementById('wood').textContent=wood;
+ document.getElementById('metal').textContent=metal;
+ document.getElementById('trash').textContent=trash;
+ document.getElementById('money').textContent=money;
 }
 
-resize();
-generate();
+function hint(t){
+ document.getElementById('hint').textContent=t;
+}
+
+window.openBuild=()=>document.getElementById('build').style.display='flex';
+window.closeBuild=()=>document.getElementById('build').style.display='none';
+
+window.buildHouse=function(){
+ if(house){
+  hint('Дом уже построен');
+  return;
+ }
+ if(wood<15||metal<5){
+  document.getElementById('buildInfo').textContent=
+   'Нужно 15 дерева и 5 металла. Сейчас: '+wood+' дерева, '+metal+' металла.';
+  return;
+ }
+
+ wood-=15;metal-=5;
+ house=true;
+
+ // Простой 3D дом
+ const x=player.position.x+5;
+ const z=player.position.z-5;
+ box(x,1,z,5,2,5,0x98714c);
+ box(x,2.5,z,5.5,1,5.5,0x493a2c);
+
+ const roof=box(x,4,z,6,1,6,0x57483b);
+ roof.rotation.z=.1;
+
+ update();
+ document.querySelector('#top .panel').textContent='🏠 База: построена';
+ document.getElementById('buildInfo').textContent=
+  'Дом построен! Теперь можно собирать детали компьютера.';
+ hint('Ты построил свой первый дом!');
+ closeBuild();
+};
+
+window.openSettings=()=>document.getElementById('settings').style.display='flex';
+window.closeSettings=()=>document.getElementById('settings').style.display='none';
+
+// Управление кнопками телефона
+document.querySelectorAll('[data-key]').forEach(btn=>{
+ const k=btn.dataset.key;
+ btn.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true;});
+ btn.addEventListener('pointerup',()=>keys[k]=false);
+ btn.addEventListener('pointerleave',()=>keys[k]=false);
+ btn.addEventListener('pointercancel',()=>keys[k]=false);
+});
+
+// WASD
+window.addEventListener('keydown',e=>{
+ const k=e.key.toLowerCase();
+ if(k==='w'||k==='a'||k==='s'||k==='d')keys[k]=true;
+ if(k==='e')collect();
+});
+window.addEventListener('keyup',e=>{
+ keys[e.key.toLowerCase()]=false;
+});
+
+// Поворот камеры пальцем
+game.addEventListener('pointerdown',e=>{
+ if(e.target.closest('#controls'))return;
+ lastX=e.clientX;
+ lastY=e.clientY;
+});
+game.addEventListener('pointermove',e=>{
+ if(e.buttons===0)return;
+ if(e.target.closest('#controls'))return;
+ yaw+=(e.clientX-lastX)*.006;
+ lastX=e.clientX;
+ lastY=e.clientY;
+});
+
+window.addEventListener('resize',()=>{
+ if(!renderer)return;
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
 </script>
 </body>
 </html>
