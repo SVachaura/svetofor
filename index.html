@@ -4,388 +4,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>8000 BTC: Chapter 1</title>
+<title>Булочка!</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#111;color:white;font-family:Arial;overflow:hidden}
-button{border:0;border-radius:12px;padding:14px 20px;color:white;background:#343d46;font-weight:bold}
-button:active{background:#647b8d}
-#game{position:fixed;inset:0;display:none}
-#menu{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(#0005,#000c),url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200') center/cover}
-h1{font-size:38px;margin:0;text-shadow:0 3px 12px black}
-.sub{letter-spacing:5px;color:#c4cbd0;margin:8px 0 35px}
-.buttons{width:80%;max-width:300px;display:grid;gap:12px}
-.buttons button{background:#263440dd;font-size:16px}
-#hud{position:absolute;inset:0;pointer-events:none;display:none}
-#top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
-.panel{background:#101820db;padding:10px 13px;border-radius:12px;font-size:13px}
-#inventory{position:absolute;left:12px;top:68px;background:#101820dd;padding:12px;border-radius:12px;font-size:13px;line-height:1.7}
-#hint{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#101820dd;padding:10px 15px;border-radius:12px;white-space:nowrap;font-size:13px}
-#controls{position:absolute;bottom:18px;left:15px;right:15px;display:flex;justify-content:space-between;align-items:end;pointer-events:auto}
-#move{display:grid;grid-template-columns:55px 55px 55px;grid-template-rows:55px 55px}
-#move button{padding:0;font-size:23px;background:#182631dd;border:1px solid #65778688}
-#move button:nth-child(1){grid-column:2}
-#move button:nth-child(2){grid-column:1;grid-row:2}
-#move button:nth-child(3){grid-column:2;grid-row:2}
-#move button:nth-child(4){grid-column:3;grid-row:2}
-#actions{display:grid;gap:9px}
-#actions button{background:#263e4cdd;min-width:100px}
-#settings{display:none;position:fixed;inset:0;background:#000c;align-items:center;justify-content:center}
-#settings .box{background:#202a33;padding:25px;border-radius:18px;width:85%;max-width:340px}
-#settings button{width:100%;margin-top:10px}
-#build{display:none;position:absolute;inset:0;background:#000b;align-items:center;justify-content:center;pointer-events:auto}
-#build .box{background:#202a33;padding:22px;border-radius:18px;width:85%;max-width:340px}
-#build button{width:100%;margin-top:10px}
+body{margin:0;background:#172338;color:white;font-family:Arial}
+#app{height:100dvh;display:flex;flex-direction:column;max-width:520px;margin:auto}
+header,footer{padding:12px;background:#101a2b;display:flex;justify-content:space-between;align-items:center}
+#meter{height:9px;background:#26364c;margin:8px 14px;border-radius:10px;overflow:hidden}
+#fill{height:100%;width:100%;background:#52d6a0}
+#scene{position:relative;flex:1;min-height:0;background:#9bdcff;overflow:hidden;touch-action:none}
+canvas{width:100%;height:100%;display:block;touch-action:none}
+#hint{position:absolute;top:10px;width:100%;text-align:center;color:#17324a;font-size:12px;pointer-events:none}
+button{border:0;border-radius:12px;padding:11px;background:#2e83ff;color:white;font-weight:bold}
+.secondary{background:#2a3b53}
+#status{font-size:11px;text-align:center;flex:1}
+#win{display:none;position:absolute;inset:0;background:#101a2bdd;align-items:center;justify-content:center;text-align:center}
+.panel{background:#20334d;padding:24px;border-radius:18px}
 </style>
 </head>
 <body>
-
-<div id="menu">
-<h1>8000 BTC</h1>
-<div class="sub">CHAPTER 1</div>
-<div class="buttons">
-<button onclick="startGame()">НОВАЯ ИГРА</button>
-<button onclick="startGame()">ПРОДОЛЖИТЬ</button>
-<button onclick="openSettings()">НАСТРОЙКИ</button>
+<div id="app">
+<header>
+<div><b>🥐 БУЛОЧКА!</b><div id="world">Каменные пещеры</div></div>
+<b id="level">Уровень 1 / 500</b>
+</header>
+<div id="meter"><div id="fill"></div></div>
+<div id="scene">
+<canvas id="game"></canvas>
+<div id="hint">Нарисуй лестницу пальцем!</div>
+<div id="win"><div class="panel">
+<h2 id="winTitle">Уровень пройден!</h2>
+<p id="winText">🥐</p>
+<button id="next">Следующий уровень →</button>
+</div></div>
 </div>
-<div style="margin-top:35px;color:#aaa;font-size:12px">PRE-ALPHA 0.1</div>
-</div>
-
-<div id="game"></div>
-
-<div id="hud">
-<div id="top">
-<div class="panel">🏠 База: не построена</div>
-<div class="panel">💵 <span id="money">0</span>$</div>
-</div>
-<div id="inventory">
-<b>ИНВЕНТАРЬ</b><br>
-🪵 Дерево: <span id="wood">0</span><br>
-🔩 Металл: <span id="metal">0</span><br>
-📦 Мусор: <span id="trash">0</span>
-</div>
-<div id="hint">Исследуй территорию</div>
-<div id="controls">
-<div id="move">
-<button data-key="w">▲</button>
-<button data-key="a">◀</button>
-<button data-key="s">▼</button>
-<button data-key="d">▶</button>
-</div>
-<div id="actions">
-<button onclick="collect()">СОБРАТЬ</button>
-<button onclick="openBuild()">СТРОИТЬ</button>
-<button onclick="openSettings()">⚙</button>
-</div>
-</div>
+<footer>
+<button class="secondary" id="reset">↻ Сброс</button>
+<div id="status">Нарисуй путь</div>
+<button class="secondary" id="erase">Очистить</button>
+</footer>
 </div>
 
-<div id="build">
-<div class="box">
-<h3>🏗️ Строительство</h3>
-<p id="buildInfo">Собери материалы для своего дома.</p>
-<button onclick="buildHouse()">ПОСТРОИТЬ ДОМ</button>
-<button onclick="closeBuild()">НАЗАД</button>
-</div>
-</div>
+<script>
+const c=document.getElementById('game');
+const ctx=c.getContext('2d');
+const scene=document.getElementById('scene');
+const $=id=>document.getElementById(id);
 
-<div id="settings">
-<div class="box">
-<h2>Настройки</h2>
-<label>Графика</label>
-<select id="quality" style="width:100%;padding:10px;margin-top:8px">
-<option>Низкая</option><option selected>Средняя</option><option>Высокая</option>
-</select>
-<button onclick="closeSettings()">СОХРАНИТЬ</button>
-</div>
-</div>
+let W=0,H=0,level=1,points=[];
+let drawing=false,moving=false,won=false;
+let hero={x:0,y:0};
 
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-
-let scene,camera,renderer,player;
-let objects=[],keys={};
-let money=0,wood=0,metal=0,trash=0;
-let house=false,started=false;
-let yaw=0;
-let lastX=0,lastY=0;
-
-const game=document.getElementById('game');
-const hud=document.getElementById('hud');
-
-function material(color){
- return new THREE.MeshStandardMaterial({color,roughness:1});
+function theme(){
+ if(level<200)return ['#9bdcff','#64748b','#45566c','Каменные пещеры'];
+ if(level<300)return ['#b7e4a1','#98633b','#704326','Земля'];
+ if(level<400)return ['#bfeaff','#eaf8ff','#9dc9df','Снежные горы'];
+ return ['#9adfff','#f7fbff','#d9efff','Облака'];
 }
 
-function box(x,y,z,sx,sy,sz,color){
- const m=new THREE.Mesh(
-  new THREE.BoxGeometry(sx,sy,sz),material(color)
- );
- m.position.set(x,y,z);
- m.castShadow=true;
- m.receiveShadow=true;
- scene.add(m);
- return m;
+function resize(){
+ let r=scene.getBoundingClientRect();
+ W=r.width;H=r.height;
+ c.width=W*devicePixelRatio;
+ c.height=H*devicePixelRatio;
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ reset();
 }
 
-function startGame(){
- document.getElementById('menu').style.display='none';
- game.style.display='block';
- hud.style.display='block';
- document.getElementById('settings').style.display='none';
- if(!started)init();
- started=true;
+function reset(){
+ hero={x:W/2,y:H-57};
+ points=[];moving=false;won=false;
+ $('win').style.display='none';
+ $('fill').style.width='100%';
+ $('level').textContent=`Уровень ${level} / 500`;
+ $('world').textContent=level===500?'Финал':theme()[3];
+ $('status').textContent='Нарисуй лестницу';
 }
 
-function init(){
- scene=new THREE.Scene();
- scene.background=new THREE.Color(0x9aadb1);
- scene.fog=new THREE.Fog(0x9aadb1,35,115);
-
- camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,250);
-
- renderer=new THREE.WebGLRenderer({antialias:true});
- renderer.setSize(innerWidth,innerHeight);
- renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
- renderer.shadowMap.enabled=true;
- renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- game.appendChild(renderer.domElement);
-
- scene.add(new THREE.HemisphereLight(0xffffff,0x53604c,2));
-
- const sun=new THREE.DirectionalLight(0xffffff,2);
- sun.position.set(-30,50,20);
- sun.castShadow=true;
- scene.add(sun);
-
- // Земля
- const ground=new THREE.Mesh(
-  new THREE.PlaneGeometry(220,220),
-  material(0x716b5c)
- );
- ground.rotation.x=-Math.PI/2;
- ground.receiveShadow=true;
- scene.add(ground);
-
- // Огромная мусорная гора
- const mountain=new THREE.Mesh(
-  new THREE.SphereGeometry(1,24,16),
-  material(0x554c43)
- );
- mountain.position.set(0,2,-25);
- mountain.scale.set(35,13,18);
- mountain.castShadow=true;
- scene.add(mountain);
-
- // Разные куски мусора
- const colors=[0x777777,0x8b5739,0x395a62,0x9a9a85,0x403e38,0x566c42,0xaaaaaa];
- const types=['wood','metal','trash'];
-
- for(let i=0;i<210;i++){
-  const x=(Math.random()-.5)*65;
-  const z=-10-Math.random()*43;
-  const size=.3+Math.random()*1.2;
-  const type=types[Math.floor(Math.random()*3)];
-  const m=new THREE.Mesh(
-   new THREE.BoxGeometry(size,size*.65,size),
-   material(colors[Math.floor(Math.random()*colors.length)])
-  );
-  m.position.set(x,size*.35,z);
-  m.rotation.y=Math.random()*Math.PI;
-  m.castShadow=true;
-  scene.add(m);
-  objects.push({mesh:m,type,used:false});
- }
-
- // Дополнительные отдельные объекты
- for(let i=0;i<45;i++){
-  const x=(Math.random()-.5)*75;
-  const z=-5-Math.random()*50;
-  const m=new THREE.Mesh(
-   new THREE.CylinderGeometry(.25,.3,.6,10),
-   material(0x718b91)
-  );
-  m.position.set(x,.3,z);
-  scene.add(m);
-  objects.push({mesh:m,type:'metal',used:false});
- }
-
- // Персонаж
- player=new THREE.Group();
- const body=new THREE.Mesh(
-  new THREE.CylinderGeometry(.35,.4,1.2,12),
-  material(0x304e68)
- );
- body.position.y=.9;
- player.add(body);
-
- const head=new THREE.Mesh(
-  new THREE.SphereGeometry(.28,12,12),
-  material(0xc49a72)
- );
- head.position.y=1.7;
- player.add(head);
- player.position.set(0,0,10);
- scene.add(player);
-
- camera.position.set(0,5,17);
- animate();
+function person(x,y){
+ ctx.fillStyle='#111';
+ ctx.fillRect(x-10,y-34,20,22);
+ ctx.fillRect(x-9,y-12,8,13);
+ ctx.fillRect(x+1,y-12,8,13);
+ ctx.fillRect(x-12,y+1,9,10);
+ ctx.fillRect(x+3,y+1,9,10);
+ ctx.fillStyle='#f4f4ee';
+ ctx.fillRect(x-7,y-31,14,16);
+ ctx.fillStyle='#111';
+ ctx.fillRect(x-4,y-25,3,5);
+ ctx.fillRect(x+2,y-25,3,5);
+ ctx.fillStyle='#e6e9ee';
+ ctx.fillRect(x-6,y-10,12,10);
+ ctx.fillRect(x-13,y-9,5,13);
+ ctx.fillRect(x+8,y-9,5,13);
 }
 
-function animate(){
- requestAnimationFrame(animate);
- if(!started)return;
+function draw(){
+ let [sky,wall,dark]=theme();
+ ctx.clearRect(0,0,W,H);
+ ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
 
- const speed=.12;
- let dx=0,dz=0;
-
- if(keys.w)dz-=1;
- if(keys.s)dz+=1;
- if(keys.a)dx-=1;
- if(keys.d)dx+=1;
-
- const len=Math.hypot(dx,dz);
- if(len>0){
-  dx/=len;dz/=len;
-  player.position.x+=dx*speed;
-  player.position.z+=dz*speed;
-  player.rotation.y=Math.atan2(dx,dz);
+ for(let y=0;y<H-34;y+=28){
+  for(let x of [0,W-38]){
+   ctx.fillStyle=wall;
+   ctx.fillRect(x,y,38,28);
+   ctx.strokeStyle=dark;
+   ctx.strokeRect(x,y,38,28);
+   ctx.fillStyle=dark;
+   ctx.fillRect(x+15,y+12,4,3);
+  }
  }
 
- player.position.x=Math.max(-48,Math.min(48,player.position.x));
- player.position.z=Math.max(-48,Math.min(25,player.position.z));
+ ctx.fillStyle=dark;
+ ctx.fillRect(0,H-34,W,34);
 
- // Камера следует за игроком
- const target=new THREE.Vector3(
-  player.position.x+Math.sin(yaw)*9,
-  6,
-  player.position.z+Math.cos(yaw)*9
- );
- camera.position.lerp(target,.08);
- camera.lookAt(player.position.x,1,player.position.z);
+ if(level===500){
+  ctx.fillStyle='#8b5a35';
+  ctx.fillRect(W*.57,H*.31,12,70);
+  ctx.fillRect(W*.43,H*.39,150,10);
+  ctx.fillStyle='#e7c99a';
+  ctx.fillRect(W*.39,H*.35,170,8);
+  ctx.fillStyle='#a66b3d';
+  ctx.fillRect(W*.49,H*.30,32,3);
+ }else{
+  ctx.font='28px serif';
+  ctx.fillText('🥐',W/2-14,42);
+ }
 
- renderer.render(scene,camera);
+ ctx.fillStyle=dark;
+ ctx.fillRect(W*.34,H*.55,28,7);
+ ctx.fillRect(W*.63,H*.40,28,7);
+
+ if(points.length>1){
+  ctx.lineCap='round';
+  ctx.lineJoin='round';
+  ctx.strokeStyle='white';
+  ctx.lineWidth=7;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x,points[0].y);
+  for(let p of points.slice(1))ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+  ctx.strokeStyle='#ffb74d';
+  ctx.lineWidth=2;
+  ctx.stroke();
+ }
+
+ ctx.fillStyle='#152033';
+ ctx.beginPath();
+ ctx.ellipse(hero.x,hero.y+12,13,4,0,0,Math.PI*2);
+ ctx.fill();
+ person(hero.x,hero.y);
+ requestAnimationFrame(draw);
 }
 
-window.collect=function(){
- if(!started)return;
- let nearest=null,dist=3;
-
- for(const o of objects){
-  if(o.used)continue;
-  const d=o.mesh.position.distanceTo(player.position);
-  if(d<dist){dist=d;nearest=o;}
- }
-
- if(!nearest){
-  hint('Рядом нет предметов');
-  return;
- }
-
- nearest.used=true;
- scene.remove(nearest.mesh);
-
- if(nearest.type==='wood')wood++;
- else if(nearest.type==='metal')metal++;
- else trash++;
-
- if(Math.random()<.18)money+=10;
-
- update();
- hint('Предмет собран!');
-};
+function startMove(){
+ if(points.length<2)return;
+ moving=true;
+ $('status').textContent='Персонаж идёт!';
+}
 
 function update(){
- document.getElementById('wood').textContent=wood;
- document.getElementById('metal').textContent=metal;
- document.getElementById('trash').textContent=trash;
- document.getElementById('money').textContent=money;
+ if(moving&&!won){
+  let target=points[0];
+  let dx=target.x-hero.x;
+  let dy=target.y-(hero.y-12);
+  let d=Math.hypot(dx,dy);
+
+  if(d>3){
+   hero.x+=dx/d*1.5;
+   hero.y+=dy/d*1.5;
+  }else{
+   points.shift();
+   if(!points.length){
+    if(hero.y<100||hero.x>W*.42)win();
+    else{
+     moving=false;
+     $('status').textContent='Нарисуй ещё!';
+    }
+   }
+  }
+
+  if(hero.x<43||hero.x>W-43||hero.y>H-40){
+   moving=false;points=[];
+   $('status').textContent='Попробуй ещё раз!';
+  }
+ }
+ requestAnimationFrame(update);
 }
 
-function hint(t){
- document.getElementById('hint').textContent=t;
+function win(){
+ won=true;moving=false;
+ $('win').style.display='flex';
+ if(level===500){
+  $('winTitle').textContent='Булочку уже съели!';
+  $('winText').textContent='На тарелке остались только крошки 😂';
+ }else{
+  $('winTitle').textContent='Уровень пройден!';
+  $('winText').textContent='Ты добрался до булочки 🥐';
+ }
 }
 
-window.openBuild=()=>document.getElementById('build').style.display='flex';
-window.closeBuild=()=>document.getElementById('build').style.display='none';
+function pos(e){
+ let r=c.getBoundingClientRect();
+ return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
 
-window.buildHouse=function(){
- if(house){
-  hint('Дом уже построен');
-  return;
- }
- if(wood<15||metal<5){
-  document.getElementById('buildInfo').textContent=
-   'Нужно 15 дерева и 5 металла. Сейчас: '+wood+' дерева, '+metal+' металла.';
-  return;
- }
+c.addEventListener('pointerdown',e=>{
+ if(won||moving)return;
+ drawing=true;points=[pos(e)];
+ c.setPointerCapture(e.pointerId);
+});
 
- wood-=15;metal-=5;
- house=true;
+c.addEventListener('pointermove',e=>{
+ if(!drawing)return;
+ let p=pos(e);
+ let last=points[points.length-1];
+ if(Math.hypot(p.x-last.x,p.y-last.y)>5)points.push(p);
+});
 
- // Простой 3D дом
- const x=player.position.x+5;
- const z=player.position.z-5;
- box(x,1,z,5,2,5,0x98714c);
- box(x,2.5,z,5.5,1,5.5,0x493a2c);
+c.addEventListener('pointerup',()=>{
+ if(!drawing)return;
+ drawing=false;
+ startMove();
+});
 
- const roof=box(x,4,z,6,1,6,0x57483b);
- roof.rotation.z=.1;
-
- update();
- document.querySelector('#top .panel').textContent='🏠 База: построена';
- document.getElementById('buildInfo').textContent=
-  'Дом построен! Теперь можно собирать детали компьютера.';
- hint('Ты построил свой первый дом!');
- closeBuild();
+$('reset').onclick=reset;
+$('erase').onclick=()=>{
+ points=[];moving=false;
+ $('status').textContent='Лестница очищена';
 };
 
-window.openSettings=()=>document.getElementById('settings').style.display='flex';
-window.closeSettings=()=>document.getElementById('settings').style.display='none';
+$('next').onclick=()=>{
+ level=level===500?1:level+1;
+ reset();
+};
 
-// Управление кнопками телефона
-document.querySelectorAll('[data-key]').forEach(btn=>{
- const k=btn.dataset.key;
- btn.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true;});
- btn.addEventListener('pointerup',()=>keys[k]=false);
- btn.addEventListener('pointerleave',()=>keys[k]=false);
- btn.addEventListener('pointercancel',()=>keys[k]=false);
-});
-
-// WASD
-window.addEventListener('keydown',e=>{
- const k=e.key.toLowerCase();
- if(k==='w'||k==='a'||k==='s'||k==='d')keys[k]=true;
- if(k==='e')collect();
-});
-window.addEventListener('keyup',e=>{
- keys[e.key.toLowerCase()]=false;
-});
-
-// Поворот камеры пальцем
-game.addEventListener('pointerdown',e=>{
- if(e.target.closest('#controls'))return;
- lastX=e.clientX;
- lastY=e.clientY;
-});
-game.addEventListener('pointermove',e=>{
- if(e.buttons===0)return;
- if(e.target.closest('#controls'))return;
- yaw+=(e.clientX-lastX)*.006;
- lastX=e.clientX;
- lastY=e.clientY;
-});
-
-window.addEventListener('resize',()=>{
- if(!renderer)return;
- camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight);
-});
+window.addEventListener('resize',resize);
+resize();
+draw();
+requestAnimationFrame(update);
 </script>
 </body>
 </html>
